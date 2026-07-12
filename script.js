@@ -1,35 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // === 1. SISTEMA DE FILTRO DE MEMBROS ===
-    const botoesFiltro = document.querySelectorAll(".btn-filtro");
-    const cardsMembros = document.querySelectorAll(".card");
+    // === 1. BOTÃO EXIBIR / OCULTAR OS MELHORES ===
+    const btnRevelar = document.getElementById("btn-revelar-melhores");
+    const secaoMelhores = document.getElementById("secao-melhores");
 
-    botoesFiltro.forEach(botao => {
-        botao.addEventListener("click", () => {
-            // Remove a cor amarela ativa de todos os botões e coloca no que foi clicado
-            botoesFiltro.forEach(b => b.classList.remove("ativo"));
-            botao.classList.add("ativo");
-
-            const filtroAtivo = botao.getAttribute("data-filter");
-
-            cardsMembros.forEach(card => {
-                const eloCard = card.getAttribute("data-elo");
-                
-                // Se for 'todos' ou se o elo do card for igual ao do botão, mostra. Se não, esconde.
-                if (filtroAtivo === "todos" || eloCard === filtroAtivo) {
-                    card.classList.remove("escondido");
-                } else {
-                    card.classList.add("escondido");
-                }
-            });
+    if (btnRevelar && secaoMelhores) {
+        btnRevelar.addEventListener("click", () => {
+            // Se estiver escondido, mostra. Se estiver visível, esconde.
+            if (secaoMelhores.classList.contains("escondido")) {
+                secaoMelhores.classList.remove("escondido");
+                // Pequeno delay para a animação do CSS pegar suavemente
+                setTimeout(() => {
+                    secaoMelhores.classList.add("mostrar");
+                }, 10);
+                btnRevelar.textContent = "Ocultar os Melhores ❌";
+            } else {
+                secaoMelhores.classList.remove("mostrar");
+                // Espera a animação sumir para colocar o display none de fato
+                setTimeout(() => {
+                    secaoMelhores.classList.add("escondido");
+                }, 500);
+                btnRevelar.textContent = "Exibir os Melhores da Guilda 🔥";
+            }
         });
-    });
+    }
 
-    // === 2. ANIMAÇÃO SUAVE DE APARECER CONTEÚDO (SCROLL REVEAL) ===
+    // === 2. ANIMAÇÃO AO ROLAR A PÁGINA (SCROLL REVEAL) ===
     const secoes = document.querySelectorAll(".section-hidden");
 
     const checarScroll = () => {
-        // Define o ponto da tela onde a animação deve começar (85% da altura da tela)
         const gatilhoUsuario = (window.innerHeight / 100) * 85; 
 
         secoes.forEach(secao => {
@@ -41,9 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Ativa o leitor de scroll do navegador
     window.addEventListener("scroll", checarScroll);
-    
-    // Roda uma vez assim que a página abre para mostrar o que já está na tela
     checarScroll(); 
 });
