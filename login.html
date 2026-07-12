@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarKindred | Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo específico para centralizar a tela de login */
+        .login-wrapper {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #050b14 0%, #0a192f 100%);
+        }
+        .login-card {
+            width: 360px;
+            padding: 40px;
+            background-color: #0a192f;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+        .login-card input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0 10px 0;
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            background: #050b14;
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+        }
+        .login-card input:focus {
+            outline: none;
+            border-color: #00b4d8;
+            box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+        }
+        .erro-msg {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2 style="color: #d4af37; margin-bottom: 10px;">Portal SK</h2>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Área Restrita para Membros Oficiais</p>
+            
+            <input type="password" id="senha-cluster" placeholder="Chave de Acesso">
+            <div id="erro-login" class="erro-msg">Chave incorreta! Tente novamente.</div>
+            
+            <button id="btn-entrar-painel" class="btn-principal" style="width: 100%;">Acessar Painel</button>
+            
+            <p style="margin-top: 20px;"><a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao site</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("btn-entrar-painel").addEventListener("click", () => {
+            const senhaDigitada = document.getElementById("senha-cluster").value;
+            // Define aqui a senha da sua guilda
+            const SENHA_CORRETA = "sk2026"; 
+
+            if (senhaDigitada === SENHA_CORRETA) {
+                // Se acertar, guarda um token no navegador e manda para a página interna
+                localStorage.setItem("sk_autenticado", "true");
+                window.location.href = "painel.html";
+            } else {
+                document.getElementById("erro-login").style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

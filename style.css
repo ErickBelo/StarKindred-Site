@@ -219,8 +219,9 @@ header nav ul li a:hover {
     margin-bottom: 15px;
 }
 
-.elo.diamante { color: #00b4d8; }
-.elo.platina { color: #52b788; }
+/* Forçar as cores corretas por classe */
+.elo.diamante { color: #00b4d8 !important; }
+.elo.platina { color: #52b788 !important; }
 
 .card .armas {
     font-size: 0.9rem;

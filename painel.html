@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarKindred | Painel do Clã</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        // SEGURANÇA: Bloqueia o acesso se não tiver feito o login
+        if (localStorage.getItem("sk_autenticado") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">SK_DASHBOARD</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Site Principal</a></li>
+                <li><a href="#" id="btn-logout" style="color: #ff4d4d;">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="conteudo">
+        <h2 style="color: #d4af37;">Quadro de Comandos Cósmicos</h2>
+        <p>Bem-vindo de volta, soldado. Aqui estão as diretrizes internas da StarKindred.</p>
+
+        <div class="cards-membros" style="margin-top: 40px; text-align: left;">
+            <!-- Bloco de Avisos -->
+            <div class="card" style="width: 100%; max-width: 500px; text-align: left;">
+                <h3 style="color: #00b4d8; margin-bottom: 15px;">📢 Próximos Treinos (2v2)</h3>
+                <p style="margin-bottom: 10px;">📅 <strong>Sábado:</strong> Às 19:00h - Foco em rotação de armas e combos de Black Hole.</p>
+                <p>📅 <strong>Domingo:</strong> Às 18:00h - Inscrições abertas para o campeonato interno de 1v1.</p>
+            </div>
+
+            <!-- Bloco de Metas -->
+            <div class="card" style="width: 100%; max-width: 500px; text-align: left;">
+                <h3 style="color: #d4af37; margin-bottom: 15px;">🎯 Diretrizes Estratégicas</h3>
+                <p style="margin-bottom: 10px;">• Manter o Peak Elo competitivo ativo (foco acima de 2000+).</p>
+                <p style="margin-bottom: 10px;">• Atletas de Greatsword/Hammer focar em punições de aproximação.</p>
+                <p>• Gravar as partidas de campeonato para análise de replays.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Função para deslogar
+        document.getElementById("btn-logout").addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.removeItem("sk_autenticado");
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>
