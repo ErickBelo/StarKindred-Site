@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | Guilda Brawlhalla</title>
+    <title>StarKindred | SK</title>
     <link rel="stylesheet" href="style.css">
     <!-- Fontes Gamer e de Texto -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- CABEÇALHO (NAVBAR) -->
+    <!-- CABEÇALHO -->
     <header>
         <div class="logo">StarKindred</div>
         <nav>
@@ -27,7 +27,7 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>RUMO AS ESTRELAS!</h1>
-            <p>Melhor comunidade de Brawlhalla, treinos, campeonatos, e mais!</p>
+            <p>Domine o Valhala ao nosso lado. Rumo aos Céus!</p>
             <a href="#recrutamento" class="btn-principal">Junte-se à Guilda</a>
         </div>
     </section>
@@ -38,49 +38,94 @@
         <p>Somos uma guilda focada em evolução, torneios e parceria. Não importa se você joga de foice, espada ou martelo, aqui buscamos o topo das ranqueadas de Brawlhalla.</p>
     </section>
 
-<!-- SEÇÃO MELHORES JOGADORES ATUALIZADA -->
+    <!-- SEÇÃO MEMBROS COM CARROSSEL INFINITO -->
     <section id="membros" class="conteudo section-hidden">
-        <h2>Nossos Melhores Jogadores</h2>
-        <p>Estes são os guerreiros da StarKindred que alcançaram o topo das arenas.</p>
+        <h2>Membros da StarKindred</h2>
+        <p>Nossa lined-up completa cruzando as arenas cósmicas.</p>
 
-        <!-- Botões de Filtro por Peak Elo -->
-        <div class="filtros">
-            <button class="btn-filtro ativo" data-filter="todos">Todos</button>
-            <button class="btn-filtro" data-filter="diamante">Peak Diamante 💎</button>
-            <button class="btn-filtro" data-filter="platina">Peak Platina 🏆</button>
+        <!-- Faixa do Carrossel Infinito -->
+        <div class="carrossel-container">
+            <div class="carrossel-track">
+                <!-- Grupo 1 de Membros -->
+                <div class="carrossel-item">.Breki</div>
+                <div class="carrossel-item">GoodKk</div>
+                <div class="carrossel-item">Devan</div>
+                <div class="carrossel-item">Zanin</div>
+                <div class="carrossel-item">Arisu</div>
+                <div class="carrossel-item">Trapirineu</div>
+                <div class="carrossel-item">Shinas</div>
+                
+                <!-- Grupo 2 (Cópia exata para criar o efeito infinito sem emendas) -->
+                <div class="carrossel-item">.Breki</div>
+                <div class="carrossel-item">GoodKk</div>
+                <div class="carrossel-item">Devan</div>
+                <div class="carrossel-item">Zanin</div>
+                <div class="carrossel-item">Arisu</div>
+                <div class="carrossel-item">Trapirineu</div>
+                <div class="carrossel-item">Shinas</div>
+            </div>
         </div>
 
-        <!-- Cards dos Jogadores -->
-        <div class="cards-membros">
-            <!-- Jogador 1 -->
-            <div class="card" data-elo="diamante">
-                <h3>.Breki</h3>
-                <p class="elo diamante">Peak: 2300 💎</p>
-                <p><strong>Mains:</strong> Nix </p>
-                <p class="armas">🎯 Foice / Blasters</p>
-            </div>
-            <!-- Jogador 2 -->
-            <div class="card" data-elo="diamante">
-                <h3>GoodKk</h3>
-                <p class="elo diamante">Peak: 2000+ 💎</p>
-                <p><strong>Mains:</strong> Fait</p>
-                <p class="armas">🎯 Orb / Foice</p>
-            </div>
-            <!-- Jogador 3 -->
-            <div class="card" data-elo="diamante">
-                <h3>Zanin</h3>
-                <p class="elo diamante">Peak: 2200 💎</p>
-                <p><strong>Mains:</strong> Ember</p>
-                <p class="armas">🎯 Lança Bow / Katars</p>
+        <!-- Botão para revelar os Melhores -->
+        <div style="margin-top: 40px;">
+            <button id="btn-revelar-melhores" class="btn-principal">Exibir os Melhores da Guilda 🔥</button>
+        </div>
+
+        <!-- Seção Oculta dos Melhores Jogadores (Aparece no Clique) -->
+        <div id="secao-melhores" class="melhores-container escondido">
+            <h3 class="titulo-destaque">Atletas de Elite (Peak Elo)</h3>
+            <div class="cards-membros">
+                <!-- 1 -->
+                <div class="card">
+                    <h3>.Breki</h3>
+                    <p class="elo diamante">Peak: 2300 💎</p>
+                    <p><strong>Mains:</strong> Nix</p>
+                    <p class="armas">🎯 Foice / Blasters</p>
+                </div>
+                <!-- 2 -->
+                <div class="card">
+                    <h3>GoodKk</h3>
+                    <p class="elo diamante">Peak: 2080+ 💎</p>
+                    <p><strong>Mains:</strong> Fait</p>
+                    <p class="armas">🎯 Foice / Orb</p>
+                </div>
+                <!-- 3 -->
+                <div class="card">
+                    <h3>Devan</h3>
+                    <p class="elo diamante">Peak: 2000+ 💎</p>
+                    <p><strong>Mains:</strong> Lucien / Reno</p>
+                    <p class="armas">🎯 Blasters / Katars</p>
+                </div>
+                <!-- 4 -->
+                <div class="card">
+                    <h3>Zanin</h3>
+                    <p class="elo platina">Peak: 2100+ 💎</p>
+                    <p><strong>Mains:</strong> Ember</p>
+                    <p class="armas">🎯 Bow / Katars</p>
+                </div>
+                <!-- 5 -->
+                <div class="card">
+                    <h3>Arisu</h3>
+                    <p class="elo diamante">Peak: 2100+ 💎</p>
+                    <p><strong>Mains:</strong> Magyar / Yumiko</p>
+                    <p class="armas">🎯 Hammer / Greatsword </p>
+                </div>
+                <!-- 6 -->
+                <div class="card">
+                    <h3>Trapirineu</h3>
+                    <p class="elo diamante">Peak: 2300+ 💎</p>
+                    <p><strong>Mains:</strong> Sidra</p>
+                    <p class="armas">🎯 Cannon / Sword</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO RECRUTAMENTO / DISCORD -->
+    <!-- SEÇÃO RECRUTAMENTO -->
     <section id="recrutamento" class="hero-recrutamento section-hidden">
         <h2>Quer entrar para o clã?</h2>
         <p>Nosso recrutamento é feito diretamente pelo nosso servidor do Discord. Clique abaixo, leia as regras e faça o seu teste!</p>
-        <a href="https://discord.gg/UJaxfdCPFt" target="_blank" class="btn-discord">Entrar no Discord</a>
+        <a href="LINK_DO_SEU_DISCORD_AQUI" target="_blank" class="btn-discord">Entrar no Discord</a>
     </section>
 
     <!-- RODAPÉ -->
@@ -88,7 +133,6 @@
         <p>&copy; 2026 StarKindred - Todos os direitos reservados.</p>
     </footer>
 
-    <!-- VÍNCULO COM O JAVASCRIPT -->
     <script src="script.js"></script>
 </body>
 </html>
