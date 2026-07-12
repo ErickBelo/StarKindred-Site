@@ -1,0 +1,253 @@
+/* RESET DE ESTILOS E FONTES */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #050b14; /* Azul quase preto, fundo do espaço */
+    color: #e2e8f0;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, .logo {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+}
+
+/* NAVBAR (CABEÇALHO) */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background-color: rgba(5, 11, 20, 0.95);
+    border-bottom: 2px solid #d4af37; /* Linha dourada */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #d4af37; /* Dourado */
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #e2e8f0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: #d4af37;
+}
+
+/* SEÇÃO HERO (BOAS-VINDAS) */
+.hero {
+    height: 70vh;
+    background: linear-gradient(135deg, rgba(10, 25, 47, 0.9), rgba(5, 11, 20, 0.95));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    color: #e2e8f0;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(0, 180, 216, 0.5); /* Brilho azul */
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #00b4d8; /* Azul claro/neon */
+    margin-bottom: 30px;
+}
+
+/* BOTÕES */
+.btn-principal {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #d4af37;
+    color: #050b14;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-principal:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px #d4af37;
+}
+
+/* SEÇÕES DE CONTEÚDO GERAL */
+.conteudo {
+    padding: 80px 10%;
+    text-align: center;
+}
+
+.conteudo h2 {
+    font-size: 2rem;
+    color: #d4af37;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.conteudo p {
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #94a3b8;
+}
+
+/* FILTROS DE JOGADORES */
+.filtros {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-filtro {
+    background-color: #0a192f;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #e2e8f0;
+    padding: 10px 24px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-filtro:hover, .btn-filtro.ativo {
+    background-color: #d4af37;
+    color: #050b14;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+/* CARDS DE MEMBROS */
+.cards-membros {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.card {
+    background-color: #0a192f; /* Azul escuro naval */
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 25px;
+    border-radius: 8px;
+    width: 250px;
+    transition: border 0.3s, transform 0.3s, display 0.3s;
+}
+
+.card:hover {
+    border-color: #d4af37;
+    transform: scale(1.05);
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #e2e8f0;
+}
+
+.card .elo {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Cores dos Elos */
+.elo.diamante { color: #00b4d8; }
+.elo.platina { color: #52b788; }
+
+/* Esconder cards que não batem com o filtro */
+.card.escondido {
+    display: none;
+}
+
+/* SEÇÃO RECRUTAMENTO / DISCORD */
+.hero-recrutamento {
+    background-color: #0a192f;
+    padding: 80px 10%;
+    text-align: center;
+    border-top: 2px solid #d4af37;
+}
+
+.hero-recrutamento h2 {
+    color: #d4af37;
+    margin-bottom: 15px;
+}
+
+.hero-recrutamento p {
+    margin-bottom: 30px;
+    color: #94a3b8;
+}
+
+.btn-discord {
+    display: inline-block;
+    padding: 15px 35px;
+    background-color: #5865F2; /* Roxo oficial do Discord */
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-discord:hover {
+    background-color: #4752c4;
+    box-shadow: 0 0 15px rgba(88, 101, 242, 0.5);
+}
+
+/* RODAPÉ */
+footer {
+    background-color: #050b14;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #64748b;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+/* ANIMAÇÕES DE SCROLL (REVELAÇÃO) */
+.section-hidden {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card .armas {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 10px;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+    padding-top: 10px;
+}
