@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarKindred | Guilda Brawlhalla</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fontes Gamer e de Texto -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- CABEÇALHO (NAVBAR) -->
+    <header>
+        <div class="logo">StarKindred</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#membros">Membros</a></li>
+                <li><a href="#recrutamento">Recrutamento</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- SEÇÃO HERO (HOME) -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>FORJADOS NA ARENA</h1>
+            <p>Domine o Valhala ao nosso lado. Rumo ao Diamante!</p>
+            <a href="#recrutamento" class="btn-principal">Junte-se à Guilda</a>
+        </div>
+    </section>
+
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="conteudo section-hidden">
+        <h2>Quem Somos</h2>
+        <p>Somos uma guilda focada em evolução, torneios e parceria. Não importa se você joga de foice, espada ou martelo, aqui buscamos o topo das ranqueadas de Brawlhalla.</p>
+    </section>
+
+<!-- SEÇÃO MELHORES JOGADORES ATUALIZADA -->
+    <section id="membros" class="conteudo section-hidden">
+        <h2>Nossos Melhores Jogadores</h2>
+        <p>Estes são os guerreiros da StarKindred que alcançaram o topo das arenas.</p>
+
+        <!-- Botões de Filtro por Peak Elo -->
+        <div class="filtros">
+            <button class="btn-filtro ativo" data-filter="todos">Todos</button>
+            <button class="btn-filtro" data-filter="diamante">Peak Diamante 💎</button>
+            <button class="btn-filtro" data-filter="platina">Peak Platina 🏆</button>
+        </div>
+
+        <!-- Cards dos Jogadores -->
+        <div class="cards-membros">
+            <!-- Jogador 1 -->
+            <div class="card" data-elo="diamante">
+                <h3>Vortex</h3>
+                <p class="elo diamante">Peak: 2100+ 💎</p>
+                <p><strong>Mains:</strong> Mordex / Nix</p>
+                <p class="armas">🎯 Foice / Pistolas</p>
+            </div>
+            <!-- Jogador 2 -->
+            <div class="card" data-elo="platina">
+                <h3>Kaelthas</h3>
+                <p class="elo platina">Peak: 1850+ 🏆</p>
+                <p><strong>Mains:</strong> Bodvar / Orion</p>
+                <p class="armas">🎯 Espada / Lança</p>
+            </div>
+            <!-- Jogador 3 -->
+            <div class="card" data-elo="diamante">
+                <h3>Shadow</h3>
+                <p class="elo diamante">Peak: 2050+ 💎</p>
+                <p><strong>Mains:</strong> Artemis / Asuri</p>
+                <p class="armas">🎯 Lança Foguete / Garras</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO RECRUTAMENTO / DISCORD -->
+    <section id="recrutamento" class="hero-recrutamento section-hidden">
+        <h2>Quer entrar para o clã?</h2>
+        <p>Nosso recrutamento é feito diretamente pelo nosso servidor do Discord. Clique abaixo, leia as regras e faça o seu teste!</p>
+        <a href="LINK_DO_SEU_DISCORD_AQUI" target="_blank" class="btn-discord">Entrar no Discord</a>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>&copy; 2026 StarKindred - Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- VÍNCULO COM O JAVASCRIPT -->
+    <script src="script.js"></script>
+</body>
+</html>
