@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilo específico para centralizar a tela de login */
         .login-wrapper {
             height: 100vh;
             display: flex;
@@ -66,13 +65,11 @@
             <h2 style="color: #d4af37; margin-bottom: 10px;">Portal SK</h2>
             <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Área Restrita para Membros Oficiais</p>
             
-            <!-- Campo de Nome/Nick -->
             <div class="input-group">
                 <label for="sk-user">Nick / Usuário</label>
                 <input type="text" id="sk-user" placeholder="Ex: .Breki">
             </div>
 
-            <!-- Campo de Senha -->
             <div class="input-group">
                 <label for="sk-pass">Senha do Clã</label>
                 <input type="password" id="sk-pass" placeholder="••••••••">
@@ -91,19 +88,14 @@
             const usuarioDigitado = document.getElementById("sk-user").value.trim();
             const senhaDigitada = document.getElementById("sk-pass").value;
 
-            // Configurações de Login
-            const SENHA_CORRETA = "sk2026"; // Altere para a senha que quiser
+            // Altere aqui para a senha padrão da sua guilda
+            const SENHA_CORRETA = "sk2026"; 
             
-            // Verifica se o usuário preencheu o nome e se a senha está certa
             if (usuarioDigitado !== "" && senhaDigitada === SENHA_CORRETA) {
-                // Salva que o usuário está autenticado e o nick dele para usar depois
                 localStorage.setItem("sk_autenticado", "true");
                 localStorage.setItem("sk_usuario", usuarioDigitado);
-                
-                // Redireciona para o painel interno
                 window.location.href = "painel.html";
             } else {
-                // Mostra erro se o campo estiver vazio ou a senha errada
                 document.getElementById("erro-login").style.display = "block";
             }
         });

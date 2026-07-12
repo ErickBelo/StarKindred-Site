@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <script>
-        // SEGURANÇA: Bloqueia o acesso se não tiver feito o login
+        // Trava de segurança: Se tentar entrar sem logar, chuta de volta pro login
         if (localStorage.getItem("sk_autenticado") !== "true") {
             window.location.href = "login.html";
         }
@@ -20,7 +20,7 @@
         <nav>
             <ul>
                 <li><a href="index.html">Site Principal</a></li>
-                <li><a href="#" id="btn-logout" style="color: #ff4d4d;">Sair</a></li>
+                <li><a href="#" id="btn-logout" style="color: #ff4d4d; border: 1px solid #ff4d4d; padding: 5px 12px; border-radius: 4px; margin-left: 15px;">Sair</a></li>
             </ul>
         </nav>
     </header>
@@ -28,29 +28,37 @@
     <section class="conteudo">
         <h2 style="color: #d4af37;">Quadro de Comandos Cósmicos</h2>
         <p>Bem-vindo de volta, <span id="nome-jogador" style="color: #00b4d8; font-weight: bold;">Membro</span>. Aqui estão as diretrizes internas da StarKindred.</p>
-        <div class="cards-membros" style="margin-top: 40px; text-align: left;">
+
+        <div class="cards-membros" style="margin-top: 40px;">
             <!-- Bloco de Avisos -->
-            <div class="card" style="width: 100%; max-width: 500px; text-align: left;">
+            <div class="card" style="width: 100%; max-width: 450px; text-align: left;">
                 <h3 style="color: #00b4d8; margin-bottom: 15px;">📢 Próximos Treinos (2v2)</h3>
-                <p style="margin-bottom: 10px;">📅 <strong>Sábado:</strong> Às 19:00h - Foco em rotação de armas e combos de Black Hole.</p>
-                <p>📅 <strong>Domingo:</strong> Às 18:00h - Inscrições abertas para o campeonato interno de 1v1.</p>
+                <p style="margin-bottom: 10px; color: #94a3b8;">📅 <strong>Sábado:</strong> Às 19:00h - Foco em combos e Black Hole.</p>
+                <p style="color: #94a3b8;">📅 <strong>Domingo:</strong> Às 18:00h - Campeonato interno de 1v1.</p>
             </div>
 
             <!-- Bloco de Metas -->
-            <div class="card" style="width: 100%; max-width: 500px; text-align: left;">
+            <div class="card" style="width: 100%; max-width: 450px; text-align: left;">
                 <h3 style="color: #d4af37; margin-bottom: 15px;">🎯 Diretrizes Estratégicas</h3>
-                <p style="margin-bottom: 10px;">• Manter o Peak Elo competitivo ativo (foco acima de 2000+).</p>
-                <p style="margin-bottom: 10px;">• Atletas de Greatsword/Hammer focar em punições de aproximação.</p>
-                <p>• Gravar as partidas de campeonato para análise de replays.</p>
+                <p style="margin-bottom: 10px; color: #94a3b8;">• Manter o Peak Elo competitivo ativo (acima de 2000+).</p>
+                <p style="margin-bottom: 10px; color: #94a3b8;">• Focar em punições rápidas usando Hammer/Greatsword.</p>
+                <p style="color: #94a3b8;">• Salvar replays para análise de erros com a staff.</p>
             </div>
         </div>
     </section>
 
     <script>
-        // Função para deslogar
+        // Pega o nick salvo no login e bota na mensagem de boas-vindas
+        const usuarioLogado = localStorage.getItem("sk_usuario");
+        if (usuarioLogado) {
+            document.getElementById("nome-jogador").textContent = usuarioLogado;
+        }
+
+        // Lógica para deslogar da conta
         document.getElementById("btn-logout").addEventListener("click", (e) => {
             e.preventDefault();
             localStorage.removeItem("sk_autenticado");
+            localStorage.removeItem("sk_usuario");
             window.location.href = "login.html";
         });
     </script>
