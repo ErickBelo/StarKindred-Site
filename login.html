@@ -24,16 +24,26 @@
             text-align: center;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
         }
+        .input-group {
+            text-align: left;
+            margin-top: 15px;
+        }
+        .input-group label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: #d4af37;
+            display: block;
+            margin-bottom: 5px;
+        }
         .login-card input {
             width: 100%;
             padding: 12px;
-            margin: 20px 0 10px 0;
             border-radius: 4px;
             border: 1px solid rgba(212, 175, 55, 0.5);
             background: #050b14;
             color: white;
             font-size: 1rem;
-            text-align: center;
+            box-sizing: border-box;
         }
         .login-card input:focus {
             outline: none;
@@ -43,7 +53,8 @@
         .erro-msg {
             color: #ff4d4d;
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-top: 15px;
+            margin-bottom: 10px;
             display: none;
         }
     </style>
@@ -53,12 +64,23 @@
     <div class="login-wrapper">
         <div class="login-card">
             <h2 style="color: #d4af37; margin-bottom: 10px;">Portal SK</h2>
-            <p style="color: #94a3b8; font-size: 0.9rem;">Área Restrita para Membros Oficiais</p>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Área Restrita para Membros Oficiais</p>
             
-            <input type="password" id="senha-cluster" placeholder="Chave de Acesso">
-            <div id="erro-login" class="erro-msg">Chave incorreta! Tente novamente.</div>
+            <!-- Campo de Nome/Nick -->
+            <div class="input-group">
+                <label for="sk-user">Nick / Usuário</label>
+                <input type="text" id="sk-user" placeholder="Ex: .Breki">
+            </div>
+
+            <!-- Campo de Senha -->
+            <div class="input-group">
+                <label for="sk-pass">Senha do Clã</label>
+                <input type="password" id="sk-pass" placeholder="••••••••">
+            </div>
             
-            <button id="btn-entrar-painel" class="btn-principal" style="width: 100%;">Acessar Painel</button>
+            <div id="erro-login" class="erro-msg">Usuário ou senha incorretos!</div>
+            
+            <button id="btn-entrar-painel" class="btn-principal" style="width: 100%; margin-top: 25px;">Acessar Painel</button>
             
             <p style="margin-top: 20px;"><a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao site</a></p>
         </div>
@@ -66,15 +88,22 @@
 
     <script>
         document.getElementById("btn-entrar-painel").addEventListener("click", () => {
-            const senhaDigitada = document.getElementById("senha-cluster").value;
-            // Define aqui a senha da sua guilda
-            const SENHA_CORRETA = "sk2026"; 
+            const usuarioDigitado = document.getElementById("sk-user").value.trim();
+            const senhaDigitada = document.getElementById("sk-pass").value;
 
-            if (senhaDigitada === SENHA_CORRETA) {
-                // Se acertar, guarda um token no navegador e manda para a página interna
+            // Configurações de Login
+            const SENHA_CORRETA = "sk2026"; // Altere para a senha que quiser
+            
+            // Verifica se o usuário preencheu o nome e se a senha está certa
+            if (usuarioDigitado !== "" && senhaDigitada === SENHA_CORRETA) {
+                // Salva que o usuário está autenticado e o nick dele para usar depois
                 localStorage.setItem("sk_autenticado", "true");
+                localStorage.setItem("sk_usuario", usuarioDigitado);
+                
+                // Redireciona para o painel interno
                 window.location.href = "painel.html";
             } else {
+                // Mostra erro se o campo estiver vazio ou a senha errada
                 document.getElementById("erro-login").style.display = "block";
             }
         });

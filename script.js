@@ -43,3 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", checarScroll);
     checarScroll(); 
 });
+
+// Recupera o nick salvo e exibe na tela
+const usuarioLogado = localStorage.getItem("sk_usuario");
+if (usuarioLogado) {
+    document.getElementById("nome-jogador").textContent = usuarioLogado;
+}
