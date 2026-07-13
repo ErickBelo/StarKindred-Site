@@ -3,157 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | SK</title>
+    <title>StarKindred | Guilda Oficial</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Fontes Gamer e de Texto -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           ESTILOS EXCLUSIVOS DOS MEBROS INTERATIVOS E LOOP
+           ========================================================================== */
+        
+        /* Modificação na lista para torná-los botões clicáveis */
+        .lista-membros-clicavel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            list-style: none;
+        }
+
+        .lista-membros-clicavel li {
+            background: rgba(0, 180, 216, 0.05);
+            border: 1px solid rgba(0, 180, 216, 0.2);
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lista-membros-clicavel li:hover {
+            border-color: #00b4d8;
+            background: rgba(0, 180, 216, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(0, 180, 216, 0.2);
+        }
+
+        /* Card de detalhes que surge ao clicar */
+        .painel-detalhes-membro {
+            margin-top: 25px;
+            background: #0a192f;
+            border: 1px solid #00b4d8;
+            border-left: 4px solid #00b4d8;
+            border-radius: 6px;
+            padding: 20px;
+            display: none; /* Inicia escondido */
+            animation: abrirPainel 0.3s ease-out forwards;
+            text-align: left;
+        }
+
+        @keyframes abrirPainel {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-linha-publica {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .info-linha-publica strong {
+            color: #00b4d8;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Estilos do Loop Infinito de Peak Elo */
+        .carrossel-container {
+            width: 100%;
+            overflow: hidden;
+            background: #050b14;
+            border: 1px dashed rgba(0, 180, 216, 0.3);
+            border-radius: 4px;
+            padding: 15px 0;
+            margin-top: 20px;
+        }
+
+        .esteira-loop {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: moverEsteira 15s linear infinite;
+        }
+
+        .carrossel-container:hover .esteira-loop {
+            animation-play-state: paused;
+        }
+
+        .item-elite {
+            background: rgba(255, 183, 3, 0.05);
+            border: 1px solid #ffb703;
+            color: #ffb703;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        @keyframes moverEsteira {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .painel-melhores {
+            margin-top: 20px;
+            background: rgba(255, 183, 3, 0.03);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            border-radius: 6px;
+            padding: 20px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO -->
-    <header>
+    <!-- Menu de Navegação Superior -->
+    <nav>
         <div class="logo">StarKindred</div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#membros">Membros</a></li>
-                <li><a href="#recrutamento">Recrutamento</a></li>
-                <!-- O id="nav-login-btn" permite que o JavaScript mude este botão dinamicamente -->
-                <li><a href="login.html" id="nav-login-btn" style="color: #d4af37; border: 1px solid #d4af37; padding: 5px 12px; border-radius: 4px; margin-left: 15px;">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#membros">Membros</a></li>
+            <li><button class="btn-painel-sk" onclick="window.location.href='login.html'">Painel SK</button></li>
+        </ul>
+    </nav>
 
-    <!-- SEÇÃO HERO (HOME) -->
-    <section id="home" class="hero">
-        <div class="hero-content">
+    <!-- Container de Conteúdo Principal -->
+    <div class="container-landing" id="home">
+        
+        <!-- Seção Hero -->
+        <div class="hero-section">
             <h1>RUMO AS ESTRELAS!</h1>
             <p>Domine o Valhalla ao nosso lado. Rumo aos Céus!</p>
-            <a href="#recrutamento" class="btn-principal">Junte-se à Guilda</a>
+            <a href="#recrutamento" class="btn-landing-primario">Junte-se à Guilda</a>
         </div>
-    </section>
 
-    <!-- SEÇÃO SOBRE -->
-    <section id="sobre" class="conteudo section-hidden">
-        <h2>Quem Somos</h2>
-        <p>Somos uma guilda focada em evolução, torneios e parceria. Não importa se você joga de foice, espada ou martelo, aqui buscamos o topo das ranqueadas de Brawlhalla.</p>
-    </section>
+        <!-- Seção: Quem Somos -->
+        <div class="secao-landing" id="sobre">
+            <h2>Quem Somos</h2>
+            <p>Somos uma guilda focada em evolução, torneios e parceria. Não importa se você joga de foice, espada ou martelo, aqui buscamos o topo das ranqueadas de Brawlhalla.</p>
+        </div>
 
-    <!-- SEÇÃO MEMBROS COM CARROSSEL INFINITO -->
-    <section id="membros" class="conteudo section-hidden">
-        <h2>Membros da StarKindred</h2>
-        <p>Nossa lined-up completa cruzando as arenas cósmicas.</p>
+        <!-- Seção: Membros da Guilda (APENAS NOMES, CLICÁVEIS) -->
+        <div class="secao-landing" id="membros">
+            <h2>Membros da StarKindred</h2>
+            <p>Selecione qualquer operador abaixo para descriptografar os dados táticos e contato do Discord.</p>
+            
+            <ul class="lista-membros-clicavel">
+                <li onclick="mostrarFicha('Breki')">.Breki</li>
+                <li onclick="mostrarFicha('GoodKk')">GoodKk</li>
+                <li onclick="mostrarFicha('Devan')">Devan</li>
+                <li onclick="mostrarFicha('Zanin')">Zanin</li>
+                <li onclick="mostrarFicha('Arisu')">Arisu</li>
+                <li onclick="mostrarFicha('Trapirineu')">Trapirineu</li>
+                <li onclick="mostrarFicha('Shinas')">Shinas</li>
+                <li onclick="mostrarFicha('TiaJuh')">Tia Juh</li>
+            </ul>
 
-        <!-- Faixa do Carrossel Infinito -->
-        <div class="carrossel-container">
-            <div class="carrossel-track">
-                <!-- Grupo 1 de Membros -->
-                <div class="carrossel-item">.Breki</div>
-                <div class="carrossel-item">GoodKk</div>
-                <div class="carrossel-item">Devan</div>
-                <div class="carrossel-item">Zanin</div>
-                <div class="carrossel-item">Arisu</div>
-                <div class="carrossel-item">Trapirineu</div>
-                <div class="carrossel-item">Shinas</div>
-                <div class="carrossel-item">Tia Juh</div>
+            <!-- PAINEL DINÂMICO DE DETALHES (Aparece aqui embaixo ao clicar) -->
+            <div class="painel-detalhes-membro" id="painel-membro">
+                <h3 id="membro-nome" style="font-family: 'Orbitron'; color: #00b4d8; font-size: 1.4rem; margin-bottom: 15px;">Nome do Operador</h3>
+                <div class="info-linha-publica"><strong>PEAK ELO:</strong> <span id="membro-elo" style="color: #fff;">-</span></div>
+                <div class="info-linha-publica"><strong>MAIN AGENT / ARMA:</strong> <span id="membro-main" style="color: #fff;">-</span></div>
                 
-                <!-- Grupo 2 -->
-                <div class="carrossel-item">.Breki</div>
-                <div class="carrossel-item">GoodKk</div>
-                <div class="carrossel-item">Devan</div>
-                <div class="carrossel-item">Zanin</div>
-                <div class="carrossel-item">Arisu</div>
-                <div class="carrossel-item">Trapirineu</div>
-                <div class="carrossel-item">Shinas</div>
-                <div class="carrossel-item">Tia Juh</div>
-            </div>
-        </div>
-
-        <!-- Botão para revelar os Melhores -->
-        <div style="margin-top: 40px;">
-            <button id="btn-revelar-melhores" class="btn-principal">Exibir os Melhores da Guilda 🔥</button>
-        </div>
-
-        <!-- Seção Oculta dos Melhores Jogadores (Aparece no Clique) -->
-        <div id="secao-melhores" class="melhores-container escondido">
-            <h3 class="titulo-destaque">Atletas de Elite (Peak Elo)</h3>
-            <div class="cards-membros">
-                <div class="card">
-                    <h3>.Breki</h3>
-                    <p class="elo diamante">Peak: 2300 💎</p>
-                    <p><strong>Mains:</strong> Nix</p>
-                    <p class="armas">🎯 Foice / Blasters</p>
-                </div>
-                <div class="card">
-                    <h3>GoodKk</h3>
-                    <p class="elo diamante">Peak: 2180 💎</p>
-                    <p><strong>Mains:</strong> Fait</p>
-                    <p class="armas">🎯 Foice / Orb</p>
-                </div>
-                <div class="card">
-                    <h3>Devan</h3>
-                    <p class="elo diamante">Peak: 2000+ 💎</p>
-                    <p><strong>Mains:</strong> Lucien / Reno</p>
-                    <p class="armas">🎯 Blasters / Katars</p>
-                </div>
-                <div class="card">
-                    <h3>Zanin</h3>
-                    <p class="elo diamante">Peak: 2100+ 💎</p>
-                    <p><strong>Mains:</strong> Ember</p>
-                    <p class="armas">🎯 Bow / Katars</p>
-                </div>
-                <div class="card">
-                    <h3>Arisu</h3>
-                    <p class="elo diamante">Peak: 2100+ 💎</p>
-                    <p><strong>Mains:</strong> Magyar / Yumiko</p>
-                    <p class="armas">🎯 Hammer / Greatsword </p>
-                </div>
-                <div class="card">
-                    <h3>Trapirineu</h3>
-                    <p class="elo diamante">Peak: 2300+ 💎</p>
-                    <p><strong>Mains:</strong> Sidra</p>
-                    <p class="armas">🎯 Cannon / Sword</p>
-                </div>
-                <div class="card">
-                    <h3>Tia Juh</h3>
-                    <p class="elo diamante">Peak: 2300 💎</p>
-                    <p><strong>Mains:</strong> Caspian</p>
-                    <p class="armas">🎯 Gautles / Katars</p>
+                <div style="margin-top: 15px; border-top: 1px solid rgba(0, 180, 216, 0.1); padding-top: 15px;">
+                    <a id="membro-discord" href="#" target="_blank" class="btn-painel-sk" style="display: inline-block; padding: 8px 20px;">
+                        💬 Chamar no Discord
+                    </a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- SEÇÃO RECRUTAMENTO -->
-    <section id="recrutamento" class="hero-recrutamento section-hidden">
-        <h2>Quer entrar para o clã?</h2>
-        <p>Nosso recrutamento é feito diretamente pelo nosso servidor do Discord. Clique abaixo, leia as regras e faça o seu teste!</p>
-        <a href="https://discord.gg/HTaFeHjV9x" target="_blank" class="btn-discord">Entrar no Discord</a>
-    </section>
+        <!-- Seção: Atletas de Elite (COM LOOP E BOTÃO) -->
+        <div class="secao-landing">
+            <h2>Atletas de Elite (Peak Elo)</h2>
+            <p>Destaques competitivos com movimentação constante no ranking global.</p>
+            
+            <div class="carrossel-container">
+                <div class="esteira-loop">
+                    <div class="item-elite">🏆 .Breki (Diamante)</div>
+                    <div class="item-elite">⚡ GoodKk (Valhallan)</div>
+                    <div class="item-elite">🔥 Devan (Peak Diamante)</div>
+                    <div class="item-elite">🔮 Zanin (Top Regional)</div>
+                    <!-- Duplicados para o loop -->
+                    <div class="item-elite">🏆 .Breki (Diamante)</div>
+                    <div class="item-elite">⚡ GoodKk (Valhallan)</div>
+                    <div class="item-elite">🔥 Devan (Peak Diamante)</div>
+                    <div class="item-elite">🔮 Zanin (Top Regional)</div>
+                </div>
+            </div>
 
-    <!-- RODAPÉ -->
-    <footer>
-        <p>&copy; 2026 StarKindred - Todos os direitos reservados.</p>
-    </footer>
+            <!-- Botão Interativo para Revelar os Melhores -->
+            <div style="margin-top: 30px; text-align: left;">
+                <button class="btn-painel-sk" id="btn-toggle-melhores" style="border-color: #ffb703; color: #ffb703;">
+                    Exibir os Melhores da Guilda 🔥
+                </button>
+            </div>
 
-    <script src="script.js"></script>
+            <!-- Painel de Honra -->
+            <div class="painel-melhores" id="mural-melhores">
+                <h3 style="font-family: 'Orbitron'; color: #ffb703; font-size: 1.1rem; margin-bottom: 10px;">📋 Registro de Honra</h3>
+                <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 15px;">Operadores com recordes excepcionais nesta temporada:</p>
+                <ul style="list-style-type: '📂 '; padding-left: 20px; color: #fff; line-height: 1.8;">
+                    <li><strong>.Breki</strong> - MVP do Torneio Interno de Verão</li>
+                    <li><strong>GoodKk</strong> - Maior sequência de vitórias (Win Streak: 18)</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LÓGICA INTERATIVA INTERNA -->
     <script>
-        // Inteligência do Botão de Login: se já logou, muda para "Painel"
-        document.addEventListener("DOMContentLoaded", () => {
-            const loginBtn = document.getElementById("nav-login-btn");
-            const estaAutenticado = localStorage.getItem("sk_autenticado");
-            const tipoUsuario = localStorage.getItem("sk_tipo_usuario"); // 'membro' ou 'admin'
+        // Banco de dados dos perfis (Altere os dados e os links do Discord aqui)
+        const dadosMembros = {
+            "Breki": { elo: "Diamante (2100+)", main: "Mordex / Manopla e Foice", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "GoodKk": { elo: "Valhallan", main: "Bodvar / Espada e Martelo", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "Devan": { elo: "Diamante", main: "Asuri / Katars e Espada", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "Zanin": { elo: "Platina 4", main: "Orion / Lança e Lança Foguete", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "Arisu": { elo: "Platina 2", main: "Hattori / Lança e Espada", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "Trapirineu": { elo: "Ouro 5", main: "Koji / Arco e Espada", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "Shinas": { elo: "Platina 1", main: "Nix / Pistola e Foice", discord: "https://discord.com/users/SEU_ID_AQUI" },
+            "TiaJuh": { elo: "Ouro 4", main: "Ember / Arco e Katars", discord: "https://discord.com/users/SEU_ID_AQUI" }
+        };
 
-            if (estaAutenticado === "true") {
-                loginBtn.textContent = "Painel SK";
-                // Redireciona para o painel correspondente sem pedir login de novo
-                if (tipoUsuario === "admin") {
-                    loginBtn.href = "admin.html";
-                } else {
-                    loginBtn.href = "painel.html";
-                }
-                loginBtn.style.backgroundColor = "rgba(212, 175, 55, 0.2)";
+        // Função para injetar os dados no painel inferior ao clicar
+        function mostrarFicha(idMembro) {
+            const painel = document.getElementById("painel-membro");
+            const dados = dadosMembros[idMembro];
+
+            if(dados) {
+                document.getElementById("membro-nome").textContent = idMembro === "TiaJuh" ? "Tia Juh" : idMembro;
+                document.getElementById("membro-elo").textContent = dados.elo;
+                document.getElementById("membro-main").textContent = dados.main;
+                document.getElementById("membro-discord").href = dados.discord;
+                
+                painel.style.display = "block";
+                
+                // Rola a tela suavemente até o painel para o usuário ver
+                painel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Lógica do botão de alternância dos Melhores da Guilda
+        const btn = document.getElementById("btn-toggle-melhores");
+        const mural = document.getElementById("mural-melhores");
+
+        btn.addEventListener("click", function() {
+            if (mural.style.display === "block") {
+                mural.style.display = "none";
+                btn.textContent = "Exibir os Melhores da Guilda 🔥";
+                btn.style.background = "transparent";
+                btn.style.color = "#ffb703";
+            } else {
+                mural.style.display = "block";
+                btn.textContent = "Ocultar Melhores ❌";
+                btn.style.background = "#ffb703";
+                btn.style.color = "#050b14";
             }
         });
     </script>

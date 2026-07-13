@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CONFIGURAÇÕES GERAIS E RESETS
+   CONFIGURAÇÕES GERAIS E RESETS (Serve para Ambos)
    ========================================================================== */
 * {
     margin: 0;
@@ -15,8 +15,162 @@ body {
     overflow-x: hidden;
 }
 
+a {
+    color: #00b4d8;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #0077b6;
+}
+
 /* ==========================================================================
-   LAYOUT DO PAINEL (GRID / FLEX PRINCIPAL)
+   ESTILOS DA LANDING PAGE (PRIMEIRO SITE / PÁGINA PÚBLICA)
+   ========================================================================== */
+
+/* Menu de Navegação Superior */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #020813;
+    border-bottom: 1px solid rgba(0, 180, 216, 0.15);
+}
+
+nav .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    color: #00b4d8;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    align-items: center;
+}
+
+nav ul li a {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+}
+
+/* Container de Conteúdo da Landing Page */
+.container-landing {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.hero-section h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.hero-section p {
+    color: #94a3b8;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+/* Seções de Texto e Títulos */
+.secao-landing {
+    margin-bottom: 50px;
+    background: #0a192f;
+    border: 1px solid rgba(0, 180, 216, 0.1);
+    border-radius: 8px;
+    padding: 30px;
+}
+
+.secao-landing h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #00b4d8;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.secao-landing p {
+    color: #cbd5e1;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Lista de Membros na Landing Page */
+.lista-membros-publica {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+    list-style: none;
+}
+
+.lista-membros-publica li {
+    background: #050b14;
+    border: 1px solid rgba(0, 180, 216, 0.2);
+    padding: 12px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    color: #e2e8f0;
+}
+
+/* Botões da Landing Page */
+.btn-landing-primario {
+    display: inline-block;
+    background: #00b4d8;
+    color: white;
+    padding: 12px 24px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-landing-primario:hover {
+    background: #0077b6;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-painel-sk {
+    background: transparent;
+    border: 1px solid #00b4d8;
+    color: #00b4d8;
+    padding: 8px 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-painel-sk:hover {
+    background: #00b4d8;
+    color: #050b14;
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.4);
+}
+
+
+/* ==========================================================================
+   ESTILOS DO PAINEL (QG INTERNO E ADMIN)
    ========================================================================== */
 .painel-container {
     display: flex;
@@ -24,7 +178,6 @@ body {
     width: 100vw;
 }
 
-/* Barra Lateral de Comando */
 .sidebar {
     width: 260px;
     background: #020813;
@@ -76,16 +229,14 @@ body {
     padding-left: 20px;
 }
 
-/* Área de Conteúdo à Direita */
 .conteudo-principal {
     margin-left: 260px;
-    flex: 1;
+    flex-grow: 1;
     width: calc(100% - 260px);
     padding: 40px;
     box-sizing: border-box;
 }
 
-/* Cabeçalho do Painel */
 .topo-painel {
     display: flex;
     justify-content: space-between;
@@ -95,9 +246,6 @@ body {
     margin-bottom: 35px;
 }
 
-/* ==========================================================================
-   COMPONENTES DE USUÁRIO (AVATARES E INFOS)
-   ========================================================================== */
 .perfil-usuario {
     display: flex;
     align-items: center;
@@ -124,9 +272,6 @@ body {
     color: #00b4d8;
 }
 
-/* ==========================================================================
-   SISTEMA DE ABAS DINÂMICAS
-   ========================================================================== */
 .aba-conteudo {
     display: none;
     animation: fadeIn 0.4s ease forwards;
@@ -141,9 +286,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================================================
-   ELEMENTOS DE FORMULÁRIO E INPUTS CORES PADRÃO
-   ========================================================================== */
 .input-sk, .select-sk, .textarea-sk {
     width: 100%;
     background: #050b14;
@@ -169,9 +311,6 @@ body {
     color: white;
 }
 
-/* ==========================================================================
-   BOTÕES CORPORATIVOS / OPERACIONAIS
-   ========================================================================== */
 .btn-enviar-sk {
     background: #00b4d8;
     color: white;
@@ -212,7 +351,7 @@ body {
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE BÁSICA
+   RESPONSIVIDADE
    ========================================================================== */
 @media (max-width: 900px) {
     .sidebar {
@@ -220,7 +359,7 @@ body {
         padding: 20px 10px;
     }
     .sidebar h3, .sidebar-menu ul li a span, .btn-logout-painel {
-        display: none; /* Em telas muito pequenas simplifica o menu */
+        display: none;
     }
     .conteudo-principal {
         margin-left: 70px;
