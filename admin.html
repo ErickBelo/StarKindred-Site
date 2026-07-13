@@ -3,52 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | Painel Administrativo</title>
+    <title>StarKindred | Painel de Controle Staff</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos específicos da área administrativa */
-        .admin-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-        
-        .grid-admin {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        @media (min-width: 768px) {
-            .grid-admin {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
+        /* ESTILOS EXCLUSIVOS DO DESIGN ADMIN ALINHADO COM O PAINEL */
         .secao-admin {
             background: #0a192f;
             border: 1px solid rgba(0, 180, 216, 0.2);
             border-radius: 8px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin-top: 20px;
         }
 
-        .secao-admin h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00b4d8;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            border-bottom: 1px solid rgba(0, 180, 216, 0.1);
-            padding-bottom: 10px;
-        }
-
-        /* Formulários */
         .form-sk {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            text-align: left;
         }
 
         .form-group {
@@ -60,7 +34,7 @@
         .form-group label {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.8rem;
-            color: #94a3b8;
+            color: #00b4d8;
         }
 
         .input-sk, .select-sk, .textarea-sk {
@@ -85,34 +59,16 @@
             min-height: 80px;
         }
 
-        .btn-enviar-sk {
-            background: #00b4d8;
-            color: white;
-            border: none;
-            padding: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-enviar-sk:hover {
-            background: #0077b6;
-        }
-
-        /* Tabelas */
+        /* Tabelas administrativas */
         .tabela-sk {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 15px;
+            text-align: left;
         }
 
         .tabela-sk th, .tabela-sk td {
             padding: 12px;
-            text-align: left;
             border-bottom: 1px solid rgba(0, 180, 216, 0.1);
             font-size: 0.9rem;
         }
@@ -122,10 +78,11 @@
             color: #94a3b8;
             font-size: 0.8rem;
             text-transform: uppercase;
+            border-bottom: 2px solid #00b4d8;
         }
 
         .btn-acao {
-            padding: 5px 10px;
+            padding: 6px 12px;
             font-family: 'Orbitron', sans-serif;
             font-size: 0.75rem;
             font-weight: bold;
@@ -146,20 +103,6 @@
             background: #ff4d4d;
             color: white;
         }
-
-        .btn-voltar {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #00b4d8;
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            transition: transform 0.2s;
-        }
-
-        .btn-voltar:hover {
-            transform: translateX(-3px);
-        }
     </style>
 
     <!-- FIREBASE COMPAT SDK -->
@@ -167,7 +110,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Trava de segurança avançada (Verifica o login e se a role_tipo atual é admin)
+        // Trava de segurança avançada
         const usuarioLogado = localStorage.getItem("sk_usuario");
         const tipoInicial = localStorage.getItem("sk_tipo_usuario");
         const tipoPromovido = localStorage.getItem(`sk_role_tipo_${usuarioLogado}`);
@@ -193,112 +136,167 @@
 </head>
 <body>
 
-    <div class="admin-container">
-        <a href="painel.html" class="btn-voltar">⬅️ Voltar ao QG dos Membros</a>
+    <div class="painel-container">
         
-        <h1 style="font-family:'Orbitron'; color: white; margin-bottom: 30px;">Painel de Comando Staff</h1>
+        <!-- SIDEBAR DE COMANDO -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <h3>Staff Panel</h3>
+                <ul>
+                    <li><a class="tab-link active" onclick="mudarAba('adm-membros')">👥 Gerenciar Membros</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('adm-biblioteca')">📖 Nova Aula</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('adm-cronograma')">📅 Novo Evento</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('adm-aulaoes')">⚔️ Convocar Aulão</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="painel.html" class="btn-logout-painel" style="color: #00b4d8; border-color: rgba(0, 180, 216, 0.4);">Voltar ao QG</a>
+            </div>
+        </aside>
 
-        <div class="grid-admin">
+        <!-- CONTEÚDO CENTRAL ADMINISTRATIVO -->
+        <main class="conteudo-principal">
             
-            <!-- FORMULÁRIO: TUTORIAIS -->
-            <section class="secao-admin">
-                <h2>📖 Publicar na Biblioteca</h2>
-                <form id="form-tutorial" class="form-sk">
-                    <div class="form-group">
-                        <label>Título do Guia</label>
-                        <input type="text" id="tut-titulo" class="input-sk" placeholder="Ex: Guia de Posicionamento - Retake A" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Categoria</label>
-                        <select id="tut-categoria" class="select-sk">
-                            <option value="Guia Tático">Guia Tático</option>
-                            <option value="Mecânica">Mecânica</option>
-                            <option value="Lineups">Lineups</option>
-                            <option value="Análise">Análise</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Descrição Breve</label>
-                        <textarea id="tut-desc" class="textarea-sk" placeholder="Explique brevemente o que será aprendido..." required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Link do Vídeo (YouTube)</label>
-                        <input type="url" id="tut-video" class="input-sk" placeholder="https://www.youtube.com/watch?v=...">
-                    </div>
-                    <button type="submit" class="btn-enviar-sk">Lançar Tutorial</button>
-                </form>
-            </section>
+            <!-- HEADER DO PAINEL STAFF -->
+            <div class="topo-painel">
+                <div>
+                    <h1 style="font-family:'Orbitron'; color: white; margin: 0; font-size: 1.6rem;">Terminal de Comando Staff</h1>
+                    <p style="color:#94a3b8; margin: 5px 0 0 0; font-size: 0.9rem;">Controle de banco de dados e atribuição de patentes da guilda.</p>
+                </div>
 
-            <!-- FORMULÁRIO: EVENTOS -->
-            <section class="secao-admin">
-                <h2>📅 Agendar no Cronograma</h2>
-                <form id="form-evento" class="form-sk">
-                    <div class="form-group">
-                        <label>Nome da Operação / Evento</label>
-                        <input type="text" id="evt-nome" class="input-sk" placeholder="Ex: Treino Interno Geral" required>
+                <div class="perfil-usuario">
+                    <div class="perfil-avatar" id="avatar-letra-staff">👑</div>
+                    <div class="perfil-info" style="text-align: left;">
+                        <span class="nome" id="nome-staff" style="display:block; font-size: 1.1rem; font-weight:bold; font-family: 'Orbitron'; color: #fff;">Staff</span>
+                        <span class="cargo" style="font-size:0.75rem; color:#ff4d4d; display: block; margin-top: 2px;">👑 Administrador</span>
                     </div>
-                    <div class="form-group">
-                        <label>Data e Horário</label>
-                        <input type="text" id="evt-data" class="input-sk" placeholder="Ex: Sábado às 20:00h" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Local / Sala</label>
-                        <input type="text" id="evt-local" class="input-sk" placeholder="Ex: Discord (Calha Tática)" required>
-                    </div>
-                    <button type="submit" class="btn-enviar-sk">Fixar Calendário</button>
-                </form>
-            </section>
+                </div>
+            </div>
 
-            <!-- FORMULÁRIO: AULÕES -->
-            <section class="secao-admin">
-                <h2>⚔️ Convocar Aulão Oficial</h2>
-                <form id="form-aulao" class="form-sk">
-                    <div class="form-group">
-                        <label>Tema da Aula</label>
-                        <input type="text" id="aula-titulo" class="input-sk" placeholder="Ex: Leitura de Mapa Avançada" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Instrutor / Convidado</label>
-                        <input type="text" id="aula-instrutor" class="input-sk" placeholder="Ex: Coach Breki" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Canal ou Link da Sala</label>
-                        <input type="text" id="aula-local" class="input-sk" placeholder="Ex: Discord - Sala de Aula 1" required>
-                    </div>
-                    <button type="submit" class="btn-enviar-sk">Disparar Convocação</button>
-                </form>
-            </section>
-
-            <!-- GERENCIAMENTO DE MEMBROS -->
-            <section class="secao-admin">
-                <h2>👥 Gerenciamento de Membros</h2>
-                <div style="overflow-x: auto;">
+            <!-- 1. ABA: GERENCIAR MEMBROS -->
+            <div id="adm-membros" class="aba-conteudo active">
+                <h2 style="font-family:'Orbitron'; color:#00b4d8;">Controle de Contingente</h2>
+                <p style="color:#94a3b8;">Altere patentes, distribua permissões de acesso ou revogue credenciais do sistema.</p>
+                
+                <div class="secao-admin" style="max-width: 100%; overflow-x: auto;">
                     <table class="tabela-sk">
                         <thead>
                             <tr>
-                                <th>Nick</th>
-                                <th>Função Atual</th>
-                                <th>Ações</th>
+                                <th>Nick do Operador</th>
+                                <th>Função Operacional</th>
+                                <th>Ações Táticas</th>
                             </tr>
                         </thead>
                         <tbody id="lista-membros-admin">
-                            <!-- Injetado dinamicamente via JS -->
+                            <!-- Injetado dinamicamente -->
                         </tbody>
                     </table>
                 </div>
-            </section>
+            </div>
 
-        </div>
+            <!-- 2. ABA: BIBLIOTECA -->
+            <div id="adm-biblioteca" class="aba-conteudo">
+                <h2 style="font-family:'Orbitron'; color:#00b4d8;">Alimentar Biblioteca Estratégica</h2>
+                <p style="color:#94a3b8;">Publique guias e conteúdos que serão exibidos na aba de estudos dos membros.</p>
+                
+                <div class="secao-admin">
+                    <form id="form-tutorial" class="form-sk">
+                        <div class="form-group">
+                            <label>Título do Guia</label>
+                            <input type="text" id="tut-titulo" class="input-sk" placeholder="Ex: Avanço Coordenado - Retake" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="tut-categoria" class="select-sk">
+                                <option value="Guia Tático">Guia Tático</option>
+                                <option value="Mecânica">Mecânica</option>
+                                <option value="Lineups">Lineups</option>
+                                <option value="Análise">Análise</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição Breve</label>
+                            <textarea id="tut-desc" class="textarea-sk" placeholder="Dicas de execução rápida..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Link do Vídeo (YouTube)</label>
+                            <input type="url" id="tut-video" class="input-sk" placeholder="https://www.youtube.com/watch?v=...">
+                        </div>
+                        <button type="submit" class="btn-enviar-sk">Lançar Tutorial</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 3. ABA: CRONOGRAMA -->
+            <div id="adm-cronograma" class="aba-conteudo">
+                <h2 style="font-family:'Orbitron'; color:#00b4d8;">Agendar Operação no Cronograma</h2>
+                <p style="color:#94a3b8;">Os dados inseridos aqui alteram o calendário global da guilda na nuvem.</p>
+                
+                <div class="secao-admin">
+                    <form id="form-evento" class="form-sk">
+                        <div class="form-group">
+                            <label>Nome da Operação / Evento</label>
+                            <input type="text" id="evt-nome" class="input-sk" placeholder="Ex: Treino Geral StarKindred" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Data e Horário</label>
+                            <input type="text" id="evt-data" class="input-sk" placeholder="Ex: Sábado às 20:00h" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Local / Canal de Voz</label>
+                            <input type="text" id="evt-local" class="input-sk" placeholder="Ex: Discord (Sala Tática 1)" required>
+                        </div>
+                        <button type="submit" class="btn-enviar-sk">Fixar Calendário</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 4. ABA: AULÕES -->
+            <div id="adm-aulaoes" class="aba-conteudo">
+                <h2 style="font-family:'Orbitron'; color:#00b4d8;">Convocar Aulão Oficial</h2>
+                <p style="color:#94a3b8;">Gere convocações táticas para sessões de coaching e análises teóricas.</p>
+                
+                <div class="secao-admin">
+                    <form id="form-aulao" class="form-sk">
+                        <div class="form-group">
+                            <label>Tema Base da Aula</label>
+                            <input type="text" id="aula-titulo" class="input-sk" placeholder="Ex: Fundamentos de Troca de Tiro" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Instrutor Convidado</label>
+                            <input type="text" id="aula-instrutor" class="input-sk" placeholder="Ex: Coach Breki" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sala de Reunião</label>
+                            <input type="text" id="aula-local" class="input-sk" placeholder="Ex: Discord - Auditório Principal" required>
+                        </div>
+                        <button type="submit" class="btn-enviar-sk">Disparar Convocação</button>
+                    </form>
+                </div>
+            </div>
+
+        </main>
     </div>
 
     <script>
-        // ==================== ENVIO DOS FORMULÁRIOS PARA O FIREBASE ====================
+        // Sistema de troca de abas integrado
+        function mudarAba(idAba) {
+            document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
+            document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(idAba).classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
+        }
 
-        // 1. Enviar Tutorial
+        // Identifica o nome do Staff no Topo
+        document.getElementById("nome-staff").textContent = localStorage.getItem("sk_usuario") || "Admin";
+
+        // ==================== ENVIO DE ARQUIVOS PRO FIREBASE ====================
+        
+        // Enviar Tutorial
         document.getElementById("form-tutorial").addEventListener("submit", async (e) => {
             e.preventDefault();
             const botao = e.target.querySelector('button');
-            botao.textContent = "Publicando...";
+            botao.textContent = "Gravando na Nuvem...";
             botao.disabled = true;
 
             try {
@@ -309,21 +307,21 @@
                     video: document.getElementById("tut-video").value,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                alert("✨ Tutorial lançado na Biblioteca em tempo real!");
+                alert("✨ Tutorial adicionado à Biblioteca com sucesso!");
                 e.target.reset();
             } catch (err) {
-                alert("Erro ao enviar para o Firebase: " + err.message);
+                alert("Falha de conexão: " + err.message);
             } finally {
                 botao.textContent = "Lançar Tutorial";
                 botao.disabled = false;
             }
         });
 
-        // 2. Enviar Evento
+        // Enviar Evento
         document.getElementById("form-evento").addEventListener("submit", async (e) => {
             e.preventDefault();
             const botao = e.target.querySelector('button');
-            botao.textContent = "Agendando...";
+            botao.textContent = "Salvando Horário...";
             botao.disabled = true;
 
             try {
@@ -333,21 +331,21 @@
                     local: document.getElementById("evt-local").value,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                alert("📅 Operação fixada no Cronograma dos membros!");
+                alert("📅 Cronograma atualizado para toda a guilda!");
                 e.target.reset();
             } catch (err) {
-                alert("Erro ao salvar evento: " + err.message);
+                alert("Falha de conexão: " + err.message);
             } finally {
                 botao.textContent = "Fixar Calendário";
                 botao.disabled = false;
             }
         });
 
-        // 3. Enviar Aulão
+        // Enviar Aulão
         document.getElementById("form-aulao").addEventListener("submit", async (e) => {
             e.preventDefault();
             const botao = e.target.querySelector('button');
-            botao.textContent = "Convocando...";
+            botao.textContent = "Chamando Equipe...";
             botao.disabled = true;
 
             try {
@@ -357,17 +355,17 @@
                     local: document.getElementById("aula-local").value,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                alert("⚔️ Convocação enviada com sucesso para o mural!");
+                alert("⚔️ Mural de Aulões atualizado no painel dos membros!");
                 e.target.reset();
             } catch (err) {
-                alert("Erro ao agendar aulão: " + err.message);
+                alert("Falha de conexão: " + err.message);
             } finally {
                 botao.textContent = "Disparar Convocação";
                 botao.disabled = false;
             }
         });
 
-        // ==================== GERENCIAMENTO DE MEMBROS AVANÇADO ====================
+        // ==================== CONTROLE DE MEMBROS (LOCALSTORAGE) ====================
         function carregarMembrosAdmin() {
             const tbody = document.getElementById("lista-membros-admin");
             
@@ -386,9 +384,7 @@
                     let nick = chave.replace("sk_user_", "");
                     if(nick.toLowerCase() === "admin") continue; 
 
-                    let dadosUsuario = JSON.parse(localStorage.getItem(chave)) || {};
                     let funcaoAtual = localStorage.getItem(`sk_role_${nick}`) || "membro";
-
                     let textoFuncao = funcaoAtual === "admin" ? "Staff / Admin" : funcaoAtual.charAt(0).toUpperCase() + funcaoAtual.slice(1);
 
                     let tr = document.createElement("tr");
@@ -396,7 +392,7 @@
                         <td style="color: #e2e8f0; font-weight: bold;">${nick}</td>
                         <td style="color: #00b4d8; font-family: 'Orbitron'; font-size: 0.85rem;" id="role-text-${nick}">${textoFuncao}</td>
                         <td>
-                            <select class="select-sk" style="width: auto; margin-bottom: 0; padding: 5px 10px; font-size: 0.8rem;" onchange="alterarFuncaoMembro('${nick}', this.value)">
+                            <select class="select-sk" style="width: auto; margin-bottom: 0; padding: 5px 8px; font-size: 0.8rem;" onchange="alterarFuncaoMembro('${nick}', this.value)">
                                 <option value="membro" ${funcaoAtual === "membro" ? "selected" : ""}>Membro</option>
                                 <option value="sub-lider" ${funcaoAtual === "sub-lider" ? "selected" : ""}>Sub-Líder</option>
                                 <option value="coach" ${funcaoAtual === "coach" ? "selected" : ""}>Coach / Instrutor</option>
@@ -422,21 +418,21 @@
             let textoFormatado = novaFuncao === "admin" ? "Staff / Admin" : novaFuncao.charAt(0).toUpperCase() + novaFuncao.slice(1);
             document.getElementById(`role-text-${nick}`).textContent = textoFormatado;
             
-            alert(`🔥 A função de ${nick} foi atualizada para: ${textoFormatado}!`);
+            alert(`🔥 A patente de ${nick} foi redefinida para: ${textoFormatado}!`);
         }
 
         function banirMembro(nick) {
-            if(confirm(`🚨 ATENÇÃO: Tem certeza que deseja BANIR e remover o jogador ${nick} do sistema?`)) {
+            if(confirm(`🚨 ALERTA CRÍTICO: Expulsar o jogador ${nick} permanentemente do QG?`)) {
                 localStorage.removeItem(`sk_user_${nick}`);
                 localStorage.removeItem(`sk_avatar_${nick}`);
                 localStorage.removeItem(`sk_role_${nick}`);
                 localStorage.removeItem(`sk_role_tipo_${nick}`);
-                alert(`Jogador ${nick} foi extinto da base de dados.`);
+                alert(`Jogador ${nick} removido dos registros.`);
                 carregarMembrosAdmin();
             }
         }
 
-        // Executa ao abrir a página
+        // Inicialização
         carregarMembrosAdmin();
     </script>
 </body>
