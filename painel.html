@@ -297,7 +297,6 @@
                 <p style="text-align:left; color:#94a3b8;">Estude o meta e melhore a sua gameplay com materiais selecionados pela Staff.</p>
                 
                 <div class="grid-cards">
-                    <!-- Cards estáticos de exemplo -->
                     <div class="card-interno">
                         <span class="tag-categoria">Foice / Scythe</span>
                         <h4>Combos Essenciais de Nix</h4>
@@ -359,41 +358,18 @@
                 </div>
             </div>
 
-            <!-- 5. ABA COMBOCODEX (HUB DE ATALHOS) -->
+            <!-- 5. ABA COMBOCODEX (BOTÃO DIRETO) -->
             <div id="combocodex" class="aba-conteudo">
-                <div style="text-align: left; margin-bottom: 30px; border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding-bottom: 20px;">
-                    <h2 style="font-family:'Orbitron'; color:#d4af37; margin: 0;">Centro de Combos ComboCodex 2v2</h2>
-                    <p style="color:#94a3b8; margin: 5px 0 0 0;">Como o ComboCodex protege os dados deles dentro de janelas, criamos pontes rápidas para você ir direto ao ponto.</p>
-                </div>
-                
-                <!-- GRID DE FERRAMENTAS DO CODEX -->
-                <div class="grid-cards">
-                    <div class="card-interno" style="border-top: 3px solid #00b4d8; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <span class="tag-categoria" style="background: rgba(0, 180, 216, 0.15); color: #00b4d8;">Calculadora</span>
-                            <h4>Gerador de Combos 2v2</h4>
-                            <p>Acesse o laboratório principal para montar, testar e calcular a porcentagem de dano verdadeiro de strings com duas lendas combinadas.</p>
-                        </div>
-                        <a href="https://combocodex.com/" target="_blank" class="btn-corelhalla" style="margin: 15px 0 0 0; background: #00b4d8;">Abrir Laboratório ↗</a>
-                    </div>
-
-                    <div class="card-interno" style="border-top: 3px solid #ff4d4d; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <span class="tag-categoria" style="background: rgba(255, 77, 77, 0.15); color: #ff4d4d;">Estratégia</span>
-                            <h4>Banco de Dados de Black Holes</h4>
-                            <p>Consulte a lista pública dos combos infinitos mais usados no circuito competitivo oficial de Brawlhalla por times profissionais.</p>
-                        </div>
-                        <a href="https://combocodex.com/" target="_blank" class="btn-corelhalla" style="margin: 15px 0 0 0; background: #ff4d4d; box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);">Ver Black Holes ↗</a>
-                    </div>
-
-                    <div class="card-interno" style="border-top: 3px solid #52b788; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <span class="tag-categoria" style="background: rgba(82, 183, 136, 0.15); color: #52b788;">Comunidade SK</span>
-                            <h4>Tem um combo novo?</h4>
-                            <p>Desenvolveu um combo de dupla que quebra o mapa com algum amigo do clã? Chame um Administrador no Discord para adicioná-lo na aba de Tutoriais!</p>
-                        </div>
-                        <a href="#" class="btn-corelhalla" style="margin: 15px 0 0 0; background: #52b788; box-shadow: none; pointer-events: none; opacity: 0.7;">Disponível na Staff ⚔️</a>
-                    </div>
+                <div style="max-width: 600px; margin: 60px auto; text-align: center; background: #0a192f; border: 1px solid rgba(212, 175, 55, 0.2); padding: 40px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">⚡</div>
+                    <h2 style="font-family:'Orbitron'; color:#d4af37; margin: 0 0 10px 0;">ComboCodex 2v2</h2>
+                    <p style="color:#94a3b8; margin: 0 0 30px 0; font-size: 0.95rem; line-height: 1.6;">
+                        Abra a plataforma oficial do ComboCodex em uma nova guia para montar estratégias de duplas, calcular danos e consultar a base de dados de Black Holes.
+                    </p>
+                    
+                    <a href="https://combocodex.com/" target="_blank" class="btn-corelhalla" style="width: auto; display: inline-block; padding: 14px 35px; background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%); font-size: 1rem; box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);">
+                        Acessar Laboratório de Combos ↗
+                    </a>
                 </div>
             </div>
 
@@ -402,7 +378,6 @@
 
     <!-- SCRIPT DE INTELIGÊNCIA DO PAINEL -->
     <script>
-        // 1. Alternador de Abas Dinâmico
         function mudarAba(idAba) {
             document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
             document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
@@ -410,7 +385,6 @@
             if(event) event.currentTarget.classList.add('active');
         }
 
-        // 2. Carrega Dados do Perfil do Jogador Logado
         const usuarioLogado = localStorage.getItem("sk_usuario") || "Membro";
         const tipoUsuario = localStorage.getItem("sk_tipo_usuario") || "membro";
 
@@ -426,12 +400,10 @@
             cargoTag.textContent = "Membro Oficial";
         }
 
-        // 3. Renderizar os itens injetados dinamicamente pelos ADMs
         document.addEventListener("DOMContentLoaded", () => {
             // Carregar Tutoriais Dinâmicos
             const listaTutoriais = JSON.parse(localStorage.getItem("tutoriais")) || [];
             const containerTutoriais = document.querySelector("#tutoriais .grid-cards");
-            
             listaTutoriais.forEach(tut => {
                 const cardHTML = `
                     <div class="card-interno" style="border-color: #ff4d4d;">
@@ -447,7 +419,6 @@
             // Carregar Eventos Dinâmicos
             const listaEventos = JSON.parse(localStorage.getItem("eventos")) || [];
             const containerEventos = document.querySelector("#eventos .grid-cards");
-            
             listaEventos.forEach(ev => {
                 const cardHTML = `
                     <div class="card-interno" style="border-left: 4px solid #ff4d4d;">
@@ -462,7 +433,6 @@
             // Carregar Aulões Dinâmicos
             const listaAulaoes = JSON.parse(localStorage.getItem("aulaoes")) || [];
             const containerAulaoes = document.querySelector("#aulaoes .grid-cards");
-            
             listaAulaoes.forEach(aula => {
                 const cardHTML = `
                     <div class="card-interno" style="border-top: 2px solid #ff4d4d;">
@@ -476,7 +446,6 @@
             });
         });
 
-        // 4. Sistema de Logout
         document.getElementById("btn-logout").addEventListener("click", (e) => {
             e.preventDefault();
             localStorage.clear();
