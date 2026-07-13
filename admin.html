@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* LAYOUT PRINCIPAL (IDÊNTICO AO MEMBRO, CORES ADMIN) */
+        /* LAYOUT PRINCIPAL (CORES ADMIN) */
         .painel-container {
             display: flex;
             min-height: 100vh;
@@ -104,7 +104,7 @@
             padding-bottom: 20px;
         }
 
-        /* CARD DE PERFIL PROFISSIONAL ADMIN */
+        /* CARD DE PERFIL ADMIN */
         .perfil-usuario {
             display: flex;
             align-items: center;
@@ -131,19 +131,16 @@
             background-size: cover;
             background-position: center;
             border: 2px solid #ff4d4d;
-            box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
         }
 
-        /* ABAS E FORMULÁRIOS */
+        /* FORMULÁRIOS */
         .aba-conteudo {
             display: none;
             animation: fadeIn 0.4s ease-in-out;
             text-align: left;
         }
 
-        .aba-conteudo.active {
-            display: block;
-        }
+        .aba-conteudo.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -164,10 +161,10 @@
             color: #ff4d4d;
             font-family: 'Orbitron', sans-serif;
             font-size: 0.85rem;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
-        .input-sk, .textarea-sk {
+        .input-sk, .select-sk, .textarea-sk {
             width: 100%;
             padding: 12px;
             background: #050b14;
@@ -179,21 +176,16 @@
             box-sizing: border-box;
         }
 
-        .input-sk:focus, .textarea-sk:focus {
-            outline: none;
-            border-color: #00b4d8;
-            box-shadow: 0 0 8px rgba(0, 180, 216, 0.2);
-        }
+        .select-sk { cursor: pointer; color: #94a3b8; }
+        .select-sk option { background: #0a192f; color: white; }
 
         .btn-admin-submit {
             width: 100%;
             padding: 12px;
             background: linear-gradient(135deg, #ff4d4d 0%, #cc1111 100%);
             color: white;
-            text-align: center;
             font-family: 'Orbitron';
             font-weight: bold;
-            font-size: 0.9rem;
             border-radius: 4px;
             border: none;
             cursor: pointer;
@@ -201,19 +193,48 @@
             transition: all 0.3s;
         }
 
-        .btn-admin-submit:hover {
-            box-shadow: 0 0 12px rgba(255, 77, 77, 0.4);
-            transform: translateY(-1px);
+        .btn-admin-submit:hover { box-shadow: 0 0 12px rgba(255, 77, 77, 0.4); }
+
+        /* TABELA DE GERENCIAMENTO DE MEMBROS */
+        .tabela-membros {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #0a192f;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 77, 77, 0.1);
         }
 
-        @media (max-width: 768px) {
-            .painel-container { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ff4d4d; }
-            .topo-painel { flex-direction: column; gap: 15px; }
+        .tabela-membros th, .tabela-membros td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 77, 77, 0.1);
         }
+
+        .tabela-membros th {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+            font-family: 'Orbitron';
+            font-size: 0.85rem;
+        }
+
+        .btn-acao {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-remover { background: #ff4d4d; color: white; margin-left: 5px; }
+        .btn-remover:hover { background: #cc1111; }
     </style>
 
-    <!-- FIREBASE COMPAT SDK -->
+    <!-- FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -240,7 +261,7 @@
 
     <div class="painel-container">
         
-        <!-- BARRA LATERAL IGUAL A DOS MEMBROS (CORES DE STAFF) -->
+        <!-- BARRA LATERAL -->
         <aside class="sidebar">
             <div class="sidebar-menu">
                 <h3>QG Gerenciamento</h3>
@@ -248,6 +269,7 @@
                     <li><a class="tab-link active" onclick="mudarAba('add-tutorial')">➕ Postar Tutorial</a></li>
                     <li><a class="tab-link" onclick="mudarAba('add-evento')">➕ Agendar Evento</a></li>
                     <li><a class="tab-link" onclick="mudarAba('add-aulao')">➕ Lançar Aulão</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('gerenciar-membros')">👥 Gerenciar Membros</a></li>
                 </ul>
             </div>
 
@@ -259,13 +281,11 @@
         <!-- CONTEÚDO CENTRAL -->
         <main class="conteudo-principal">
             
-            <!-- TOPO IDENTICO AO DOS MEMBROS -->
             <div class="topo-painel">
                 <div style="display: flex; gap: 15px; align-items: center;">
                     <a href="painel.html" style="background: #00b4d8; color: white; text-decoration: none; font-family: 'Orbitron'; font-size: 0.8rem; padding: 6px 12px; border-radius: 4px; font-weight: bold; box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);">👁️ Ver Painel Membros</a>
                 </div>
 
-                <!-- CARD DE PERFIL PROFISSIONAL DO ADMIN -->
                 <div class="perfil-usuario">
                     <div class="perfil-avatar" id="avatar-letra">A</div>
                     <div class="perfil-info" style="text-align: left;">
@@ -275,23 +295,30 @@
                 </div>
             </div>
 
-            <!-- ABAS DE ENVIOS CONFIGURADAS PARA O FIRESTORE -->
-
             <!-- 1. POSTAR TUTORIAL -->
             <div id="add-tutorial" class="aba-conteudo active">
-                <h2 style="font-family:'Orbitron'; color:#ff4d4d;">Adicionar Conteúdo Estratégico</h2>
-                <p style="color:#94a3b8;">Publique guias e análises que aparecerão instantaneamente na biblioteca dos membros.</p>
+                <h2>Adicionar Conteúdo Estratégico</h2>
+                <p>Publique guias e vídeos que aparecerão na biblioteca dos membros.</p>
                 
                 <div class="form-container-admin">
                     <form id="form-tutoriais">
-                        <label>Arma / Categoria:</label>
-                        <input type="text" id="tut-cat" class="input-sk" placeholder="Ex: Foice / Scythe" required>
+                        <label>Categoria do Tutorial:</label>
+                        <select id="tut-cat" class="select-sk" required>
+                            <option value="" disabled selected>Selecione uma categoria...</option>
+                            <option value="Arma">Arma (Combos/Setups)</option>
+                            <option value="Movimentação">Movimentação (Dash/Dodge/Fastfall)</option>
+                            <option value="Nomenclatura">Nomenclatura (Termologias/Leituras)</option>
+                            <option value="Outros">Outros</option>
+                        </select>
 
                         <label>Título do Guia:</label>
-                        <input type="text" id="tut-titulo" class="input-sk" placeholder="Ex: Combos de Lin-Fei" required>
+                        <input type="text" id="tut-titulo" class="input-sk" placeholder="Ex: Guia Completo de Active Input na Foice" required>
 
-                        <label>Instruções / Descrição:</label>
-                        <textarea id="tut-desc" class="textarea-sk" rows="4" placeholder="Descreva os inputs, dodges e leituras..." required></textarea>
+                        <label>Link do Vídeo (YouTube / Streamable):</label>
+                        <input type="url" id="tut-video" class="input-sk" placeholder="https://www.youtube.com/watch?v=..." required>
+
+                        <label>Descrição / Anotações Complementares:</label>
+                        <textarea id="tut-desc" class="textarea-sk" rows="3" placeholder="Insira detalhes textuais adicionais aqui..." required></textarea>
 
                         <button type="submit" class="btn-admin-submit">Lançar Tutorial</button>
                     </form>
@@ -300,19 +327,19 @@
 
             <!-- 2. AGENDAR EVENTO -->
             <div id="add-evento" class="aba-conteudo">
-                <h2 style="font-family:'Orbitron'; color:#ff4d4d;">Marcar Novo Evento ou Campeonato</h2>
-                <p style="color:#94a3b8;">Atualize o cronograma de operações oficiais do clã StarKindred.</p>
+                <h2>Marcar Novo Evento ou Campeonato</h2>
+                <p>Atualize o cronograma de operações oficiais da guilda StarKindred.</p>
                 
                 <div class="form-container-admin">
                     <form id="form-eventos">
-                        <label>Tipo de Evento:</label>
-                        <input type="text" id="ev-tipo" class="input-sk" placeholder="Ex: Torneio 1v1" required>
+                        <label>Nome do Evento:</label>
+                        <input type="text" id="ev-nome" class="input-sk" placeholder="Ex: Torneio Interno StarKindred Cup" required>
 
-                        <label>Nome da Operação:</label>
-                        <input type="text" id="ev-nome" class="input-sk" placeholder="Ex: Copa StarKindred Iron" required>
+                        <label>Data e Horário do Evento:</label>
+                        <input type="text" id="ev-data" class="input-sk" placeholder="Ex: Próximo Sábado (18/07) às 19:00h" required>
 
-                        <label>Data e Detalhes:</label>
-                        <input type="text" id="ev-detalhes" class="input-sk" placeholder="Ex: Sábado às 19:00h no Discord" required>
+                        <label>Local do Evento:</label>
+                        <input type="text" id="ev-local" class="input-sk" placeholder="Ex: Sala de Torneios no Discord / Lobby Privado" required>
 
                         <button type="submit" class="btn-admin-submit">Fixar no Calendário</button>
                     </form>
@@ -321,38 +348,62 @@
 
             <!-- 3. LANÇAR AULÃO -->
             <div id="add-aulao" class="aba-conteudo">
-                <h2 style="font-family:'Orbitron'; color:#ff4d4d;">Agendar Aulão de Treinamento</h2>
-                <p style="color:#94a3b8;">Programe sessões de coach ou revisões de replay com a guilda.</p>
+                <h2>Agendar Aulão de Treinamento</h2>
+                <p>Programe mentorias ou análises de replay coletivas.</p>
                 
                 <div class="form-container-admin">
                     <form id="form-aulaoes">
-                        <label>Tema do Aulão:</label>
-                        <input type="text" id="aula-tema" class="input-sk" placeholder="Ex: Posicionamento em 2v2" required>
+                        <label>Título / Tema do Aulão:</label>
+                        <input type="text" id="aula-titulo" class="input-sk" placeholder="Ex: Como punir assinaturas e gerenciar o stage" required>
 
-                        <label>Professor / Coach:</label>
-                        <input type="text" id="aula-prof" class="input-sk" placeholder="Ex: .Breki" required>
+                        <label>Convidado Especial / Instrutor:</label>
+                        <input type="text" id="aula-convidado" class="input-sk" placeholder="Ex: .Breki ou Coach Convidado" required>
 
-                        <label>Modalidade:</label>
-                        <input type="text" id="aula-tipo" class="input-sk" placeholder="Ex: Prática / Análise" required>
+                        <label>Local do Aulão:</label>
+                        <input type="text" id="aula-local" class="input-sk" placeholder="Ex: Canal de Voz 'Aula Prática' no Discord" required>
 
                         <button type="submit" class="btn-admin-submit">Convocar Membros</button>
                     </form>
                 </div>
             </div>
 
+            <!-- 4. GERENCIAMENTO DE MEMBROS -->
+            <div id="gerenciar-membros" class="aba-conteudo">
+                <h2>Controle de Membros da Guilda</h2>
+                <p>Visualize todos os cadastrados e faça o gerenciamento administrativo.</p>
+                
+                <table class="tabela-membros">
+                    <thead>
+                        <tr>
+                            <th>Nick do Jogador</th>
+                            <th>Ações Administrativas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-membros-admin">
+                        <!-- Será preenchido dinamicamente com dados do Firebase ou LocalStorage -->
+                        <tr>
+                            <td style="color: white; font-weight: bold;">.Breki</td>
+                            <td><span style="color: #94a3b8; font-size: 0.8rem; font-style: italic;">Membro Oficial (Fixado)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </main>
     </div>
 
-    <!-- SCRIPT DE INTELIGÊNCIA DO ADMIN -->
     <script>
         function mudarAba(idAba) {
             document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
             document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
             document.getElementById(idAba).classList.add('active');
             if(event) event.currentTarget.classList.add('active');
+            
+            if(idAba === 'gerenciar-membros') {
+                carregarMembrosAdmin();
+            }
         }
 
-        // Puxar o nome do Admin logado
         const usuarioLogado = localStorage.getItem("sk_usuario") || "Admin";
         document.getElementById("nome-jogador").textContent = usuarioLogado;
         
@@ -365,19 +416,20 @@
             avatarDiv.textContent = usuarioLogado.charAt(0).toUpperCase();
         }
 
-        // ENVIO DE DADOS PARA O FIRESTORE IN REAL-TIME
+        // ==================== ENVIOS PARA O FIRESTORE ====================
 
         // Enviar Tutorial
         document.getElementById("form-tutoriais").addEventListener("submit", function(e) {
             e.preventDefault();
             db.collection("tutoriais").add({
-                'tut-cat': document.getElementById("tut-cat").value,
-                'tut-titulo': document.getElementById("tut-titulo").value,
-                'tut-desc': document.getElementById("tut-desc").value,
+                categoria: document.getElementById("tut-cat").value,
+                titulo: document.getElementById("tut-titulo").value,
+                video: document.getElementById("tut-video").value,
+                desc: document.getElementById("tut-desc").value,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
-                alert("🔥 Sucesso! Tutorial gravado no banco de dados da nuvem.");
+                alert("🔥 Tutorial e Vídeo gravados na nuvem com sucesso!");
                 document.getElementById("form-tutoriais").reset();
             })
             .catch(err => alert("Erro ao enviar: " + err));
@@ -387,13 +439,13 @@
         document.getElementById("form-eventos").addEventListener("submit", function(e) {
             e.preventDefault();
             db.collection("eventos").add({
-                'ev-tipo': document.getElementById("ev-tipo").value,
-                'ev-nome': document.getElementById("ev-nome").value,
-                'ev-detalhes': document.getElementById("ev-detalhes").value,
+                nome: document.getElementById("ev-nome").value,
+                data: document.getElementById("ev-data").value,
+                local: document.getElementById("ev-local").value,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
-                alert("🔥 Sucesso! Calendário atualizado na nuvem.");
+                alert("🔥 Evento fixado no cronograma em nuvem!");
                 document.getElementById("form-eventos").reset();
             })
             .catch(err => alert("Erro ao enviar: " + err));
@@ -403,17 +455,56 @@
         document.getElementById("form-aulaoes").addEventListener("submit", function(e) {
             e.preventDefault();
             db.collection("aulaoes").add({
-                'aula-tema': document.getElementById("aula-tema").value,
-                'aula-prof': document.getElementById("aula-prof").value,
-                'aula-tipo': document.getElementById("aula-tipo").value,
+                titulo: document.getElementById("aula-titulo").value,
+                convidado: document.getElementById("aula-convidado").value,
+                local: document.getElementById("aula-local").value,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
-                alert("🔥 Sucesso! Aulão agendado na nuvem.");
+                alert("🔥 Convite de Aulão enviado para a base de dados!");
                 document.getElementById("form-aulaoes").reset();
             })
             .catch(err => alert("Erro ao enviar: " + err));
         });
+
+        // ==================== GERENCIAMENTO DE MEMBROS (MOCK/LOCAL) ====================
+        function carregarMembrosAdmin() {
+            const tbody = document.getElementById("lista-membros-admin");
+            // Mantém o fixado e carrega as contas locais criadas pelo sistema de login
+            tbody.innerHTML = `
+                <tr>
+                    <td style="color: white; font-weight: bold;">.Breki</td>
+                    <td><span style="color: #94a3b8; font-size: 0.8rem; font-style: italic;">Membro Oficial (Fixado)</span></td>
+                </tr>
+            `;
+
+            // Puxa as contas salvas no localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                let chave = localStorage.key(i);
+                if (chave.startsWith("sk_user_")) {
+                    let nick = chave.replace("sk_user_", "");
+                    if(nick.toLowerCase() === "admin") continue;
+
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td style="color: #e2e8f0;">${nick}</td>
+                        <td>
+                            <button class="btn-acao btn-remover" onclick="banirMembro('${nick}')">Banir / Remover</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            }
+        }
+
+        function banirMembro(nick) {
+            if(confirm(`Tem certeza que deseja remover o jogador ${nick} do sistema?`)) {
+                localStorage.removeItem(`sk_user_${nick}`);
+                localStorage.removeItem(`sk_avatar_${nick}`);
+                alert(`Jogador ${nick} foi removido com sucesso.`);
+                carregarMembrosAdmin();
+            }
+        }
 
         document.getElementById("btn-logout").addEventListener("click", (e) => {
             e.preventDefault();
