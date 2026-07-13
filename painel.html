@@ -260,6 +260,7 @@
                     <li><a class="tab-link" onclick="mudarAba('eventos')">📅 Eventos</a></li>
                     <li><a class="tab-link" onclick="mudarAba('membros-lista')">👥 Lista de Membros</a></li>
                     <li><a class="tab-link" onclick="mudarAba('aulaoes')">⚔️ Aulões</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('combocodex')">⚡ ComboCodex 2v2</a></li>
                 </ul>
             </div>
 
@@ -358,6 +359,20 @@
                 </div>
             </div>
 
+            <!-- 5. ABA COMBOCODEX EMBUTIDO -->
+            <div id="combocodex" class="aba-conteudo">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="text-align: left;">
+                        <h2 style="font-family:'Orbitron'; color:#d4af37; margin: 0;">Quadro de Combos 2v2</h2>
+                        <p style="color:#94a3b8; margin: 5px 0 0 0;">Consulte a base de dados externa do ComboCodex sem sair do painel.</p>
+                    </div>
+                    <a href="https://combocodex.com/" target="_blank" class="btn-corelhalla" style="width: auto; margin: 0; padding: 10px 20px; background: #ff4d4d; box-shadow: none;">Abrir em Nova Guia ↗</a>
+                </div>
+                
+                <!-- Janela de renderização do site deles -->
+                <iframe src="https://combocodex.com/" style="width: 100%; height: 68vh; border: 2px solid rgba(212, 175, 55, 0.25); border-radius: 8px; background: #0a192f;"></iframe>
+            </div>
+
         </main>
     </div>
 
@@ -382,7 +397,6 @@
         if(tipoUsuario === "admin") {
             cargoTag.textContent = "Administrador";
             cargoTag.style.color = "#ff4d4d";
-            // Revela o botão de retorno secreto apenas para quem é Administrador
             document.getElementById("btn-retornar-admin").style.display = "inline-block";
         } else {
             cargoTag.textContent = "Membro Oficial";
