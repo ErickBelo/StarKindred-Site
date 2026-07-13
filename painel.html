@@ -356,42 +356,85 @@
 
     <!-- SCRIPT DE INTELIGÊNCIA DO PAINEL -->
     <script>
-        // 1. Alternador de Abas Dinâmico
-        function mudarAba(idAba) {
-            // Esconde todas as abas
-            const abas = document.querySelectorAll('.aba-conteudo');
-            abas.forEach(aba => aba.classList.remove('active'));
+      // 1. Alternador de Abas Dinâmico
+function mudarAba(idAba) {
+    document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
+    document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
+    document.getElementById(idAba).classList.add('active');
+    if(event) event.currentTarget.classList.add('active');
+}
 
-            // Remove a classe ativa dos botões do menu
-            const links = document.querySelectorAll('.tab-link');
-            links.forEach(link => link.classList.remove('active'));
+// 2. Carrega Dados do Perfil
+const usuarioLogado = localStorage.getItem("sk_usuario") || "Membro";
+const tipoUsuario = localStorage.getItem("sk_tipo_usuario") || "membro";
 
-            // Mostra a aba clicada e ativa o botão correspondente
-            document.getElementById(idAba).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+document.getElementById("nome-jogador").textContent = usuarioLogado;
+document.getElementById("avatar-letra").textContent = usuarioLogado.charAt(0).toUpperCase();
 
-        // 2. Sistema de Identificação do Perfil
-        const usuarioLogado = localStorage.getItem("sk_usuario") || "Membro";
-        const tipoUsuario = localStorage.getItem("sk_tipo_usuario") || "membro";
+const cargoTag = document.getElementById("cargo-jogador");
+if(tipoUsuario === "admin") {
+    cargoTag.textContent = "Administrador";
+    cargoTag.style.color = "#ff4d4d";
+} else {
+    cargoTag.textContent = "Membro Oficial";
+}
 
-        document.getElementById("nome-jogador").textContent = usuarioLogado;
-        document.getElementById("avatar-letra").textContent = usuarioLogado.charAt(0).toUpperCase();
-        
-        const cargoTag = document.getElementById("cargo-jogador");
-        if(tipoUsuario === "admin") {
-            cargoTag.textContent = "Administrador";
-            cargoTag.style.color = "#ff4d4d";
-        } else {
-            cargoTag.textContent = "Membro Oficial";
-        }
+// 3. FUNÇÃO MÁGICA: Renderizar os itens criados pelos ADMs
+document.addEventListener("DOMContentLoaded", () => {
+    // Carregar Tutoriais Dinâmicos
+    const listaTutoriais = JSON.parse(localStorage.getItem("tutoriais")) || [];
+    const containerTutoriais = document.querySelector("#tutoriais .grid-cards");
+    
+    listaTutoriais.forEach(tut => {
+        const cardHTML = `
+            <div class="card-interno" style="border-color: #ff4d4d;">
+                <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${tut['tut-cat']}</span>
+                <h4>${tut['tut-titulo']}</h4>
+                <p>${tut['tut-desc']}</p>
+                <span style="font-size:0.8rem; color:#64748b; font-weight:bold;">📌 Postado pela Staff</span>
+            </div>
+        `;
+        containerTutoriais.insertAdjacentHTML('beforeend', cardHTML);
+    });
 
-        // 3. Logout
-        document.getElementById("btn-logout").addEventListener("click", (e) => {
-            e.preventDefault();
-            localStorage.clear();
-            window.location.href = "login.html";
-        });
+    // Carregar Eventos Dinâmicos
+    const listaEventos = JSON.parse(localStorage.getItem("eventos")) || [];
+    const containerEventos = document.querySelector("#eventos .grid-cards");
+    
+    listaEventos.forEach(ev => {
+        const cardHTML = `
+            <div class="card-interno" style="border-left: 4px solid #ff4d4d;">
+                <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${ev['ev-tipo']}</span>
+                <h4>${ev['ev-nome']}</h4>
+                <p>${ev['ev-detalhes']}</p>
+            </div>
+        `;
+        containerEventos.insertAdjacentHTML('beforeend', cardHTML);
+    });
+
+    // Carregar Aulões Dinâmicos
+    const listaAulaoes = JSON.parse(localStorage.getItem("aulaoes")) || [];
+    const containerAulaoes = document.querySelector("#aulaoes .grid-cards");
+    
+    listaAulaoes.forEach(aula => {
+        const cardHTML = `
+            <div class="card-interno" style="border-top: 2px solid #ff4d4d;">
+                <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${aula['aula-tipo']}</span>
+                <h4>${aula['aula-tema']}</h4>
+                <p>👨‍🏫 <strong>Professor:</strong> ${aula['aula-prof']}</p>
+                <p style="color:#52b788; font-weight:bold; font-size:0.9rem;">Sala do Discord Liberada 🔓</p>
+            </div>
+        `;
+        containerAulaoes.insertAdjacentHTML('beforeend', cardHTML);
+    });
+});
+
+// 4. Logout
+document.getElementById("btn-logout").addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href = "login.html";
+});
     </script>
 </body>
 </html>
