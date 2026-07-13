@@ -53,16 +53,17 @@
             transition: all 0.3s;
             background: rgba(255, 255, 255, 0.02);
             border-left: 3px solid transparent;
+            cursor: pointer;
         }
 
-        .sidebar-menu ul li a:hover {
+        .sidebar-menu ul li a.active, .sidebar-menu ul li a:hover {
             color: #d4af37;
-            background: rgba(212, 175, 55, 0.05);
+            background: rgba(212, 175, 55, 0.07);
             border-left-color: #d4af37;
             transform: translateX(5px);
         }
 
-        /* BOTÃO CORELHALLA */
+        /* BOTÕES DA SIDEBAR */
         .btn-corelhalla {
             display: block;
             width: 100%;
@@ -111,7 +112,7 @@
             position: relative;
         }
 
-        /* ÁREA DE PERFIL (SUPERIOR DIREITO) */
+        /* TOPO: PERFIL */
         .topo-painel {
             display: flex;
             justify-content: space-between;
@@ -129,7 +130,6 @@
             padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid rgba(212, 175, 55, 0.3);
-            margin-left: auto; /* Empurra o perfil pro canto direito */
         }
 
         .perfil-avatar {
@@ -145,37 +145,73 @@
             font-family: 'Orbitron', sans-serif;
         }
 
-        .perfil-info {
-            text-align: left;
+        /* GERENCIAMENTO DE ABAS (ESCONDER/MOSTRAR) */
+        .aba-conteudo {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
         }
 
-        .perfil-info .nome {
-            font-weight: bold;
-            color: #e2e8f0;
+        .aba-conteudo.active {
             display: block;
-            font-size: 0.95rem;
         }
 
-        .perfil-info .cargo {
-            color: #00b4d8;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* GRID DE MEMBROS E ADMS */
-        .secao-lista h3 {
+        /* ESTILOS DE CARDS INTERNOS */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card-interno {
+            background: #0a192f;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .card-interno:hover {
+            border-color: #00b4d8;
+            transform: translateY(-3px);
+        }
+
+        .card-interno h4 {
             font-family: 'Orbitron', sans-serif;
             color: #d4af37;
-            margin-bottom: 20px;
-            text-align: left;
+            margin-bottom: 10px;
         }
 
+        .card-interno p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin: 0 0 15px 0;
+        }
+
+        .tag-categoria {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            background: rgba(0, 180, 216, 0.15);
+            color: #00b4d8;
+            margin-bottom: 15px;
+        }
+
+        /* GRID DE USUÁRIOS */
         .grid-usuarios {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
         }
 
         .card-user {
@@ -188,63 +224,26 @@
             gap: 15px;
         }
 
-        .card-user .status-dot {
-            width: 100%;
-            max-width: 10px;
+        .status-dot {
+            width: 10px;
             height: 10px;
-            background-color: #52b788; /* Verde Online */
+            background-color: #52b788;
             border-radius: 50%;
             box-shadow: 0 0 8px #52b788;
         }
 
-        .card-user.adm-border {
-            border-color: rgba(255, 77, 77, 0.4);
-        }
-
-        .card-user.adm-border .status-dot {
-            background-color: #ff4d4d; /* Vermelho para ADM */
-            box-shadow: 0 0 8px #ff4d4d;
-        }
-
-        .card-user-info h4 {
-            font-family: 'Orbitron', sans-serif;
-            color: #e2e8f0;
-            font-size: 1rem;
-        }
-
-        .card-user-info p {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin: 0;
-            text-align: left;
-        }
+        .card-user.adm-border { border-color: rgba(255, 77, 77, 0.4); }
+        .card-user.adm-border .status-dot { background-color: #ff4d4d; box-shadow: 0 0 8px #ff4d4d; }
 
         /* RESPONSIVIDADE */
         @media (max-width: 768px) {
-            .painel-container {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 2px solid #d4af37;
-            }
-            .topo-painel {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .perfil-usuario {
-                margin-left: initial;
-                width: 100%;
-                justify-content: center;
-            }
+            .painel-container { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #d4af37; }
+            .topo-painel { flex-direction: column; gap: 15px; }
         }
     </style>
     <script>
-        // Trava de segurança básica
-        if (localStorage.getItem("sk_autenticado") !== "true") {
-            window.location.href = "login.html";
-        }
+        if (localStorage.getItem("sk_autenticado") !== "true") { window.location.href = "login.html"; }
     </script>
 </head>
 <body>
@@ -256,103 +255,129 @@
             <div class="sidebar-menu">
                 <h3>Navegação SK</h3>
                 <ul>
-                    <li><a href="#tutoriais">📖 Tutoriais</a></li>
-                    <li><a href="#eventos">📅 Eventos</a></li>
-                    <li><a href="#membros-lista">👥 Lista de Membros</a></li>
-                    <li><a href="#aulaoes">⚔️ Aulões</a></li>
+                    <li><a class="tab-link active" onclick="mudarAba('tutoriais')">📖 Tutoriais</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('eventos')">📅 Eventos</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('membros-lista')">👥 Lista de Membros</a></li>
+                    <li><a class="tab-link" onclick="mudarAba('aulaoes')">⚔️ Aulões</a></li>
                 </ul>
             </div>
 
-            <!-- BOTÕES INFERIORES DA SIDEBAR -->
             <div>
-                <!-- Link para o Corelhalla (Altere para o link real depois) -->
                 <a href="https://corelhalla.com" target="_blank" class="btn-corelhalla">🌐 Corelhalla</a>
                 <a href="#" id="btn-logout" class="btn-logout-painel">Desconectar</a>
             </div>
         </aside>
 
-        <!-- CONTEÚDO CENTRAL DA TELA -->
+        <!-- CONTEÚDO CENTRAL -->
         <main class="conteudo-principal">
             
-            <!-- TOPO: ÁREA DE PERFIL -->
+            <!-- TOPO PERFIL -->
             <div class="topo-painel">
                 <a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao Site</a>
-                
                 <div class="perfil-usuario">
                     <div class="perfil-avatar" id="avatar-letra">U</div>
-                    <div class="perfil-info">
-                        <span class="nome" id="nome-jogador">Jogador</span>
-                        <span class="cargo" id="cargo-jogador">Membro</span>
+                    <div class="perfil-info" style="text-align: left;">
+                        <span class="nome" id="nome-jogador" style="display:block; font-weight:bold;">Jogador</span>
+                        <span class="cargo" id="cargo-jogador" style="font-size:0.75rem; color:#00b4d8;">Membro</span>
                     </div>
                 </div>
             </div>
 
-            <!-- SEÇÃO DE MEMBROS E ADMS ONLINE -->
-            <section class="secao-lista" id="membros-lista">
-                <h3>Administração da Guilda</h3>
-                <div class="grid-usuarios">
-                    <!-- ADM 1 -->
-                    <div class="card-user adm-border">
-                        <div class="status-dot"></div>
-                        <div class="card-user-info">
-                            <h4>Fundador SK</h4>
-                            <p>Administrador</p>
-                        </div>
+            <!-- 1. ABA TUTORIAIS -->
+            <div id="tutoriais" class="aba-conteudo active">
+                <h2 style="font-family:'Orbitron'; color:#d4af37; text-align:left;">Biblioteca de Combos & Estratégias</h2>
+                <p style="text-align:left; color:#94a3b8;">Estude o meta e melhore a sua gameplay com materiais selecionados pela Staff.</p>
+                
+                <div class="grid-cards">
+                    <div class="card-interno">
+                        <span class="tag-categoria">Foice / Scythe</span>
+                        <h4>Combos Essenciais de Nix</h4>
+                        <p>Aprenda setups de active input e strings de leitura de dodge para trancar o oponente no ar.</p>
+                        <a href="#" style="color:#00b4d8; text-decoration:none; font-size:0.9rem; font-weight:bold;">Ver Guia Completo →</a>
+                    </div>
+                    <div class="card-interno">
+                        <span class="tag-categoria" style="background:rgba(82, 183, 136, 0.15); color:#52b788;">Estratégia 2v2</span>
+                        <h4>Táticas de Black Hole</h4>
+                        <p>Como sincronizar ataques de espada e blasters para executar o combo infinito de dupla perfeito.</p>
+                        <a href="#" style="color:#00b4d8; text-decoration:none; font-size:0.9rem; font-weight:bold;">Assistir Análise →</a>
                     </div>
                 </div>
+            </div>
 
-                <hr style="border: 0; border-top: 1px solid rgba(212, 175, 55, 0.1); margin: 30px 0;">
-
-                <h3>Membros Oficiais Online</h3>
-                <div class="grid-usuarios">
-                    <!-- Membro 1 -->
-                    <div class="card-user">
-                        <div class="status-dot"></div>
-                        <div class="card-user-info">
-                            <h4>.Breki</h4>
-                            <p>Membro Activo</p>
-                        </div>
-                    </div>
-                    <!-- Membro 2 -->
-                    <div class="card-user">
-                        <div class="status-dot"></div>
-                        <div class="card-user-info">
-                            <h4>GoodKk</h4>
-                            <p>Membro Activo</p>
-                        </div>
-                    </div>
-                    <!-- Membro 3 -->
-                    <div class="card-user">
-                        <div class="status-dot"></div>
-                        <div class="card-user-info">
-                            <h4>Devan</h4>
-                            <p>Membro Activo</p>
-                        </div>
-                    </div>
-                    <!-- Membro 4 -->
-                    <div class="card-user">
-                        <div class="status-dot"></div>
-                        <div class="card-user-info">
-                            <h4>Zanin</h4>
-                            <p>Membro Activo</p>
-                        </div>
+            <!-- 2. ABA EVENTOS -->
+            <div id="eventos" class="aba-conteudo">
+                <h2 style="font-family:'Orbitron'; color:#d4af37; text-align:left;">Calendário de Operações</h2>
+                <p style="text-align:left; color:#94a3b8;">Fique por dentro de todos os campeonatos internos, treinos e eventos valendo prêmios.</p>
+                
+                <div class="grid-cards">
+                    <div class="card-interno" style="border-left: 4px solid #d4af37;">
+                        <span class="tag-categoria" style="background:rgba(212,175,55,0.15); color:#d4af37;">Torneio</span>
+                        <h4>King of Valhalla 1v1</h4>
+                        <p>📅 <strong>Data:</strong> Próximo Domingo às 18:00h<br>🏆 <strong>Premiação:</strong> Skin de Arma/Metadev para o primeiro colocado.</p>
+                        <button class="btn-principal" style="padding:8px 15px; font-size:0.8rem;">Inscrever-se</button>
                     </div>
                 </div>
-            </section>
+            </div>
+
+            <!-- 3. ABA LISTA DE MEMBROS -->
+            <div id="membros-lista" class="aba-conteudo">
+                <h2 style="font-family:'Orbitron'; color:#d4af37; text-align:left; margin-bottom:20px;">Quadro de Membros Oficiais</h2>
+                
+                <h3 style="font-family:'Orbitron'; color:#ff4d4d; font-size:1.1rem; text-align:left; margin-bottom:15px;">Administração</h3>
+                <div class="grid-usuarios" style="margin-bottom:30px;">
+                    <div class="card-user adm-border"><div class="status-dot"></div><div><h4 style="font-family:'Orbitron';">Fundador SK</h4><p style="font-size:0.8rem; color:#64748b;">Líder / Staff</p></div></div>
+                </div>
+
+                <h3 style="font-family:'Orbitron'; color:#00b4d8; font-size:1.1rem; text-align:left; margin-bottom:15px;">Membros Online</h3>
+                <div class="grid-usuarios">
+                    <div class="card-user"><div class="status-dot"></div><div><h4 style="font-family:'Orbitron';">.Breki</h4><p style="font-size:0.8rem; color:#64748b;">Membro</p></div></div>
+                    <div class="card-user"><div class="status-dot"></div><div><h4 style="font-family:'Orbitron';">Zanin</h4><p style="font-size:0.8rem; color:#64748b;">Membro</p></div></div>
+                    <div class="card-user"><div class="status-dot"></div><div><h4 style="font-family:'Orbitron';">GoodKk</h4><p style="font-size:0.8rem; color:#64748b;">Membro</p></div></div>
+                </div>
+            </div>
+
+            <!-- 4. ABA AULÕES -->
+            <div id="aulaoes" class="aba-conteudo">
+                <h2 style="font-family:'Orbitron'; color:#d4af37; text-align:left;">Aulões de Treinamento da Staff</h2>
+                <p style="text-align:left; color:#94a3b8;">Mentorias ao vivo feitas pelos jogadores Diamante/Elite da guilda para analisar replays e corrigir vícios.</p>
+                
+                <div class="grid-cards">
+                    <div class="card-interno">
+                        <span class="tag-categoria">Mentoria Coletiva</span>
+                        <h4>Análise de Replay & Posicionamento</h4>
+                        <p>👨‍🏫 <strong>Professor:</strong> .Breki / Trapirineu<br>🎯 Aprendizado prático focado em leitura de dash e punições rápidas no chão.</p>
+                        <p style="color:#52b788; font-weight:bold; font-size:0.9rem;">Sala do Discord Liberada 🔓</p>
+                    </div>
+                </div>
+            </div>
 
         </main>
     </div>
 
+    <!-- SCRIPT DE INTELIGÊNCIA DO PAINEL -->
     <script>
-        // Carrega os dados reais do jogador logado
+        // 1. Alternador de Abas Dinâmico
+        function mudarAba(idAba) {
+            // Esconde todas as abas
+            const abas = document.querySelectorAll('.aba-conteudo');
+            abas.forEach(aba => aba.classList.remove('active'));
+
+            // Remove a classe ativa dos botões do menu
+            const links = document.querySelectorAll('.tab-link');
+            links.forEach(link => link.classList.remove('active'));
+
+            // Mostra a aba clicada e ativa o botão correspondente
+            document.getElementById(idAba).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // 2. Sistema de Identificação do Perfil
         const usuarioLogado = localStorage.getItem("sk_usuario") || "Membro";
         const tipoUsuario = localStorage.getItem("sk_tipo_usuario") || "membro";
 
-        // Aplica o nome e a primeira letra no Avatar
         document.getElementById("nome-jogador").textContent = usuarioLogado;
         document.getElementById("avatar-letra").textContent = usuarioLogado.charAt(0).toUpperCase();
         
-        // Define a tag do cargo visualmente
         const cargoTag = document.getElementById("cargo-jogador");
         if(tipoUsuario === "admin") {
             cargoTag.textContent = "Administrador";
@@ -361,7 +386,7 @@
             cargoTag.textContent = "Membro Oficial";
         }
 
-        // Lógica de Logout
+        // 3. Logout
         document.getElementById("btn-logout").addEventListener("click", (e) => {
             e.preventDefault();
             localStorage.clear();
