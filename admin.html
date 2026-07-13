@@ -161,7 +161,7 @@
                 </ul>
             </div>
             <div>
-                <a href="painel.html" class="btn-logout-painel" style="color: #00b4d8; border-color: rgba(0, 180, 216, 0.4);">Voltar ao QG</a>
+                <a href="painel.html" class="btn-logout-painel" style="color: #00b4d8; border-color: rgba(0, 180, 216, 0.4); text-decoration: none; display: flex; align-items: center; justify-content: center;">Voltar ao QG</a>
             </div>
         </aside>
 
@@ -342,7 +342,7 @@
                     local: document.getElementById("evt-local").value,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                alert("📅 Cronograma updated para toda a guilda!");
+                alert("📅 Cronograma atualizado para toda a guilda!");
                 e.target.reset();
             } catch (err) {
                 alert("Falha de conexão: " + err.message);
@@ -376,7 +376,7 @@
             }
         });
 
-        // Helper para gerar o HTML do cargo formatado
+        // Helper para gerar o HTML do cargo formatado com as cores certas
         function obterHTMLBadgeCargo(funcao) {
             if(funcao === "admin") {
                 return `<span class="badge-cargo" style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d;">👑 Staff / Admin</span>`;
@@ -450,6 +450,7 @@
                 localStorage.removeItem(`sk_avatar_${nick}`);
                 localStorage.removeItem(`sk_role_${nick}`);
                 localStorage.removeItem(`sk_role_tipo_${nick}`);
+                localStorage.removeItem(`sk_profile_data_${nick}`); // Limpa também a ficha tática avançada
                 alert(`Jogador ${nick} removido dos registros.`);
                 carregarMembrosAdmin();
             }

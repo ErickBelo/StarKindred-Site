@@ -3,120 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | Login</title>
+    <title>StarKindred | Autenticação de Operador</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        .login-wrapper {
-            height: 100vh;
+        /* Estilos específicos para centralizar e formatar a tela de login */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #050b14;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #050b14 0%, #0a192f 100%);
-            padding: 20px;
+            min-height: 100vh;
         }
-        .login-card {
-            width: 100%;
-            max-width: 360px;
-            padding: 40px 25px;
-            background-color: #0a192f;
-            border: 2px solid #d4af37;
+
+        .login-box {
+            background: #0a192f;
+            border: 1px solid rgba(0, 180, 216, 0.25);
             border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-        }
-        .input-group {
-            text-align: left;
-            margin-top: 15px;
-        }
-        .input-group label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            color: #d4af37;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .login-card input {
+            padding: 40px;
             width: 100%;
-            padding: 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            background: #050b14;
-            color: white;
-            font-size: 1rem;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            text-align: center;
             box-sizing: border-box;
         }
-        .login-card input:focus {
+
+        .login-box h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00b4d8;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .login-box p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .form-login {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-wrapper label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: #00b4d8;
+            font-weight: bold;
+        }
+
+        .input-sk {
+            background: #050b14;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            border-radius: 4px;
+            padding: 12px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .input-sk:focus {
             outline: none;
             border-color: #00b4d8;
-            box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+            box-shadow: 0 0 8px rgba(0, 180, 216, 0.3);
         }
-        .erro-msg {
-            color: #ff4d4d;
+
+        .btn-login {
+            background: #00b4d8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 14px;
+            font-family: 'Orbitron', sans-serif;
             font-size: 0.9rem;
-            margin-top: 15px;
-            margin-bottom: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .btn-login:hover {
+            background: #0077b6;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .erro-mensagem {
+            color: #ff4d4d;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 10px;
             display: none;
+            font-family: 'Roboto', sans-serif;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-wrapper">
-        <div class="login-card">
-            <h2 style="color: #d4af37; margin-bottom: 10px;">Portal SK</h2>
-            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Acesso Membro & Administração</p>
-            
-            <div class="input-group">
-                <label for="sk-user">Nick / Usuário</label>
-                <input type="text" id="sk-user" placeholder="Ex: .Breki">
+    <div class="login-box">
+        <h1>StarKindred</h1>
+        <p>Insira suas credenciais para acessar o QG</p>
+
+        <form id="form-autenticacao" class="form-login">
+            <div class="input-wrapper">
+                <label>Codinome / Nick de Jogo</label>
+                <input type="text" id="login-usuario" class="input-sk" placeholder="Ex: Operador01" required autocomplete="off">
             </div>
 
-            <div class="input-group">
-                <label for="sk-pass">Chave de Acesso</label>
-                <input type="password" id="sk-pass" placeholder="••••••••">
+            <div class="input-wrapper">
+                <label>Chave de Acesso Tática</label>
+                <input type="password" id="login-senha" class="input-sk" placeholder="••••••••" required>
             </div>
-            
-            <div id="erro-login" class="erro-msg">Usuário ou chave incorretos!</div>
-            
-            <button id="btn-entrar-painel" class="btn-principal" style="width: 100%; margin-top: 25px;">Acessar Sistema</button>
-            
-            <p style="margin-top: 20px;"><a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao site</a></p>
-        </div>
+
+            <div id="msg-erro" class="erro-mensagem">⚠️ Credenciais incorretas ou inválidas.</div>
+
+            <button type="submit" class="btn-login">Autenticar Terminal</button>
+        </form>
     </div>
 
     <script>
-        document.getElementById("btn-entrar-painel").addEventListener("click", () => {
-            const usuarioDigitado = document.getElementById("sk-user").value.trim();
-            const senhaDigitada = document.getElementById("sk-pass").value;
+        // Lista de usuários autorizados no sistema (Hardcoded / Fixo)
+        // Adicione ou mude os usuários e senhas aqui conforme necessário
+        const listaUsuariosValidos = {
+            "admin": "admin123",
+            "Breki": "breki2026",
+            "Isaias": "senha123",
+            "Kurona": "senha456",
+            "Alberto": "senha789"
+        };
 
-            // DEFINIÇÃO DAS SENHAS
-            const SENHA_MEMBRO = "sk2026";
-            const SENHA_ADMIN = "adminsk99"; // Defina a senha master de ADM aqui
+        document.getElementById("form-autenticacao").addEventListener("submit", function(e) {
+            e.preventDefault();
 
-            if (usuarioDigitado === "") {
-                document.getElementById("erro-login").textContent = "Digite o seu usuário!";
-                document.getElementById("erro-login").style.display = "block";
-                return;
-            }
-            
-            if (senhaDigitada === SENHA_ADMIN) {
-                // Autentica como Administrador
+            const usuarioInput = document.getElementById("login-usuario").value.trim();
+            const senhaInput = document.getElementById("login-senha").value;
+            const msgErro = document.getElementById("msg-erro");
+
+            // Validação simples: ignora maiúsculas/minúsculas apenas na busca da chave do objeto
+            const chaveEncontrada = Object.keys(listaUsuariosValidos).find(
+                key => key.toLowerCase() === usuarioInput.toLowerCase()
+            );
+
+            if (chaveEncontrada && listaUsuariosValidos[chaveEncontrada] === senhaInput) {
+                // Preserva a grafia original cadastrada na lista (ex: "Breki" em vez de "breki")
+                const nickOficial = chaveEncontrada;
+
+                // 1. Ativa a trava de segurança do painel
                 localStorage.setItem("sk_autenticado", "true");
-                localStorage.setItem("sk_usuario", usuarioDigitado);
-                localStorage.setItem("sk_tipo_usuario", "admin");
-                window.location.href = "admin.html";
-            } else if (senhaDigitada === SENHA_MEMBRO) {
-                // Autentica como Membro padrão
-                localStorage.setItem("sk_autenticado", "true");
-                localStorage.setItem("sk_usuario", usuarioDigitado);
-                localStorage.setItem("sk_tipo_usuario", "membro");
+
+                // 2. Salva o usuário ativo na sessão
+                localStorage.setItem("sk_usuario", nickOficial);
+
+                // 3. Define a role padrão (Admin ou Membro) caso seja o primeiro login
+                if (nickOficial.toLowerCase() === "admin") {
+                    localStorage.setItem("sk_tipo_usuario", "admin");
+                    localStorage.setItem(`sk_role_${nickOficial}`, "admin");
+                    localStorage.setItem(`sk_role_tipo_${nickOficial}`, "admin");
+                } else {
+                    // Só define como membro padrão se o ADM já não tiver alterado a patente antes
+                    if (!localStorage.getItem(`sk_role_${nickOficial}`)) {
+                        localStorage.setItem("sk_tipo_usuario", "membro");
+                        localStorage.setItem(`sk_role_${nickOficial}`, "membro");
+                        localStorage.setItem(`sk_role_tipo_${nickOficial}`, "membro");
+                    }
+                }
+
+                // 4. Registra o operador na persistência local para aparecer no painel staff (admin.html)
+                localStorage.setItem(`sk_user_${nickOficial}`, "ativo");
+
+                // Oculta erro e joga para o Painel Principal
+                msgErro.style.display = "none";
                 window.location.href = "painel.html";
+
             } else {
-                document.getElementById("erro-login").textContent = "Chave incorreta! Tente novamente.";
-                document.getElementById("erro-login").style.display = "block";
+                // Exibe mensagem de erro tático
+                msgErro.style.display = "block";
+                document.getElementById("login-senha").value = "";
+                document.getElementById("login-senha").focus();
             }
         });
+
+        // Limpa resquícios de sessões antigas ao carregar a página de login
+        localStorage.removeItem("sk_autenticado");
     </script>
 </body>
 </html>

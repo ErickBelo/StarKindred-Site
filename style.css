@@ -1,172 +1,235 @@
-/* CONFIGURAÇÕES GERAIS */
-body {
-    background-color: #050b14;
-    color: #e2e8f0;
-    font-family: 'Roboto', sans-serif;
+/* ==========================================================================
+   CONFIGURAÇÕES GERAIS E RESETS
+   ========================================================================== */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* CONTAINER PRINCIPAL DO PAINEL (FLEXBOX) */
+body {
+    background: #050b14;
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   LAYOUT DO PAINEL (GRID / FLEX PRINCIPAL)
+   ========================================================================== */
 .painel-container {
     display: flex;
     min-height: 100vh;
-    background: #050b14;
+    width: 100vw;
 }
 
-/* BARRA LATERAL (SIDEBAR) */
+/* Barra Lateral de Comando */
 .sidebar {
     width: 260px;
-    background-color: #0a192f;
-    border-right: 2px solid #00b4d8;
+    background: #020813;
+    border-right: 1px solid rgba(0, 180, 216, 0.15);
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-sizing: border-box;
+    position: fixed;
+    height: 100vh;
+    z-index: 10;
 }
 
 .sidebar h3 {
-    color: #00b4d8;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.3rem;
-    margin-top: 0;
-    margin-bottom: 30px;
-    text-align: center;
+    color: #00b4d8;
+    font-size: 1.2rem;
     letter-spacing: 1px;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
 }
 
 .sidebar-menu ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-menu ul li {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .sidebar-menu ul li a {
     display: block;
     padding: 12px 15px;
-    color: #e2e8f0;
-    text-decoration: none;
+    color: #94a3b8;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    text-decoration: none;
     border-radius: 4px;
-    transition: all 0.3s;
-    background: rgba(255, 255, 255, 0.01);
-    border-left: 3px solid transparent;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 2px solid transparent;
 }
 
-/* Aba ativa ou quando passa o mouse */
-.sidebar-menu ul li a.active, 
-.sidebar-menu ul li a:hover {
-    color: #00b4d8;
-    background: rgba(0, 180, 216, 0.07);
+.sidebar-menu ul li a:hover,
+.sidebar-menu ul li a.active {
+    color: #ffffff;
+    background: rgba(0, 180, 216, 0.08);
     border-left-color: #00b4d8;
-    transform: translateX(5px);
+    padding-left: 20px;
 }
 
-/* Botão Sair */
-.btn-logout-painel {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid rgba(255, 77, 77, 0.4);
-    color: #ff4d4d;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 4px;
+/* Área de Conteúdo à Direita */
+.conteudo-principal {
+    margin-left: 260px;
+    flex: 1;
+    width: calc(100% - 260px);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* Cabeçalho do Painel */
+.topo-painel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+    padding-bottom: 25px;
+    margin-bottom: 35px;
+}
+
+/* ==========================================================================
+   COMPONENTES DE USUÁRIO (AVATARES E INFOS)
+   ========================================================================== */
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(10, 25, 47, 0.5);
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 180, 216, 0.1);
+}
+
+.perfil-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #00b4d8;
+    background-color: #050b14;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
     font-weight: bold;
+    color: #00b4d8;
+}
+
+/* ==========================================================================
+   SISTEMA DE ABAS DINÂMICAS
+   ========================================================================== */
+.aba-conteudo {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.aba-conteudo.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   ELEMENTOS DE FORMULÁRIO E INPUTS CORES PADRÃO
+   ========================================================================== */
+.input-sk, .select-sk, .textarea-sk {
+    width: 100%;
+    background: #050b14;
+    border: 1px solid rgba(0, 180, 216, 0.2);
+    border-radius: 4px;
+    padding: 10px 12px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
     transition: all 0.3s;
     box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+.input-sk:focus, .select-sk:focus, .textarea-sk:focus {
+    outline: none;
+    border-color: #00b4d8;
+    box-shadow: 0 0 8px rgba(0, 180, 216, 0.25);
+}
+
+.select-sk option {
+    background: #0a192f;
+    color: white;
+}
+
+/* ==========================================================================
+   BOTÕES CORPORATIVOS / OPERACIONAIS
+   ========================================================================== */
+.btn-enviar-sk {
+    background: #00b4d8;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-enviar-sk:hover {
+    background: #0077b6;
+}
+
+.btn-logout-painel {
+    background: transparent;
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 10px;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .btn-logout-painel:hover {
     background: #ff4d4d;
     color: white;
-    box-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
 }
 
-/* CONTEÚDO CENTRAL CORRETO */
-.conteudo-principal {
-    flex: 1;
-    padding: 40px;
-    box-sizing: border-box;
-}
-
-/* TOPO COM PERFIL DO JOGADOR */
-.topo-painel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
-    padding-bottom: 20px;
-}
-
-.perfil-usuario {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: #0a192f;
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 180, 216, 0.15);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.perfil-avatar {
-    width: 50px;
-    height: 50px;
-    background: #00b4d8;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    font-family: 'Orbitron', sans-serif;
-    background-size: cover;
-    background-position: center;
-    border: 2px solid #00b4d8;
-}
-
-/* ⚠️ SISTEMA DE ABAS (ESCONDE AS INATIVAS) */
-.aba-conteudo {
-    display: none; /* Esconde por padrão */
-    animation: fadeIn 0.4s ease-in-out;
-}
-
-.aba-conteudo.active {
-    display: block; /* Só mostra a que tiver a classe .active */
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* RESPONSIVIDADE PARA CELULAR */
-@media (max-width: 768px) {
-    .painel-container {
-        flex-direction: column;
-    }
+/* ==========================================================================
+   RESPONSIVIDADE BÁSICA
+   ========================================================================== */
+@media (max-width: 900px) {
     .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 2px solid #00b4d8;
+        width: 70px;
+        padding: 20px 10px;
+    }
+    .sidebar h3, .sidebar-menu ul li a span, .btn-logout-painel {
+        display: none; /* Em telas muito pequenas simplifica o menu */
+    }
+    .conteudo-principal {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 20px;
     }
     .topo-painel {
         flex-direction: column;
-        gap: 15px;
         align-items: flex-start;
+        gap: 20px;
     }
 }
