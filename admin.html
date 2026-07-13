@@ -3,174 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | QG do Administrador</title>
+    <title>StarKindred | QG Administrativo</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        .admin-container { display: flex; min-height: 100vh; background: #050b14; }
-        .sidebar { width: 260px; background-color: #0a192f; border-right: 2px solid #ff4d4d; padding: 30px 20px; display: flex; flex-direction: column; justify-content: space-between; }
-        .sidebar-menu h3 { color: #ff4d4d; font-size: 1.1rem; margin-bottom: 30px; text-align: center; border-bottom: 1px solid rgba(255, 77, 77, 0.2); padding-bottom: 15px; font-family: 'Orbitron'; }
-        .sidebar-menu ul { list-style: none; }
-        .sidebar-menu ul li { margin-bottom: 15px; }
-        .sidebar-menu ul li a { display: block; padding: 12px 15px; color: #e2e8f0; text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; border-radius: 4px; transition: all 0.3s; background: rgba(255, 255, 255, 0.02); cursor: pointer; border-left: 3px solid transparent; }
-        .sidebar-menu ul li a.active, .sidebar-menu ul li a:hover { color: #ff4d4d; background: rgba(255, 77, 77, 0.05); border-left-color: #ff4d4d; }
+        body {
+            background: #050b14;
+            color: #e2e8f0;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+        .admin-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0a192f;
+            border: 2px solid #ff4d4d;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.1);
+        }
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff4d4d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0;
+        }
+        p { color: #94a3b8; margin-bottom: 30px; }
         
-        .conteudo-principal { flex: 1; padding: 40px; }
-        .form-cadastro { background: #0a192f; border: 1px solid rgba(255, 77, 77, 0.2); padding: 30px; border-radius: 8px; max-width: 600px; text-align: left; margin-top: 20px; box-shadow: 0 0 15px rgba(255, 77, 77, 0.05); }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; color: #ff4d4d; font-family: 'Orbitron'; font-size: 0.85rem; margin-bottom: 8px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: #050b14; border: 1px solid rgba(255, 77, 77, 0.4); border-radius: 4px; color: white; font-family: 'Roboto'; font-size: 1rem; }
-        .form-group input:focus, .form-group textarea:focus { border-color: #00b4d8; outline: none; }
+        .secao-admin {
+            background: rgba(5, 11, 20, 0.6);
+            border: 1px solid rgba(255, 77, 77, 0.2);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .secao-admin h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #e2e8f0;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 77, 77, 0.2);
+            padding-bottom: 10px;
+        }
         
-        .aba-admin { display: none; }
-        .aba-admin.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        label {
+            display: block;
+            color: #d4af37;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+        .input-sk, .select-sk, .textarea-sk {
+            width: 100%;
+            padding: 12px;
+            background: #050b14;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 4px;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .input-sk:focus, .select-sk:focus, .textarea-sk:focus {
+            outline: none;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 8px rgba(255, 77, 77, 0.2);
+        }
         
-        .btn-adm { background: #ff4d4d; color: white; border: none; padding: 12px 25px; font-family: 'Orbitron'; font-weight: bold; border-radius: 4px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; }
-        .btn-adm:hover { background: #e03a3a; box-shadow: 0 0 10px rgba(255, 77, 77, 0.4); }
-        .sucesso-msg { color: #52b788; font-weight: bold; margin-top: 15px; display: none; }
+        .btn-enviar {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff4d4d 0%, #cc1111 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+        }
+        .btn-enviar:hover {
+            transform: scale(1.01);
+            box-shadow: 0 0 15px #ff4d4d;
+        }
+        .btn-voltar {
+            display: inline-block;
+            color: #00b4d8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .btn-voltar:hover { text-decoration: underline; }
     </style>
+
+    <!-- CARREGANDO O FIREBASE VIA CDN (NAVEGADOR) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <script>
+        // Trava simples de segurança local por enquanto
         if (localStorage.getItem("sk_autenticado") !== "true" || localStorage.getItem("sk_tipo_usuario") !== "admin") {
             window.location.href = "login.html";
         }
+
+        // Suas credenciais reais do Firebase configuradas
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
+            authDomain: "starkindred-51af3.firebaseapp.com",
+            projectId: "starkindred-51af3",
+            storageBucket: "starkindred-51af3.appspot.com",
+            messagingSenderId: "83330470650",
+            appId: "1:83330470650:web:162ac3be5b8c24866c7143",
+            measurementId: "G-FFE53C599V"
+        };
+
+        // Inicializando o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
     </script>
 </head>
 <body>
 
     <div class="admin-container">
-        <!-- BARRA LATERAL ADM -->
-        <aside class="sidebar">
-            <div class="sidebar-menu">
-                <h3>QG DE CONTROLE</h3>
-                <ul>
-                    <li><a class="tab-link active" onclick="mudarAbaAdmin('add-tutorial')">📝 Postar Tutorial</a></li>
-                    <li><a class="tab-link" onclick="mudarAbaAdmin('add-evento')">📅 Criar Evento</a></li>
-                    <li><a class="tab-link" onclick="mudarAbaAdmin('add-aulao')">⚔️ Agendar Aulão</a></li>
-                </ul>
-            </div>
-            <div>
-                <a href="painel.html" class="btn-adm" style="background:#00b4d8; display:block; text-align:center; margin-bottom:15px; text-decoration:none; font-size:0.85rem;">Ir pro Painel Geral</a>
-                <a href="#" onclick="logout()" style="color:#ff4d4d; text-decoration:none; font-family:'Orbitron'; font-size:0.9rem; display:block; text-align:center;">Desconectar</a>
-            </div>
-        </aside>
+        <a href="painel.html" class="btn-voltar">← Ir para o Painel dos Membros</a>
+        <h1>Painel de Controle Staff</h1>
+        <p>Publique conteúdos oficiais na base de dados em nuvem da StarKindred.</p>
 
-        <!-- ÁREA CENTRAL DE FORMULÁRIOS -->
-        <main class="conteudo-principal">
-            <div style="text-align: left; margin-bottom: 30px; border-bottom: 1px solid rgba(255,77,77,0.1); padding-bottom: 20px;">
-                <h1 style="color: #ff4d4d; font-family: 'Orbitron';">Painel do Administrador</h1>
-                <p style="color: #64748b;">Olá, <span id="nome-adm" style="color: white; font-weight:bold;">Admin</span>. O que vamos lançar para o clã hoje?</p>
-            </div>
+        <!-- FORMULÁRIO DE TUTORIAIS -->
+        <div class="secao-admin">
+            <h3>📖 Publicar Novo Guia / Tutorial</h3>
+            <form id="form-tutoriais">
+                <label>Categoria da Arma:</label>
+                <input type="text" id="tut-cat" class="input-sk" placeholder="Ex: Foice / Scythe, Espada, Blasters" required>
 
-            <!-- FORMULÁRIO: TUTORIAL -->
-            <div id="add-tutorial" class="aba-admin active">
-                <h2 style="color: white; font-family: 'Orbitron'; text-align:left;">Publicar Novo Tutorial</h2>
-                <div class="form-cadastro">
-                    <div class="form-group">
-                        <label>Categoria / Arma</label>
-                        <input type="text" id="tut-cat" placeholder="Ex: Foice / Scythe, Espada, Geral">
-                    </div>
-                    <div class="form-group">
-                        <label>Título do Guia</label>
-                        <input type="text" id="tut-titulo" placeholder="Ex: Combo Infinito de Katar">
-                    </div>
-                    <div class="form-group">
-                        <label>Descrição / Instruções</label>
-                        <textarea id="tut-desc" rows="4" placeholder="Escreva os comandos ou links de vídeos aqui..."></textarea>
-                    </div>
-                    <button class="btn-adm" onclick="salvarItem('tutoriais', ['tut-cat', 'tut-titulo', 'tut-desc'])">Postar Tutorial 🔥</button>
-                    <p id="msg-sucesso-tut" class="sucesso-msg">🚀 Tutorial publicado com sucesso!</p>
-                </div>
-            </div>
+                <label>Título do Tutorial:</label>
+                <input type="text" id="tut-titulo" class="input-sk" placeholder="Ex: Strings de Leitura com Nix" required>
 
-            <!-- FORMULÁRIO: EVENTO -->
-            <div id="add-evento" class="aba-admin">
-                <h2 style="color: white; font-family: 'Orbitron'; text-align:left;">Criar Novo Evento</h2>
-                <div class="form-cadastro">
-                    <div class="form-group">
-                        <label>Tipo de Evento</label>
-                        <input type="text" id="ev-tipo" placeholder="Ex: Torneio 1v1, Treino de Guilda">
-                    </div>
-                    <div class="form-group">
-                        <label>Nome do Evento</label>
-                        <input type="text" id="ev-nome" placeholder="Ex: Torneio Interno StarKindred">
-                    </div>
-                    <div class="form-group">
-                        <label>Data, Hora e Prêmios</label>
-                        <textarea id="ev-detalhes" rows="3" placeholder="Ex: Domingo às 18:00h - Prêmio: Skin Metadev"></textarea>
-                    </div>
-                    <button class="btn-adm" onclick="salvarItem('eventos', ['ev-tipo', 'ev-nome', 'ev-detalhes'])">Lançar Evento 📅</button>
-                    <p id="msg-sucesso-ev" class="sucesso-msg">🚀 Evento adicionado ao calendário!</p>
-                </div>
-            </div>
+                <label>Descrição Curta / Instruções:</label>
+                <textarea id="tut-desc" class="textarea-sk" rows="3" placeholder="Aprenda setups de active input e strings de leitura..." required></textarea>
 
-            <!-- FORMULÁRIO: AULÃO -->
-            <div id="add-aulao" class="aba-admin">
-                <h2 style="color: white; font-family: 'Orbitron'; text-align:left;">Agendar Novo Aulão</h2>
-                <div class="form-cadastro">
-                    <div class="form-group">
-                        <label>Tipo de Mentoria</label>
-                        <input type="text" id="aula-tipo" placeholder="Ex: Mentoria Coletiva, Análise 1v1">
-                    </div>
-                    <div class="form-group">
-                        <label>Tema da Aula</label>
-                        <input type="text" id="aula-tema" placeholder="Ex: Posicionamento e Leitura de Dodge">
-                    </div>
-                    <div class="form-group">
-                        <label>Professor (Staff)</label>
-                        <input type="text" id="aula-prof" placeholder="Ex: .Breki / Trapirineu">
-                    </div>
-                    <button class="btn-adm" onclick="salvarItem('aulaoes', ['aula-tipo', 'aula-tema', 'aula-prof'])">Agendar Aula ⚔️</button>
-                    <p id="msg-sucesso-aula" class="sucesso-msg">🚀 Aula agendada com sucesso!</p>
-                </div>
-            </div>
-        </main>
+                <button type="submit" class="btn-enviar">Lançar na Base de Dados</button>
+            </form>
+        </div>
+
+        <!-- FORMULÁRIO DE EVENTOS -->
+        <div class="secao-admin">
+            <h3>📅 Agendar Operação / Campeonato</h3>
+            <form id="form-eventos">
+                <label>Tipo de Evento:</label>
+                <input type="text" id="ev-tipo" class="input-sk" placeholder="Ex: Torneio 1v1, Treino de Clã, Frosty" required>
+
+                <label>Nome do Evento:</label>
+                <input type="text" id="ev-nome" class="input-sk" placeholder="Ex: King of Valhalla" required>
+
+                <label>Data, Horário e Detalhes:</label>
+                <input type="text" id="ev-detalhes" class="input-sk" placeholder="Ex: Próximo Domingo às 18:00h" required>
+
+                <button type="submit" class="btn-enviar">Fixar no Calendário</button>
+            </form>
+        </div>
+
+        <!-- FORMULÁRIO DE AULÕES -->
+        <div class="secao-admin">
+            <h3>⚔️ Marcar Aulão Especial</h3>
+            <form id="form-aulaoes">
+                <label>Foco / Tema do Aulão:</label>
+                <input type="text" id="aula-tema" class="input-sk" placeholder="Ex: Análise de Replay & Posicionamento" required>
+
+                <label>Nome do Instrutor (Professor):</label>
+                <input type="text" id="aula-prof" class="input-sk" placeholder="Ex: .Breki" required>
+
+                <label>Tipo de Aula:</label>
+                <input type="text" id="aula-tipo" class="input-sk" placeholder="Ex: Teórica, Prática 2v2" required>
+
+                <button type="submit" class="btn-enviar">Convocar Alunos</button>
+            </form>
+        </div>
     </div>
 
     <script>
-        document.getElementById("nome-adm").textContent = localStorage.getItem("sk_usuario");
+        // LÓGICA DE ENVIO PARA O FIREBASE FIRESTORE
 
-        function mudarAbaAdmin(idAba) {
-            document.querySelectorAll('.aba-admin').forEach(a => a.classList.remove('active'));
-            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(idAba).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        // Sistema dinâmico de salvamento local
-        function salvarItem(chaveBanco, IDsCampos) {
-            const dados = {};
-            let camposVazios = false;
-
-            IDsCampos.forEach(id => {
-                const valor = document.getElementById(id).value.trim();
-                if(!valor) camposVazios = true;
-                dados[id] = valor;
-            });
-
-            if(camposVazios) {
-                alert("Por favor, preencha todos os campos antes de postar!");
-                return;
-            }
-
-            // Pega a lista que já existe ou cria uma nova vazia
-            let listaExistente = JSON.parse(localStorage.getItem(chaveBanco)) || [];
-            listaExistente.push(dados);
+        // Enviar Tutorial
+        document.getElementById("form-tutoriais").addEventListener("submit", function(e) {
+            e.preventDefault();
             
-            // Grava de volta na memória do navegador
-            localStorage.setItem(chaveBanco, JSON.stringify(listaExistente));
+            db.collection("tutoriais").add({
+                tutCat: document.getElementById("tut-cat").value,
+                tutTitulo: document.getElementById("tut-titulo").value,
+                tutDesc: document.getElementById("tut-desc").value,
+                dataCriacao: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert("Sucesso: Guia enviado para a nuvem!");
+                document.getElementById("form-tutoriais").reset();
+            })
+            .catch((error) => console.error("Erro ao salvar tutorial: ", error));
+        });
 
-            // Limpa os campos
-            IDsCampos.forEach(id => document.getElementById(id).value = "");
+        // Enviar Evento
+        document.getElementById("form-eventos").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            db.collection("eventos").add({
+                evTipo: document.getElementById("ev-tipo").value,
+                evNome: document.getElementById("ev-nome").value,
+                evDetalhes: document.getElementById("ev-detalhes").value,
+                dataCriacao: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert("Sucesso: Evento agendado na nuvem!");
+                document.getElementById("form-eventos").reset();
+            })
+            .catch((error) => console.error("Erro ao salvar evento: ", error));
+        });
 
-            // Mostra mensagem de sucesso temporária
-            let msgId = chaveBanco === 'tutoriais' ? 'msg-sucesso-tut' : (chaveBanco === 'eventos' ? 'msg-sucesso-ev' : 'msg-sucesso-aula');
-            const msgNode = document.getElementById(msgId);
-            msgNode.style.display = "block";
-            setTimeout(() => msgNode.style.display = "none", 4000);
-        }
-
-        function logout() { localStorage.clear(); window.location.href = "login.html"; }
+        // Enviar Aulão
+        document.getElementById("form-aulaoes").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            db.collection("aulaoes").add({
+                aulaTema: document.getElementById("aula-tema").value,
+                aulaProf: document.getElementById("aula-prof").value,
+                aulaTipo: document.getElementById("aula-tipo").value,
+                dataCriacao: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert("Sucesso: Aulão publicado na nuvem!");
+                document.getElementById("form-aulaoes").reset();
+            })
+            .catch((error) => console.error("Erro ao salvar aulão: ", error));
+        });
     </script>
 </body>
 </html>
