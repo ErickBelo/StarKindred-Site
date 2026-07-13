@@ -71,6 +71,7 @@
             padding: 12px;
             border-bottom: 1px solid rgba(0, 180, 216, 0.1);
             font-size: 0.9rem;
+            vertical-align: middle;
         }
 
         .tabela-sk th {
@@ -102,6 +103,16 @@
         .btn-remover:hover {
             background: #ff4d4d;
             color: white;
+        }
+
+        /* Tags de Cargos Formatadas */
+        .badge-cargo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
         }
     </style>
 
@@ -184,7 +195,7 @@
                             <tr>
                                 <th>Nick do Operador</th>
                                 <th>Função Operacional</th>
-                                <th>Ações Táticas</th>
+                                <th>Alterar Patente / Ações</th>
                             </tr>
                         </thead>
                         <tbody id="lista-membros-admin">
@@ -331,7 +342,7 @@
                     local: document.getElementById("evt-local").value,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                alert("📅 Cronograma atualizado para toda a guilda!");
+                alert("📅 Cronograma updated para toda a guilda!");
                 e.target.reset();
             } catch (err) {
                 alert("Falha de conexão: " + err.message);
@@ -365,6 +376,19 @@
             }
         });
 
+        // Helper para gerar o HTML do cargo formatado
+        function obterHTMLBadgeCargo(funcao) {
+            if(funcao === "admin") {
+                return `<span class="badge-cargo" style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d;">👑 Staff / Admin</span>`;
+            } else if(funcao === "sub-lider") {
+                return `<span class="badge-cargo" style="background: rgba(226, 232, 240, 0.1); color: #e2e8f0;">⚔️ Sub-Líder</span>`;
+            } else if(funcao === "coach") {
+                return `<span class="badge-cargo" style="background: rgba(46, 204, 113, 0.1); color: #2ecc71;">🧠 Coach Oficial</span>`;
+            } else {
+                return `<span class="badge-cargo" style="background: rgba(0, 180, 216, 0.1); color: #00b4d8;">🛡️ Membro</span>`;
+            }
+        }
+
         // ==================== CONTROLE DE MEMBROS (LOCALSTORAGE) ====================
         function carregarMembrosAdmin() {
             const tbody = document.getElementById("lista-membros-admin");
@@ -372,8 +396,8 @@
             tbody.innerHTML = `
                 <tr>
                     <td style="color: white; font-weight: bold;">.Breki</td>
-                    <td style="color: #d4af37; font-family: 'Orbitron'; font-size: 0.85rem; font-weight: bold;">👑 Líder Supremo</td>
-                    <td><span style="color: #566573; font-size: 0.8rem; font-style: italic;">Membro Imutável</span></td>
+                    <td><span class="badge-cargo" style="background: rgba(212, 175, 55, 0.1); color: #d4af37;">👑 Líder Supremo</span></td>
+                    <td><span style="color: #566573; font-size: 0.8rem; font-style: italic;">Acesso Mestre Vinculado</span></td>
                 </tr>
             `;
 
@@ -385,12 +409,11 @@
                     if(nick.toLowerCase() === "admin") continue; 
 
                     let funcaoAtual = localStorage.getItem(`sk_role_${nick}`) || "membro";
-                    let textoFuncao = funcaoAtual === "admin" ? "Staff / Admin" : funcaoAtual.charAt(0).toUpperCase() + funcaoAtual.slice(1);
 
                     let tr = document.createElement("tr");
                     tr.innerHTML = `
                         <td style="color: #e2e8f0; font-weight: bold;">${nick}</td>
-                        <td style="color: #00b4d8; font-family: 'Orbitron'; font-size: 0.85rem;" id="role-text-${nick}">${textoFuncao}</td>
+                        <td id="role-text-${nick}">${obterHTMLBadgeCargo(funcaoAtual)}</td>
                         <td>
                             <select class="select-sk" style="width: auto; margin-bottom: 0; padding: 5px 8px; font-size: 0.8rem;" onchange="alterarFuncaoMembro('${nick}', this.value)">
                                 <option value="membro" ${funcaoAtual === "membro" ? "selected" : ""}>Membro</option>
@@ -415,10 +438,10 @@
                 localStorage.setItem(`sk_role_tipo_${nick}`, "membro");
             }
 
-            let textoFormatado = novaFuncao === "admin" ? "Staff / Admin" : novaFuncao.charAt(0).toUpperCase() + novaFuncao.slice(1);
-            document.getElementById(`role-text-${nick}`).textContent = textoFormatado;
+            // Recarrega visualmente a tag de cargo na coluna correspondente
+            document.getElementById(`role-text-${nick}`).innerHTML = obterHTMLBadgeCargo(novaFuncao);
             
-            alert(`🔥 A patente de ${nick} foi redefinida para: ${textoFormatado}!`);
+            alert(`🔥 A patente de ${nick} foi redefinida no sistema!`);
         }
 
         function banirMembro(nick) {
