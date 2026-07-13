@@ -11,6 +11,7 @@ body {
     background-color: #050b14; 
     color: #e2e8f0;
     overflow-x: hidden;
+    width: 100%;
 }
 
 h1, h2, h3, .logo {
@@ -42,6 +43,7 @@ header nav ul {
     display: flex;
     align-items: center;
     list-style: none;
+    flex-wrap: wrap;
 }
 
 header nav ul li {
@@ -68,6 +70,7 @@ header nav ul li a:hover {
     justify-content: center;
     text-align: center;
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 0 20px;
 }
 
 .hero-content h1 {
@@ -125,7 +128,7 @@ header nav ul li a:hover {
     color: #94a3b8;
 }
 
-/* CARROSSEL INFINITO */
+/* CARROSSEL INFINITO (AJUSTADO PARA MOBILE) */
 .carrossel-container {
     overflow: hidden;
     background-color: #0a192f;
@@ -134,8 +137,8 @@ header nav ul li a:hover {
     padding: 20px 0;
     white-space: nowrap;
     position: relative;
-    width: 100vw;
-    margin-left: -10vw;
+    width: 100%;
+    margin-left: 0;
 }
 
 .carrossel-track {
@@ -218,7 +221,6 @@ header nav ul li a:hover {
     margin-bottom: 15px;
 }
 
-/* Cores corrigidas com força total para evitar bugs visuais */
 .elo.diamante { color: #00b4d8 !important; }
 .elo.platina { color: #52b788 !important; }
 
@@ -284,4 +286,27 @@ footer {
 .section-visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* RESPONSIVIDADE MOBILE (PREVINE SITE TORTO) */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    header nav ul {
+        justify-content: center;
+        gap: 10px;
+    }
+    header nav ul li {
+        margin-left: 0;
+        margin: 5px 10px;
+    }
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    .conteudo {
+        padding: 50px 5%;
+    }
 }

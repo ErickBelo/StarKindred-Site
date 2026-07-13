@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarKindred | Administração</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        // Trava de segurança: Se não for ADMIN de verdade, expulsa da página
+        if (localStorage.getItem("sk_autenticado") !== "true" || localStorage.getItem("sk_tipo_usuario") !== "admin") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">SK_ADMIN_PANEL</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Site Principal</a></li>
+                <li><a href="#" id="btn-logout" style="color: #ff4d4d; border: 1px solid #ff4d4d; padding: 5px 12px; border-radius: 4px; margin-left: 15px;">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="conteudo">
+        <h2 style="color: #ff4d4d;">QG de Controle (Administrador)</h2>
+        <p>Logado como: <span id="nome-admin" style="color: #d4af37; font-weight: bold;">Admin</span></p>
+
+        <div class="cards-membros" style="margin-top: 40px;">
+            <!-- Gerenciamento de Testes -->
+            <div class="card" style="width: 100%; max-width: 450px; text-align: left; border-color: #ff4d4d;">
+                <h3 style="color: #ff4d4d; margin-bottom: 15px;">⚔️ Lista de Testes Pendentes</h3>
+                <p style="margin-bottom: 10px; color: #94a3b8;">• <strong>Candidato 1:</strong> NickBrawl (Pistolas/Foice) - Agendado Sábado 18h.</p>
+                <p style="color: #94a3b8;">• <strong>Candidato 2:</strong> ValhallaKing (Machado) - Aguardando examinador.</p>
+            </div>
+
+            <!-- Funções Secretas -->
+            <div class="card" style="width: 100%; max-width: 450px; text-align: left; border-color: #ff4d4d;">
+                <h3 style="color: #ff4d4d; margin-bottom: 15px;">⚙️ Controle da Staff</h3>
+                <p style="margin-bottom: 10px; color: #94a3b8;">• Modificar link do Discord de recrutamento.</p>
+                <p style="margin-bottom: 10px; color: #94a3b8;">• Remover/Adicionar membros na Line-up oficial.</p>
+                <p style="color: #d4af37; font-size: 0.9rem; font-weight: bold;">⚠️ Painel integrado via código local.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("nome-admin").textContent = localStorage.getItem("sk_usuario");
+
+        document.getElementById("btn-logout").addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.clear(); // Limpa todo o login do navegador
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>

@@ -19,7 +19,8 @@
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#membros">Membros</a></li>
                 <li><a href="#recrutamento">Recrutamento</a></li>
-                <li><a href="login.html" style="color: #d4af37; border: 1px solid #d4af37; padding: 5px 12px; border-radius: 4px; margin-left: 15px;">Login</a></li>
+                <!-- O id="nav-login-btn" permite que o JavaScript mude este botão dinamicamente -->
+                <li><a href="login.html" id="nav-login-btn" style="color: #d4af37; border: 1px solid #d4af37; padding: 5px 12px; border-radius: 4px; margin-left: 15px;">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -57,7 +58,7 @@
                 <div class="carrossel-item">Shinas</div>
                 <div class="carrossel-item">Tia Juh</div>
                 
-                <!-- Grupo 2 (Cópia exata para criar o efeito infinito sem emendas) -->
+                <!-- Grupo 2 -->
                 <div class="carrossel-item">.Breki</div>
                 <div class="carrossel-item">GoodKk</div>
                 <div class="carrossel-item">Devan</div>
@@ -78,49 +79,42 @@
         <div id="secao-melhores" class="melhores-container escondido">
             <h3 class="titulo-destaque">Atletas de Elite (Peak Elo)</h3>
             <div class="cards-membros">
-                <!-- 1 -->
                 <div class="card">
                     <h3>.Breki</h3>
                     <p class="elo diamante">Peak: 2300 💎</p>
                     <p><strong>Mains:</strong> Nix</p>
                     <p class="armas">🎯 Foice / Blasters</p>
                 </div>
-                <!-- 2 -->
                 <div class="card">
                     <h3>GoodKk</h3>
                     <p class="elo diamante">Peak: 2180 💎</p>
                     <p><strong>Mains:</strong> Fait</p>
                     <p class="armas">🎯 Foice / Orb</p>
                 </div>
-                <!-- 3 -->
                 <div class="card">
                     <h3>Devan</h3>
                     <p class="elo diamante">Peak: 2000+ 💎</p>
                     <p><strong>Mains:</strong> Lucien / Reno</p>
                     <p class="armas">🎯 Blasters / Katars</p>
                 </div>
-                <!-- 4 -->
                 <div class="card">
                     <h3>Zanin</h3>
                     <p class="elo diamante">Peak: 2100+ 💎</p>
                     <p><strong>Mains:</strong> Ember</p>
                     <p class="armas">🎯 Bow / Katars</p>
                 </div>
-                <!-- 5 -->
                 <div class="card">
                     <h3>Arisu</h3>
                     <p class="elo diamante">Peak: 2100+ 💎</p>
                     <p><strong>Mains:</strong> Magyar / Yumiko</p>
                     <p class="armas">🎯 Hammer / Greatsword </p>
                 </div>
-                <!-- 6 -->
                 <div class="card">
                     <h3>Trapirineu</h3>
                     <p class="elo diamante">Peak: 2300+ 💎</p>
                     <p><strong>Mains:</strong> Sidra</p>
                     <p class="armas">🎯 Cannon / Sword</p>
                 </div>
-                <!-- 7 -->
                 <div class="card">
                     <h3>Tia Juh</h3>
                     <p class="elo diamante">Peak: 2300 💎</p>
@@ -144,5 +138,24 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Inteligência do Botão de Login: se já logou, muda para "Painel"
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginBtn = document.getElementById("nav-login-btn");
+            const estaAutenticado = localStorage.getItem("sk_autenticado");
+            const tipoUsuario = localStorage.getItem("sk_tipo_usuario"); // 'membro' ou 'admin'
+
+            if (estaAutenticado === "true") {
+                loginBtn.textContent = "Painel SK";
+                // Redireciona para o painel correspondente sem pedir login de novo
+                if (tipoUsuario === "admin") {
+                    loginBtn.href = "admin.html";
+                } else {
+                    loginBtn.href = "painel.html";
+                }
+                loginBtn.style.backgroundColor = "rgba(212, 175, 55, 0.2)";
+            }
+        });
+    </script>
 </body>
 </html>

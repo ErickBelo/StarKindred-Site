@@ -13,10 +13,12 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #050b14 0%, #0a192f 100%);
+            padding: 20px;
         }
         .login-card {
-            width: 360px;
-            padding: 40px;
+            width: 100%;
+            max-width: 360px;
+            padding: 40px 25px;
             background-color: #0a192f;
             border: 2px solid #d4af37;
             border-radius: 8px;
@@ -63,7 +65,7 @@
     <div class="login-wrapper">
         <div class="login-card">
             <h2 style="color: #d4af37; margin-bottom: 10px;">Portal SK</h2>
-            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Área Restrita para Membros Oficiais</p>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Acesso Membro & Administração</p>
             
             <div class="input-group">
                 <label for="sk-user">Nick / Usuário</label>
@@ -71,13 +73,13 @@
             </div>
 
             <div class="input-group">
-                <label for="sk-pass">Senha do Clã</label>
+                <label for="sk-pass">Chave de Acesso</label>
                 <input type="password" id="sk-pass" placeholder="••••••••">
             </div>
             
-            <div id="erro-login" class="erro-msg">Usuário ou senha incorretos!</div>
+            <div id="erro-login" class="erro-msg">Usuário ou chave incorretos!</div>
             
-            <button id="btn-entrar-painel" class="btn-principal" style="width: 100%; margin-top: 25px;">Acessar Painel</button>
+            <button id="btn-entrar-painel" class="btn-principal" style="width: 100%; margin-top: 25px;">Acessar Sistema</button>
             
             <p style="margin-top: 20px;"><a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao site</a></p>
         </div>
@@ -88,14 +90,30 @@
             const usuarioDigitado = document.getElementById("sk-user").value.trim();
             const senhaDigitada = document.getElementById("sk-pass").value;
 
-            // Altere aqui para a senha padrão da sua guilda
-            const SENHA_CORRETA = "sk2026"; 
+            // DEFINIÇÃO DAS SENHAS
+            const SENHA_MEMBRO = "sk2026";
+            const SENHA_ADMIN = "adminsk99"; // Defina a senha master de ADM aqui
+
+            if (usuarioDigitado === "") {
+                document.getElementById("erro-login").textContent = "Digite o seu usuário!";
+                document.getElementById("erro-login").style.display = "block";
+                return;
+            }
             
-            if (usuarioDigitado !== "" && senhaDigitada === SENHA_CORRETA) {
+            if (senhaDigitada === SENHA_ADMIN) {
+                // Autentica como Administrador
                 localStorage.setItem("sk_autenticado", "true");
                 localStorage.setItem("sk_usuario", usuarioDigitado);
+                localStorage.setItem("sk_tipo_usuario", "admin");
+                window.location.href = "admin.html";
+            } else if (senhaDigitada === SENHA_MEMBRO) {
+                // Autentica como Membro padrão
+                localStorage.setItem("sk_autenticado", "true");
+                localStorage.setItem("sk_usuario", usuarioDigitado);
+                localStorage.setItem("sk_tipo_usuario", "membro");
                 window.location.href = "painel.html";
             } else {
+                document.getElementById("erro-login").textContent = "Chave incorreta! Tente novamente.";
                 document.getElementById("erro-login").style.display = "block";
             }
         });
