@@ -112,7 +112,7 @@
             position: relative;
         }
 
-        /* TOPO: PERFIL */
+        /* TOPO: PERFIL E NAVEGAÇÃO */
         .topo-painel {
             display: flex;
             justify-content: space-between;
@@ -243,6 +243,7 @@
         }
     </style>
     <script>
+        // Trava de segurança básica
         if (localStorage.getItem("sk_autenticado") !== "true") { window.location.href = "login.html"; }
     </script>
 </head>
@@ -271,9 +272,15 @@
         <!-- CONTEÚDO CENTRAL -->
         <main class="conteudo-principal">
             
-            <!-- TOPO PERFIL -->
+            <!-- TOPO: PERFIL E DIRECIONAMENTO -->
             <div class="topo-painel">
-                <a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao Site</a>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="index.html" style="color: #00b4d8; text-decoration: none; font-size: 0.9rem;">← Voltar ao Site</a>
+                    
+                    <!-- BOTÃO SECRETO DO ADM (Fica invisível para membros comuns) -->
+                    <a href="admin.html" id="btn-retornar-admin" style="display: none; background: #ff4d4d; color: white; text-decoration: none; font-family: 'Orbitron'; font-size: 0.8rem; padding: 6px 12px; border-radius: 4px; font-weight: bold; box-shadow: 0 0 10px rgba(255, 77, 77, 0.3);">⚙️ Voltar ao QG Admin</a>
+                </div>
+
                 <div class="perfil-usuario">
                     <div class="perfil-avatar" id="avatar-letra">U</div>
                     <div class="perfil-info" style="text-align: left;">
@@ -289,6 +296,7 @@
                 <p style="text-align:left; color:#94a3b8;">Estude o meta e melhore a sua gameplay com materiais selecionados pela Staff.</p>
                 
                 <div class="grid-cards">
+                    <!-- Cards estáticos de exemplo -->
                     <div class="card-interno">
                         <span class="tag-categoria">Foice / Scythe</span>
                         <h4>Combos Essenciais de Nix</h4>
@@ -314,7 +322,6 @@
                         <span class="tag-categoria" style="background:rgba(212,175,55,0.15); color:#d4af37;">Torneio</span>
                         <h4>King of Valhalla 1v1</h4>
                         <p>📅 <strong>Data:</strong> Próximo Domingo às 18:00h<br>🏆 <strong>Premiação:</strong> Skin de Arma/Metadev para o primeiro colocado.</p>
-                        <button class="btn-principal" style="padding:8px 15px; font-size:0.8rem;">Inscrever-se</button>
                     </div>
                 </div>
             </div>
@@ -356,85 +363,87 @@
 
     <!-- SCRIPT DE INTELIGÊNCIA DO PAINEL -->
     <script>
-      // 1. Alternador de Abas Dinâmico
-function mudarAba(idAba) {
-    document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
-    document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
-    document.getElementById(idAba).classList.add('active');
-    if(event) event.currentTarget.classList.add('active');
-}
+        // 1. Alternador de Abas Dinâmico
+        function mudarAba(idAba) {
+            document.querySelectorAll('.aba-conteudo').forEach(aba => aba.classList.remove('active'));
+            document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(idAba).classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
+        }
 
-// 2. Carrega Dados do Perfil
-const usuarioLogado = localStorage.getItem("sk_usuario") || "Membro";
-const tipoUsuario = localStorage.getItem("sk_tipo_usuario") || "membro";
+        // 2. Carrega Dados do Perfil do Jogador Logado
+        const usuarioLogado = localStorage.getItem("sk_usuario") || "Membro";
+        const tipoUsuario = localStorage.getItem("sk_tipo_usuario") || "membro";
 
-document.getElementById("nome-jogador").textContent = usuarioLogado;
-document.getElementById("avatar-letra").textContent = usuarioLogado.charAt(0).toUpperCase();
+        document.getElementById("nome-jogador").textContent = usuarioLogado;
+        document.getElementById("avatar-letra").textContent = usuarioLogado.charAt(0).toUpperCase();
 
-const cargoTag = document.getElementById("cargo-jogador");
-if(tipoUsuario === "admin") {
-    cargoTag.textContent = "Administrador";
-    cargoTag.style.color = "#ff4d4d";
-} else {
-    cargoTag.textContent = "Membro Oficial";
-}
+        const cargoTag = document.getElementById("cargo-jogador");
+        if(tipoUsuario === "admin") {
+            cargoTag.textContent = "Administrador";
+            cargoTag.style.color = "#ff4d4d";
+            // Revela o botão de retorno secreto apenas para quem é Administrador
+            document.getElementById("btn-retornar-admin").style.display = "inline-block";
+        } else {
+            cargoTag.textContent = "Membro Oficial";
+        }
 
-// 3. FUNÇÃO MÁGICA: Renderizar os itens criados pelos ADMs
-document.addEventListener("DOMContentLoaded", () => {
-    // Carregar Tutoriais Dinâmicos
-    const listaTutoriais = JSON.parse(localStorage.getItem("tutoriais")) || [];
-    const containerTutoriais = document.querySelector("#tutoriais .grid-cards");
-    
-    listaTutoriais.forEach(tut => {
-        const cardHTML = `
-            <div class="card-interno" style="border-color: #ff4d4d;">
-                <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${tut['tut-cat']}</span>
-                <h4>${tut['tut-titulo']}</h4>
-                <p>${tut['tut-desc']}</p>
-                <span style="font-size:0.8rem; color:#64748b; font-weight:bold;">📌 Postado pela Staff</span>
-            </div>
-        `;
-        containerTutoriais.insertAdjacentHTML('beforeend', cardHTML);
-    });
+        // 3. Renderizar os itens injetados dinamicamente pelos ADMs
+        document.addEventListener("DOMContentLoaded", () => {
+            // Carregar Tutoriais Dinâmicos
+            const listaTutoriais = JSON.parse(localStorage.getItem("tutoriais")) || [];
+            const containerTutoriais = document.querySelector("#tutoriais .grid-cards");
+            
+            listaTutoriais.forEach(tut => {
+                const cardHTML = `
+                    <div class="card-interno" style="border-color: #ff4d4d;">
+                        <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${tut['tut-cat']}</span>
+                        <h4>${tut['tut-titulo']}</h4>
+                        <p>${tut['tut-desc']}</p>
+                        <span style="font-size:0.8rem; color:#64748b; font-weight:bold;">📌 Postado pela Staff</span>
+                    </div>
+                `;
+                containerTutoriais.insertAdjacentHTML('beforeend', cardHTML);
+            });
 
-    // Carregar Eventos Dinâmicos
-    const listaEventos = JSON.parse(localStorage.getItem("eventos")) || [];
-    const containerEventos = document.querySelector("#eventos .grid-cards");
-    
-    listaEventos.forEach(ev => {
-        const cardHTML = `
-            <div class="card-interno" style="border-left: 4px solid #ff4d4d;">
-                <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${ev['ev-tipo']}</span>
-                <h4>${ev['ev-nome']}</h4>
-                <p>${ev['ev-detalhes']}</p>
-            </div>
-        `;
-        containerEventos.insertAdjacentHTML('beforeend', cardHTML);
-    });
+            // Carregar Eventos Dinâmicos
+            const listaEventos = JSON.parse(localStorage.getItem("eventos")) || [];
+            const containerEventos = document.querySelector("#eventos .grid-cards");
+            
+            listaEventos.forEach(ev => {
+                const cardHTML = `
+                    <div class="card-interno" style="border-left: 4px solid #ff4d4d;">
+                        <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${ev['ev-tipo']}</span>
+                        <h4>${ev['ev-nome']}</h4>
+                        <p>${ev['ev-detalhes']}</p>
+                    </div>
+                `;
+                containerEventos.insertAdjacentHTML('beforeend', cardHTML);
+            });
 
-    // Carregar Aulões Dinâmicos
-    const listaAulaoes = JSON.parse(localStorage.getItem("aulaoes")) || [];
-    const containerAulaoes = document.querySelector("#aulaoes .grid-cards");
-    
-    listaAulaoes.forEach(aula => {
-        const cardHTML = `
-            <div class="card-interno" style="border-top: 2px solid #ff4d4d;">
-                <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${aula['aula-tipo']}</span>
-                <h4>${aula['aula-tema']}</h4>
-                <p>👨‍🏫 <strong>Professor:</strong> ${aula['aula-prof']}</p>
-                <p style="color:#52b788; font-weight:bold; font-size:0.9rem;">Sala do Discord Liberada 🔓</p>
-            </div>
-        `;
-        containerAulaoes.insertAdjacentHTML('beforeend', cardHTML);
-    });
-});
+            // Carregar Aulões Dinâmicos
+            const listaAulaoes = JSON.parse(localStorage.getItem("aulaoes")) || [];
+            const containerAulaoes = document.querySelector("#aulaoes .grid-cards");
+            
+            listaAulaoes.forEach(aula => {
+                const cardHTML = `
+                    <div class="card-interno" style="border-top: 2px solid #ff4d4d;">
+                        <span class="tag-categoria" style="background:rgba(255, 77, 77, 0.15); color:#ff4d4d;">${aula['aula-tipo']}</span>
+                        <h4>${aula['aula-tema']}</h4>
+                        <p>👨‍🏫 <strong>Professor:</strong> ${aula['aula-prof']}</p>
+                        <p style="color:#52b788; font-weight:bold; font-size:0.9rem;">Sala do Discord Liberada 🔓</p>
+                    </div>
+                `;
+                containerAulaoes.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        });
 
-// 4. Logout
-document.getElementById("btn-logout").addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.clear();
-    window.location.href = "login.html";
-});
+        // 4. Sistema de Logout
+        document.getElementById("btn-logout").addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = "login.html";
+        });
     </script>
 </body>
 </html>
