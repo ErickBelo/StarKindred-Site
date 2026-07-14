@@ -201,11 +201,30 @@
             color: var(--amarelo);
         }
 
+        /* Estilos do Aviso do Painel */
+        .aviso-item {
+            border-left: 2px solid var(--amarelo);
+            padding-left: 12px;
+            margin-bottom: 15px;
+        }
+
+        .aviso-data {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--dourado);
+            margin-bottom: 4px;
+        }
+
+        .aviso-texto {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
         /* ==========================================================================
            ÁREA EXCLUSIVA DE ADMINISTRAÇÃO (Oculta por Padrão)
            ========================================================================== */
         .admin-section {
-            display: none; /* Só aparece via JS para Líder Supremo / Adm */
+            display: none; 
             margin-top: 50px;
             border-top: 2px dashed var(--dourado);
             padding-top: 40px;
@@ -213,7 +232,7 @@
 
         .admin-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
@@ -245,6 +264,11 @@
             border-color: var(--amarelo);
         }
 
+        textarea.input-admin {
+            resize: vertical;
+            min-height: 80px;
+        }
+
         .btn-admin-submit {
             font-family: 'Orbitron', sans-serif;
             background: var(--dourado);
@@ -265,7 +289,7 @@
         /* Tabela de Controle de Membros */
         .membros-lista {
             margin-top: 15px;
-            max-height: 300px;
+            max-height: 220px;
             overflow-y: auto;
         }
 
@@ -313,14 +337,14 @@
         <h1 class="titulo-secao">Cabine de Comando</h1>
 
         <div class="dashboard-grid">
-            <!-- Avisos Gerais -->
+            <!-- Avisos Gerais (Carregados Dinamicamente do Firestore) -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Mensagens da Liderança</h2>
                     <span>📡</span>
                 </div>
                 <div id="conteiner-avisos">
-                    <p style="color: var(--texto-mutado);">Acessando canais de comunicação...</p>
+                    <p style="color: var(--texto-mutado);">Sintonizando transmissores cósmicos...</p>
                 </div>
             </div>
 
@@ -337,34 +361,47 @@
         </div>
 
         <!-- ==========================================================================
-             COMPONENTE: CONSOLE DE ADMINISTRAÇÃO (SÓ ABRE SE FOR ADM NO BANCO)
+             COMPONENTE: CONSOLE DE ADMINISTRAÇÃO
              ========================================================================== -->
         <section id="sessao-admin" class="admin-section">
             <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
             
             <div class="admin-grid">
-                <!-- Painel 1: Gerenciar Tripulante -->
+                <!-- Painel 1: Transmissor de Comunicados (Novo!) -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h2>Atualizar Avisos da Liderança</h2>
+                        <span>📡</span>
+                    </div>
+                    <form id="form-comunicado" class="form-admin">
+                        <input type="text" id="adm-aviso-data" class="input-admin" placeholder="Data (ex: 14 JUL 2026)" required>
+                        <textarea id="adm-aviso-texto" class="input-admin" placeholder="Digite o aviso para toda a tripulação..." required></textarea>
+                        <button type="submit" class="btn-admin-submit">Transmitir Comunicado</button>
+                    </form>
+                </div>
+
+                <!-- Painel 2: Ajustar Piloto -->
                 <div class="admin-card">
                     <div class="card-header">
                         <h2>Ajustar Piloto (Elo/Corehalla)</h2>
                         <span>⚙️</span>
                     </div>
                     <form id="form-ajuste-membro" class="form-admin">
-                        <input type="text" id="adm-membro-nick" class="input-admin" placeholder="Nick exato do piloto (ex: Breki)" required>
+                        <input type="text" id="adm-membro-nick" class="input-admin" placeholder="Nick do piloto (ex: Breki)" required>
                         <input type="number" id="adm-membro-elo" class="input-admin" placeholder="Novo Elo Máximo" required>
                         <input type="url" id="adm-membro-corehalla" class="input-admin" placeholder="Link do Corehalla" required>
-                        <button type="submit" class="btn-admin-submit">Atualizar Ficha do Piloto</button>
+                        <button type="submit" class="btn-admin-submit">Atualizar Ficha</button>
                     </form>
                 </div>
 
-                <!-- Painel 2: Controle de Tripulantes / Exclusão -->
+                <!-- Painel 3: Lista para Exclusão -->
                 <div class="admin-card">
                     <div class="card-header">
-                        <h2>Lista da Tripulação (Remover Membros)</h2>
+                        <h2>Lista da Tripulação</h2>
                         <span>👥</span>
                     </div>
                     <div id="lista-membros-controle" class="membros-lista">
-                        <!-- Gerado dinamicamente via JS -->
+                        <!-- Dinâmico -->
                     </div>
                 </div>
             </div>
@@ -372,11 +409,11 @@
     </main>
 
     <!-- ==========================================================================
-         CÓDIGO DE INTEGRAÇÃO DO CONTROLADOR (Corrigido)
+         INTEGRAÇÃO FIRESTORE
          ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
@@ -400,7 +437,9 @@
                 return;
             }
 
-            // Busca os dados do piloto logado no Firestore
+            // Puxa o comunicado em tempo real do banco de dados
+            carregarComunicados();
+
             try {
                 const docRef = doc(db, "membros", nomeSalvo);
                 const docSnap = await getDoc(docRef);
@@ -408,11 +447,9 @@
                 if (docSnap.exists()) {
                     const dados = docSnap.data();
 
-                    // Preenche a barra de status no topo
                     document.getElementById("nome-piloto").textContent = dados.nome;
                     document.getElementById("display-patente").textContent = dados.patente || "Membro";
                     
-                    // CORREÇÃO AQUI: Acesso seguro à propriedade ArmaMain's com colchetes para não quebrar o código
                     const armaMain = dados["ArmaMain's"] || "Não definido";
                     document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
                     document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
@@ -426,7 +463,7 @@
                         linkCore.removeAttribute("href");
                     }
 
-                    // VALIDOR DE PERMISSÃO: Se o cargo for "Líder Supremo" ou "Administrador"
+                    // Se for Adm ou Líder Supremo, destrava as ferramentas extras
                     if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
                         document.getElementById("sessao-admin").style.display = "block";
                         carregarGerenciadorMembros();
@@ -438,7 +475,55 @@
         });
 
         // ==========================================================================
-        // FUNÇÃO DE ATUALIZAÇÃO (SALVAR DADOS DO MEMBRO)
+        // CARREGA COMUNICADOS DO FIRESTORE
+        // ==========================================================================
+        async function carregarComunicados() {
+            const container = document.getElementById("conteiner-avisos");
+            try {
+                const docRef = doc(db, "avisos", "comunicado");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const dados = docSnap.data();
+                    container.innerHTML = `
+                        <div class="aviso-item">
+                            <div class="aviso-data">${dados.data || 'DATA ESTELAR'}</div>
+                            <div class="aviso-texto">${dados.texto || 'Nenhum comunicado ativo.'}</div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `<p style="color: var(--texto-mutado);">Nenhuma transmissão ativa de momento.</p>`;
+                }
+            } catch (err) {
+                console.error("Erro ao obter aviso:", err);
+                container.innerHTML = `<p style="color: var(--vermelho-erro);">Falha na comunicação de rádio.</p>`;
+            }
+        }
+
+        // ==========================================================================
+        // TRANSMITE NOVO COMUNICADO (SALVA NO BANCO)
+        // ==========================================================================
+        document.getElementById("form-comunicado").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const dataAviso = document.getElementById("adm-aviso-data").value.trim();
+            const textoAviso = document.getElementById("adm-aviso-texto").value.trim();
+
+            try {
+                // Sobrescreve o documento fixo 'comunicado' na coleção 'avisos'
+                await setDoc(doc(db, "avisos", "comunicado"), {
+                    data: dataAviso,
+                    texto: textoAviso
+                });
+                alert("Novo aviso transmitido para toda a guilda!");
+                location.reload();
+            } catch (err) {
+                console.error("Erro ao enviar aviso:", err);
+                alert("Falha de transmissão.");
+            }
+        });
+
+        // ==========================================================================
+        // ATUALIZA INTEGRANTES (ELO / COREHALLA)
         // ==========================================================================
         document.getElementById("form-ajuste-membro").addEventListener("submit", async function(e) {
             e.preventDefault();
@@ -451,24 +536,22 @@
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    // Atualiza o documento no Firestore com os dados novos
                     await updateDoc(docRef, {
                         elomax: eloAlvo,
                         corehalla: corehallaAlvo
                     });
-                    alert(`Ficha do Piloto ${nickAlvo} atualizada com sucesso no banco!`);
-                    location.reload(); // Recarrega para refletir as alterações
+                    alert(`Ficha do Piloto ${nickAlvo} atualizada!`);
+                    location.reload();
                 } else {
-                    alert("Piloto não encontrado no banco de dados.");
+                    alert("Piloto não encontrado.");
                 }
             } catch (err) {
                 console.error("Erro ao atualizar piloto:", err);
-                alert("Erro ao realizar operação.");
             }
         });
 
         // ==========================================================================
-        // CARREGA E GERA A LISTA DE CONTROLE DE EXCLUSÃO
+        // GERA A TABELA DE MEMBROS
         // ==========================================================================
         async function carregarGerenciadorMembros() {
             const container = document.getElementById("lista-membros-controle");
@@ -476,7 +559,7 @@
 
             try {
                 const querySnapshot = await getDocs(collection(db, "membros"));
-                container.innerHTML = ""; // Limpa
+                container.innerHTML = "";
 
                 querySnapshot.forEach((docSnap) => {
                     const m = docSnap.data();
@@ -491,25 +574,23 @@
                     container.appendChild(div);
                 });
 
-                // Adiciona os listeners nos botões de excluir
                 const botoes = container.querySelectorAll(".btn-excluir");
                 botoes.forEach(btn => {
                     btn.addEventListener("click", async function() {
                         const idParaRemover = this.getAttribute("data-id");
                         
                         if (idParaRemover === nomeSalvo) {
-                            alert("Comandante, você não pode excluir o seu próprio registro de voo!");
+                            alert("Você não pode remover a si mesmo!");
                             return;
                         }
 
-                        if (confirm(`Tem certeza de que deseja banir/remover o piloto ${idParaRemover} da base da guilda?`)) {
+                        if (confirm(`Excluir o registro do piloto ${idParaRemover}?`)) {
                             await deleteDoc(doc(db, "membros", idParaRemover));
-                            alert(`Piloto ${idParaRemover} foi removido com sucesso.`);
+                            alert(`Piloto ${idParaRemover} removido.`);
                             location.reload();
                         }
                     });
                 });
-
             } catch (err) {
                 console.error("Erro ao listar tripulantes:", err);
             }
@@ -518,7 +599,7 @@
 
     <script>
         function efetuarLogoff() {
-            if (confirm("Deseja fechar os sistemas e sair da cabine de comando?")) {
+            if (confirm("Fechar sistemas e sair da cabine?")) {
                 localStorage.removeItem("sk_usuario");
                 localStorage.removeItem("sk_patente");
                 window.location.href = "login.html";
