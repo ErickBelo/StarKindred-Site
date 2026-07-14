@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | Painel do Comandante</title>
+    <title>StarKindred | Cabine de Comando</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
-           PALETA DE CORES TÁTICA & CONFIGURAÇÕES BASE
+           PALETA DE CORES TÁTICA (Consistente com a Index/Login)
            ========================================================================== */
         :root {
             --bg-principal: #030914;      /* Azul espacial profundo */
             --bg-card: rgba(8, 18, 37, 0.85); /* Azul escuro semi-transparente */
             --amarelo: #ffb703;           /* Amarelo vibrante */
-            --dourado: #d4af37;           /* Dourado para adms e patentes */
-            --azul-brilho: #00b4d8;       /* Azul ciano para membros comuns e sistemas ativos */
+            --dourado: #d4af37;           /* Dourado para patentes e conquistas */
             --texto-claro: #ffffff;
             --texto-mutado: #94a3b8;
-            --verde-sucesso: #10b981;
+            --borda-suave: rgba(212, 175, 55, 0.15);
         }
 
+        /* ==========================================================================
+           ESTILOS GERAIS & FUNDO ESPACIAL (CD)
+           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -30,14 +32,13 @@
             background-color: var(--bg-principal);
             color: var(--texto-claro);
             font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Camada 1: Estrelas estáticas */
+        /* Estrelas estáticas de fundo */
         body::before {
             content: "";
             position: fixed;
@@ -48,14 +49,13 @@
             z-index: -2;
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            background-position: 0 0, 40px 60px, 130px 270px;
-            opacity: 0.4;
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px;
+            background-position: 0 0, 40px 60px;
+            opacity: 0.35;
         }
 
-        /* Camada 2: Estrelas piscando suavemente */
+        /* Estrelas cintilantes com animação */
         body::after {
             content: "";
             position: fixed;
@@ -80,7 +80,7 @@
         }
 
         /* ==========================================================================
-           HEADER DO PAINEL (BARRA DE CONTROLE)
+           HEADER DO PAINEL (Barra de Status do Piloto)
            ========================================================================== */
         header {
             display: flex;
@@ -88,716 +88,326 @@
             align-items: center;
             padding: 15px 5%;
             background: rgba(3, 9, 20, 0.9);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid var(--borda-suave);
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(8px);
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .avatar-moldura {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--amarelo);
-            background: var(--bg-principal);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .logo-painel {
             font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
             font-weight: bold;
-            color: var(--amarelo);
-            box-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
-        }
-
-        .user-meta h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95rem;
             color: var(--texto-claro);
         }
 
-        .user-meta span {
-            font-size: 0.75rem;
+        .logo-painel span {
             color: var(--dourado);
-            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .piloto-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .saudacao {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--texto-claro);
+        }
+
+        .saudacao span {
+            color: var(--amarelo);
+            font-weight: bold;
+        }
+
+        .badge-patente {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--dourado);
+            color: var(--dourado);
+            padding: 3px 10px;
+            border-radius: 20px;
             text-transform: uppercase;
         }
 
-        .btn-sair {
+        .btn-logoff {
             font-family: 'Orbitron', sans-serif;
             background: transparent;
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            border: 1px solid #ef4444;
             color: #ef4444;
             padding: 6px 15px;
             font-size: 0.8rem;
-            font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
-        .btn-sair:hover {
+        .btn-logoff:hover {
             background: #ef4444;
             color: #ffffff;
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
         }
 
         /* ==========================================================================
-           ESTRUTURA EM GRID (LATERAL + CONTEÚDO DINÂMICO)
+           CONTEÚDO E GRID DO PAINEL
            ========================================================================== */
         .painel-container {
-            max-width: 1250px;
-            width: 100%;
-            margin: 30px auto;
+            max-width: 1200px;
+            margin: 40px auto;
             padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            flex: 1;
         }
 
-        @media (min-width: 900px) {
-            .painel-container {
-                grid-template-columns: 280px 1fr;
-            }
-        }
-
-        /* ==========================================================================
-           BARRA LATERAL DE NAVEGAÇÃO
-           ========================================================================== */
-        .sidebar {
-            background: var(--bg-card);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            border-radius: 8px;
-            padding: 20px;
-            height: fit-content;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .sidebar-perfil-quick {
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-        }
-
-        .sidebar-perfil-quick .user-elo-text {
+        .titulo-secao {
             font-family: 'Orbitron', sans-serif;
-            color: var(--amarelo);
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        .sidebar-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .menu-link {
-            font-family: 'Orbitron', sans-serif;
-            background: rgba(3, 9, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--texto-mutado);
-            padding: 12px 15px;
-            border-radius: 6px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .menu-link:hover, .menu-link.ativo {
-            color: var(--amarelo);
-            border-color: var(--amarelo);
-            background: rgba(255, 183, 3, 0.05);
-            box-shadow: 0 0 10px rgba(255, 183, 3, 0.1);
-        }
-
-        .menu-link.link-externo {
-            border-color: rgba(0, 180, 216, 0.2);
-            color: var(--azul-brilho);
-        }
-
-        .menu-link.link-externo:hover {
+            font-size: 1.8rem;
             color: var(--texto-claro);
-            background: var(--azul-brilho);
-            border-color: var(--azul-brilho);
+            margin-bottom: 30px;
+            border-left: 4px solid var(--amarelo);
+            padding-left: 15px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
         }
 
-        /* ==========================================================================
-           BLOCOS DE CONTEÚDO DINÂMICO
-           ========================================================================== */
-        .conteudo-secao {
-            display: none; /* Controlado via JS */
-            animation: fadeIn 0.4s ease forwards;
+        /* Grade Principal do Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
 
-        .conteudo-secao.ativo {
-            display: block;
-        }
-
-        .painel-bloco {
+        .painel-card {
             background: var(--bg-card);
-            border: 1px solid rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--borda-suave);
             border-radius: 8px;
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(3px);
-            margin-bottom: 25px;
+            transition: transform 0.3s, border-color 0.3s;
         }
 
-        .painel-bloco h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--amarelo);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 10px;
+        .painel-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 183, 3, 0.25);
         }
 
-        /* ==========================================================================
-           ABA 1: VISÃO GERAL (HOME DO PAINEL)
-           ========================================================================== */
-        .info-estatistica {
+        .card-header {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-            font-size: 0.95rem;
-        }
-
-        .info-estatistica strong {
-            color: var(--dourado);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-        }
-
-        /* ==========================================================================
-           ABA 2: MEMBROS & PERFIS
-           ========================================================================== */
-        .membros-list-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .membro-card {
-            background: rgba(3, 9, 20, 0.6);
-            border-radius: 6px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        /* Borda de acordo com o Cargo: Azul para Membro, Dourado para ADM */
-        .membro-card.cargo-membro {
-            border: 1px solid rgba(0, 180, 216, 0.25);
-        }
-        .membro-card.cargo-membro h3 {
-            color: var(--azul-brilho);
-        }
-
-        .membro-card.cargo-adm {
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
-        }
-        .membro-card.cargo-adm h3 {
-            color: var(--dourado);
-        }
-
-        .membro-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .membro-cargo-tag {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-bottom: 12px;
-        }
-
-        .cargo-membro .membro-cargo-tag {
-            color: var(--azul-brilho);
-        }
-        .cargo-adm .membro-cargo-tag {
-            color: var(--dourado);
-        }
-
-        .membro-meta-info {
-            font-size: 0.85rem;
-            color: var(--texto-mutado);
-            margin-bottom: 15px;
-        }
-
-        /* Botão para Perfil do Membro */
-        .btn-perfil {
-            display: block;
-            width: 100%;
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            background: transparent;
-            color: var(--texto-claro);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .cargo-membro .btn-perfil:hover {
-            border-color: var(--azul-brilho);
-            background: rgba(0, 180, 216, 0.05);
-            color: var(--azul-brilho);
-        }
-
-        .cargo-adm .btn-perfil:hover {
-            border-color: var(--dourado);
-            background: rgba(212, 175, 55, 0.05);
-            color: var(--dourado);
-        }
-
-        /* ==========================================================================
-           ABA 3: TUTORIAIS (VÍDEOS)
-           ========================================================================== */
-        .tutoriais-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .tutorial-card {
-            background: rgba(3, 9, 20, 0.6);
-            border: 1px solid rgba(255, 183, 3, 0.1);
-            border-radius: 6px;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .tutorial-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--amarelo);
-        }
-
-        .video-fake-thumbnail {
-            position: relative;
-            background: #000;
-            width: 100%;
-            aspect-ratio: 16/9;
-            display: flex;
-            justify-content: center;
             align-items: center;
-            color: var(--amarelo);
-            font-size: 3rem;
-            cursor: pointer;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
         }
 
-        .video-fake-thumbnail::after {
-            content: "▶";
-            text-shadow: 0 0 15px rgba(255, 183, 3, 0.6);
-        }
-
-        .tutorial-info {
-            padding: 15px;
-        }
-
-        .tutorial-info h3 {
+        .card-header h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
-            color: var(--texto-claro);
-            margin-bottom: 5px;
-        }
-
-        .tutorial-info p {
-            font-size: 0.85rem;
-            color: var(--texto-mutado);
-        }
-
-        /* ==========================================================================
-           ABA 4: EVENTOS (CRONOGRAMA)
-           ========================================================================== */
-        .evento-card {
-            background: rgba(3, 9, 20, 0.6);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-        }
-
-        @media (min-width: 600px) {
-            .evento-card {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-
-        .evento-data-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 183, 3, 0.1);
-            border: 1px solid var(--amarelo);
-            border-radius: 4px;
-            padding: 10px;
-            min-width: 80px;
-            height: 80px;
-        }
-
-        .evento-data-box .dia {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
             color: var(--amarelo);
+            letter-spacing: 0.5px;
         }
 
-        .evento-data-box .mes {
-            font-family: 'Orbitron', sans-serif;
+        .card-icone {
+            font-size: 1.3rem;
+            color: var(--dourado);
+        }
+
+        /* Conteúdos Internos dos Cards */
+        .aviso-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .aviso-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .aviso-data {
             font-size: 0.75rem;
-            text-transform: uppercase;
+            color: var(--dourado);
+            font-family: 'Orbitron', sans-serif;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .aviso-texto {
+            font-size: 0.95rem;
             color: var(--texto-claro);
         }
 
-        .evento-detalhes {
-            flex: 1;
-            padding: 0 15px;
+        .treino-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .evento-detalhes h3 {
+        .status-badge {
+            align-self: flex-start;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.15rem;
-            color: var(--dourado);
-            margin-bottom: 5px;
+            font-size: 0.7rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            color: #10b981;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
         }
 
-        .evento-detalhes p {
+        .status-badge.pendente {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+            color: #f59e0b;
+        }
+
+        .metrica-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .metrica-label {
             font-size: 0.9rem;
             color: var(--texto-mutado);
         }
 
-        .btn-participar {
+        .metrica-valor {
             font-family: 'Orbitron', sans-serif;
-            background: var(--amarelo);
-            color: var(--bg-principal);
-            border: none;
-            padding: 10px 20px;
-            font-size: 0.8rem;
             font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
+            color: var(--texto-claro);
+            font-size: 1.1rem;
         }
 
-        .btn-participar:hover {
-            background: var(--dourado);
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+        .metrica-valor.destaque {
+            color: var(--amarelo);
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
         }
 
-        /* ==========================================================================
-           ANIMAÇÕES
-           ========================================================================== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .piloto-info {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header do Painel -->
+    <!-- Header do Painel (Sincronizado) -->
     <header>
-        <div class="user-info">
-            <div class="avatar-moldura" id="user-avatar">?</div>
-            <div class="user-meta">
-                <h3 id="user-display">Carregando...</h3>
-                <span id="user-cargo">Membro</span>
-            </div>
-        </div>
-        <div class="nav-painel">
-            <button class="btn-sair" onclick="fazerLogout()">Desconectar</button>
+        <div class="logo-painel">STAR<span>KINDRED</span></div>
+        
+        <div class="piloto-info">
+            <div class="saudacao">Bem-vindo, Comandante <span id="nome-piloto">Piloto</span></div>
+            <div class="badge-patente">Oficial de Elite</div>
+            <button class="btn-logoff" onclick="efetuarLogoff()">Logoff</button>
         </div>
     </header>
 
-    <!-- Grid do Painel Principal -->
+    <!-- Container Principal do Painel -->
     <main class="painel-container">
-        
-        <!-- Lateral: Menu de Navegação Tático -->
-        <aside class="sidebar">
-            <div class="sidebar-perfil-quick">
-                <span class="sidebar-perfil-quick-nome" id="sb-nome" style="font-family: 'Orbitron', sans-serif; display:block; margin-bottom: 5px;">Aguardando...</span>
-                <div class="user-elo-text">🏆 ELO <span id="sb-elo">0000</span></div>
-            </div>
-            <div class="sidebar-menu">
-                <button class="menu-link ativo" onclick="alternarAba('visao-geral', this)">🌌 Visão Geral</button>
-                <button class="menu-link" onclick="alternarAba('membros', this)">👥 Membros</button>
-                <button class="menu-link" onclick="alternarAba('tutoriais', this)">📖 Tutoriais</button>
-                <button class="menu-link" onclick="alternarAba('eventos', this)">📅 Eventos</button>
-                <!-- Botão com Link Direto de Combos 2v2 -->
-                <a href="https://combocodex.com/combos/search/" target="_blank" class="menu-link link-externo">⚔️ Combos 2v2 ↗</a>
-            </div>
-        </aside>
+        <h1 class="titulo-secao">Cabine de Comando</h1>
 
-        <!-- Área Principal (Conteúdos das Abas) -->
-        <section class="main-content">
+        <div class="dashboard-grid">
             
-            <!-- ABA 1: VISÃO GERAL -->
-            <div id="visao-geral" class="conteudo-secao ativo">
-                <div class="painel-bloco">
-                    <h2>🎯 Diretrizes de Combate (Semanal)</h2>
-                    <div class="info-estatistica">
-                        <strong>Lenda Registrada:</strong>
-                        <span id="user-legend">Definindo...</span>
-                    </div>
-                    <div class="info-estatistica">
-                        <strong>Arsenal Favorito:</strong>
-                        <span id="user-weapons">Definindo...</span>
-                    </div>
-                    <div class="info-estatistica">
-                        <strong>Patente da Frota:</strong>
-                        <span id="user-patente">Batedor Estelar</span>
-                    </div>
+            <!-- CARD 1: Canal de Avisos -->
+            <div class="painel-card">
+                <div class="card-header">
+                    <h2>Mensagens da Liderança</h2>
+                    <span class="card-icone">📡</span>
                 </div>
-
-                <div class="painel-bloco">
-                    <h2>📢 Boletim de Órbita</h2>
-                    <div style="border-left: 3px solid var(--dourado); padding-left: 15px;">
-                        <h4 style="font-family: 'Orbitron'; color: var(--dourado); margin-bottom: 5px;">Seja bem-vindo ao Hub!</h4>
-                        <p style="font-size: 0.95rem; color: var(--texto-mutado); line-height: 1.5;">Este é o quartel-general de controle dos comandantes da StarKindred. Use a navegação à esquerda para gerenciar diretrizes, treinar combos, agendar eventos ou consultar perfis de outros gladiadores cósmicos.</p>
-                    </div>
+                <div class="aviso-item">
+                    <span class="aviso-data">14 JUL 2026</span>
+                    <p class="aviso-texto">Preparar para a próxima seletiva de 2v2 no final de semana. Afiem os combos de espada e foice.</p>
+                </div>
+                <div class="aviso-item">
+                    <span class="aviso-data">10 JUL 2026</span>
+                    <p class="aviso-texto">Novo recorde de atividade alcançado no nosso Discord oficial! Parabéns a toda a tripulação.</p>
                 </div>
             </div>
 
-            <!-- ABA 2: MEMBROS -->
-            <div id="membros" class="conteudo-secao">
-                <div class="painel-bloco">
-                    <h2>👥 Lista de Pilotos Ativos</h2>
-                    <div class="membros-list-container">
-                        
-                        <!-- Membro 1 (ADM) -->
-                        <div class="membro-card cargo-adm">
-                            <h3>.Breki</h3>
-                            <span class="membro-cargo-tag">Administrador</span>
-                            <div class="membro-meta-info">
-                                ⚔️ Nix (Scythe / Blasters)<br>
-                                🏆 PEAK ELO: 2300
-                            </div>
-                            <button class="btn-perfil" onclick="verPerfil('.Breki')">Ver Perfil</button>
-                        </div>
-
-                        <!-- Membro 2 (ADM) -->
-                        <div class="membro-card cargo-adm">
-                            <h3>Arisu</h3>
-                            <span class="membro-cargo-tag">Administrador</span>
-                            <div class="membro-meta-info">
-                                ⚔️ Magyar (GS / Hammer)<br>
-                                🏆 PEAK ELO: 2400
-                            </div>
-                            <button class="btn-perfil" onclick="verPerfil('Arisu')">Ver Perfil</button>
-                        </div>
-
-                        <!-- Membro 3 (Membro) -->
-                        <div class="membro-card cargo-membro">
-                            <h3>GoodKk</h3>
-                            <span class="membro-cargo-tag">Membro</span>
-                            <div class="membro-meta-info">
-                                ⚔️ Fait (Orb / Scythe)<br>
-                                🏆 PEAK ELO: 2180
-                            </div>
-                            <button class="btn-perfil" onclick="verPerfil('GoodKk')">Ver Perfil</button>
-                        </div>
-
-                        <!-- Membro 4 (Membro) -->
-                        <div class="membro-card cargo-membro">
-                            <h3>Zanin</h3>
-                            <span class="membro-cargo-tag">Membro</span>
-                            <div class="membro-meta-info">
-                                ⚔️ Ember (Bow / Katars)<br>
-                                🏆 PEAK ELO: 2250
-                            </div>
-                            <button class="btn-perfil" onclick="verPerfil('Zanin')">Ver Perfil</button>
-                        </div>
-
-                        <!-- Membro 5 (Membro) -->
-                        <div class="membro-card cargo-membro">
-                            <h3>Devan</h3>
-                            <span class="membro-cargo-tag">Membro</span>
-                            <div class="membro-meta-info">
-                                ⚔️ Lucien (Katars / Blasters)<br>
-                                🏆 PEAK ELO: 2100
-                            </div>
-                            <button class="btn-perfil" onclick="verPerfil('Devan')">Ver Perfil</button>
-                        </div>
-
-                    </div>
+            <!-- CARD 2: Cronograma de Treinos -->
+            <div class="painel-card">
+                <div class="card-header">
+                    <h2>Cronograma Tático</h2>
+                    <span class="card-icone">⚔️</span>
+                </div>
+                <div class="treino-info">
+                    <span class="status-badge">Confirmado</span>
+                    <p><strong>Atividade:</strong> Treino Aberto da Guilda (Saguão Customizado)</p>
+                    <p class="aviso-texto" style="font-size: 0.9rem;"><strong>Horário:</strong> Hoje às 20:00h</p>
+                </div>
+                <div class="treino-info" style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 15px;">
+                    <span class="status-badge pendente">Pendente</span>
+                    <p><strong>Atividade:</strong> Treino Seletivo de 2v2 (Comunidade)</p>
+                    <p class="aviso-texto" style="font-size: 0.9rem;"><strong>Horário:</strong> Sábado às 16:00h</p>
                 </div>
             </div>
 
-            <!-- ABA 3: TUTORIAIS -->
-            <div id="tutoriais" class="conteudo-secao">
-                <div class="painel-bloco">
-                    <h2>📖 Treinamento de Arena</h2>
-                    <div class="tutoriais-grid">
-                        
-                        <!-- Tutorial 1 -->
-                        <div class="tutorial-card">
-                            <div class="video-fake-thumbnail" onclick="alert('Iniciando stream de dados do vídeo...')"></div>
-                            <div class="tutorial-info">
-                                <h3>Setup de Combates 2v2</h3>
-                                <p>Aprenda a criar follow-ups eficientes usando foice e martelo sem golpear o seu parceiro de arena.</p>
-                            </div>
-                        </div>
-
-                        <!-- Tutorial 2 -->
-                        <div class="tutorial-card">
-                            <div class="video-fake-thumbnail" onclick="alert('Iniciando stream de dados do vídeo...')"></div>
-                            <div class="tutorial-info">
-                                <h3>Movimentação Avançada (Dash-Jump)</h3>
-                                <p>Acelere sua mecânica de escape e dominância de plataforma utilizando técnicas de fast-fall de elite.</p>
-                            </div>
-                        </div>
-
-                    </div>
+            <!-- CARD 3: Estatísticas de Órbita -->
+            <div class="painel-card">
+                <div class="card-header">
+                    <h2>Dados Operacionais</h2>
+                    <span class="card-icone">📊</span>
+                </div>
+                <div class="metrica-box">
+                    <span class="metrica-label">Total de Membros</span>
+                    <span class="metrica-valor">8 Ativos</span>
+                </div>
+                <div class="metrica-box">
+                    <span class="metrica-label">Estatuto da Frota</span>
+                    <span class="metrica-valor destaque">Em Órbita</span>
+                </div>
+                <div class="metrica-box">
+                    <span class="metrica-label">Peak Elo da Guilda</span>
+                    <span class="metrica-valor" style="color: var(--dourado);">2400 (Arisu)</span>
                 </div>
             </div>
 
-            <!-- ABA 4: EVENTOS -->
-            <div id="eventos" class="conteudo-secao">
-                <div class="painel-bloco">
-                    <h2>📅 Cronograma de Atividades Cósmicas</h2>
-                    
-                    <!-- Evento 1 -->
-                    <div class="evento-card">
-                        <div class="evento-data-box">
-                            <span class="dia">17</span>
-                            <span class="mes">Jul</span>
-                        </div>
-                        <div class="evento-detalhes">
-                            <h3>Treino Coletivo de 2v2</h3>
-                            <p>Simulações em lobbies internos para ajustar as duplas titulares da guilda. Presença obrigatória.</p>
-                        </div>
-                        <button class="btn-participar" onclick="alert('Inscrição confirmada na lista de presença!')">Confirmar</button>
-                    </div>
-
-                    <!-- Evento 2 -->
-                    <div class="evento-card">
-                        <div class="evento-data-box">
-                            <span class="dia">25</span>
-                            <span class="mes">Jul</span>
-                        </div>
-                        <div class="evento-detalhes">
-                            <h3>Aulão Aberto: Leitura de Dodge</h3>
-                            <p>Instruções práticas conduzidas pelos ADMs sobre como punir consistentemente as esquivas adversárias.</p>
-                        </div>
-                        <button class="btn-participar" onclick="alert('Inscrição confirmada na lista de presença!')">Confirmar</button>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
+        </div>
     </main>
 
-    <!-- Script de Gestão Dinâmica -->
+    <!-- Script de Gestão do Painel de Bordo (CD) -->
     <script>
-        // Ao carregar a página, lê quem está logado e monta o perfil
+        // Executado ao carregar a página para preencher os dados do piloto e blindar a rota
         document.addEventListener("DOMContentLoaded", function() {
-            const nomeLogado = localStorage.getItem("sk_usuario");
-            
-            // SEGURANÇA CORRIGIDA: Se não houver nome salvo, manda o usuário de volta pro login de verdade!
-            if (!nomeLogado) {
-                alert("Canal de comunicação não autenticado. Faça o login primeiro!");
+            // Puxa o nome guardado no navegador durante o login
+            const nomeSalvo = localStorage.getItem("sk_usuario");
+
+            // BLINDAGEM DE ROTA: Se o usuário tentar acessar o painel diretamente sem logar, ele é expulso para a index
+            if (!nomeSalvo) {
+                alert("Identificação de piloto não encontrada! Redirecionando para a central de acesso...");
                 window.location.href = "login.html";
                 return;
             }
-            
-            // Define se o usuário logado é ADM ou Membro Comum
-            const admsFicticios = [".breki", "arisu", "breki", ".breki"];
-            const eADM = admsFicticios.includes(nomeLogado.toLowerCase());
 
-            // Configura textos base
-            document.getElementById("user-display").textContent = nomeLogado.toUpperCase();
-            document.getElementById("sb-nome").textContent = nomeLogado;
-            document.getElementById("user-avatar").textContent = nomeLogado.substring(0, 1).toUpperCase();
-
-            // Seta tags visuais de cargo e patente
-            if (eADM) {
-                document.getElementById("user-cargo").textContent = "Líder da Frota";
-                document.getElementById("user-cargo").style.color = "var(--dourado)";
-                document.getElementById("user-patente").textContent = "Almirante Supremo";
-            } else {
-                document.getElementById("user-cargo").textContent = "Membro de Elite";
-                document.getElementById("user-cargo").style.color = "var(--azul-brilho)";
-                document.getElementById("user-patente").textContent = "Piloto de Caça";
-            }
-
-            // Sincroniza estatísticas baseadas no nome
-            const lendas = ["Nix", "Fait", "Lucien", "Ember", "Magyar", "Val", "Koji"];
-            const armas = ["Scythe / Blasters", "Orb / Scythe", "Katars / Blasters", "Bow / Katars", "Greatsword / Hammer", "Gauntlets / Sword", "Sword / Bow"];
-            
-            const index = nomeLogado.length % lendas.length;
-            document.getElementById("user-legend").textContent = lendas[index];
-            document.getElementById("user-weapons").textContent = armas[index];
-            
-            const eloCalculado = 1900 + (nomeLogado.length * 15);
-            document.getElementById("sb-elo").textContent = eloCalculado;
+            // Exibe o nome do comandante no painel
+            document.getElementById("nome-piloto").textContent = nomeSalvo;
         });
 
-        // Alternador de Abas Dinâmico (Sem Refresh)
-        function alternarAba(idAba, elementoBtn) {
-            // Oculta todas as seções
-            const secoes = document.querySelectorAll(".conteudo-secao");
-            secoes.forEach(secao => secao.classList.remove("ativo"));
-
-            // Desativa todos os botões do menu lateral
-            const botoes = document.querySelectorAll(".menu-link");
-            botoes.forEach(btn => btn.classList.remove("ativo"));
-
-            // Exibe a aba correta e ativa o botão
-            document.getElementById(idAba).classList.add("ativo");
-            elementoBtn.classList.add("ativo");
-        }
-
-        // Função rápida para simular a visualização de perfil de um membro
-        function verPerfil(nomeMembro) {
-            alert(`Carregando perfil cósmico de ${nomeMembro}... Atualmente o servidor central de perfis está otimizando os logs.`);
-        }
-
-        function fazerLogout() {
-            localStorage.removeItem("sk_usuario");
-            alert("Sistemas desligados. Conexão cósmica encerrada!");
-            window.location.href = "login.html";
+        // Função de Logoff para limpar a sessão de comando
+        function efetuarLogoff() {
+            if (confirm("Deseja fechar os sistemas e sair da cabine de comando?")) {
+                // Remove a chave do usuário para desautenticar
+                localStorage.removeItem("sk_usuario");
+                
+                alert("Sistemas de bordo encerrados com sucesso!");
+                // Redireciona para o login
+                window.location.href = "login.html";
+            }
         }
     </script>
 </body>
