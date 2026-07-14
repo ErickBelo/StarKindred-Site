@@ -263,6 +263,24 @@
             box-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
         }
 
+        /* Botão Vermelho de Remover Membro */
+        .btn-excluir {
+            font-family: 'Orbitron', sans-serif;
+            background: transparent;
+            color: var(--vermelho-erro);
+            border: 1px solid var(--vermelho-erro);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-excluir:hover {
+            background: var(--vermelho-erro);
+            color: white;
+        }
+
         /* ==========================================================================
            COMPONENTE: LISTA DA TRIPULAÇÃO (ACESSO GERAL)
            ========================================================================== */
@@ -508,22 +526,25 @@
                     document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
                     document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
                     
+                    // CORREÇÃO: Busca o link tanto minúsculo quanto maiúsculo
+                    const valorCorehalla = dados.corehalla || dados.Corehalla;
                     const linkCore = document.getElementById("corehalla-jogador");
-                    if (dados.corehalla) {
-                        // Limpeza de aspas extras se houver
-                        const linkLimpo = dados.corehalla.replace(/"/g, '');
+
+                    if (valorCorehalla && valorCorehalla.trim() !== "" && valorCorehalla !== '""' && valorCorehalla !== '"" ""') {
+                        const linkLimpo = valorCorehalla.replace(/"/g, '').trim();
                         linkCore.href = linkLimpo;
                         linkCore.textContent = "Ver no Corehalla ↗";
+                        document.getElementById("auto-corehalla").value = linkLimpo;
                     } else {
                         linkCore.textContent = "Link não associado";
                         linkCore.removeAttribute("href");
+                        document.getElementById("auto-corehalla").value = "";
                     }
 
-                    // Preenche os campos do formulário "Meu Perfil" com os dados atuais dele
+                    // Preenche os campos remanescentes do formulário "Meu Perfil"
                     document.getElementById("auto-legend").value = dados.mainLegend || "";
                     document.getElementById("auto-armas").value = dados["ArmaMain's"] || "";
                     document.getElementById("auto-elo").value = dados.elomax || "";
-                    document.getElementById("auto-corehalla").value = (dados.corehalla || "").replace(/"/g, '');
 
                     // Valida privilégios administrativos
                     if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
@@ -582,7 +603,10 @@
                     const idMembro = docSnap.id;
 
                     const classeBadge = (m.patente === "Líder Supremo" || m.patente === "Administrador") ? "lider" : "";
-                    const linkCorehalla = m.corehalla ? m.corehalla.replace(/"/g, '') : "";
+                    
+                    // Pega o link do corehalla da tabela tratando maiúsculas/minúsculas
+                    const campoLink = m.corehalla || m.Corehalla;
+                    const linkCorehalla = campoLink ? campoLink.replace(/"/g, '').trim() : "";
 
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
@@ -645,7 +669,7 @@
                         </div>
                     `;
                 } else {
-                    container.innerHTML = `<p style="color: var(--texto-mutado);">Nenhuma transmissão ativa de momento.</p>`;
+                    container.innerHTML = `<p style="color: var(--texto-mutado);">Nenhuma transmissão activa de momento.</p>`;
                 }
             } catch (err) {
                 console.error("Erro ao obter aviso:", err);
@@ -706,7 +730,7 @@
     </script>
 
     <script>
-        function efetuarLogoff() {
+        function efectuarLogoff() {
             if (confirm("Deseja fechar os sistemas e sair da cabine de comando?")) {
                 localStorage.removeItem("sk_usuario");
                 localStorage.removeItem("sk_patente");
