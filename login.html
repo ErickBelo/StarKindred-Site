@@ -7,18 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
-           PALETA DE CORES TÁTICA & CONFIGURAÇÕES BASE
+           PALETA DE CORES TÁTICA
            ========================================================================== */
         :root {
-            --bg-principal: #030914;      /* Azul espacial profundo */
-            --bg-card: rgba(8, 18, 37, 0.85); /* Azul escuro semi-transparente */
-            --amarelo: #ffb703;           /* Amarelo vibrante */
-            --dourado: #d4af37;           /* Dourado de destaque */
-            --azul-brilho: #00b4d8;       /* Azul ciano ativo */
+            --bg-principal: #030914;      
+            --bg-card: rgba(8, 18, 37, 0.85); 
+            --amarelo: #ffb703;           
+            --dourado: #d4af37;           
             --texto-claro: #ffffff;
             --texto-mutado: #94a3b8;
         }
 
+        /* ==========================================================================
+           ESTILOS GERAIS & FUNDO ESPACIAL
+           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -37,24 +39,48 @@
             position: relative;
         }
 
-        /* Camada Estelar */
         body::before {
             content: "";
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
                 radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
             background-size: 550px 550px, 350px 350px;
             background-position: 0 0, 40px 60px;
+            opacity: 0.35;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-image: 
+                radial-gradient(rgba(214, 175, 55, 0.4), rgba(214, 175, 55, 0.1) 2px, transparent 30px),
+                radial-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1) 1.5px, transparent 20px);
+            background-size: 400px 400px, 300px 300px;
+            background-position: 80px 120px, 210px 50px;
+            animation: cintilar 6s infinite alternate ease-in-out;
             opacity: 0.3;
         }
 
-        /* Card de Login */
+        @keyframes cintilar {
+            0% { opacity: 0.15; }
+            50% { opacity: 0.45; }
+            100% { opacity: 0.2; }
+        }
+
+        /* ==========================================================================
+           CARD DE LOGIN
+           ========================================================================== */
         .login-container {
             background: var(--bg-card);
             border: 1px solid rgba(212, 175, 55, 0.2);
@@ -62,9 +88,11 @@
             padding: 40px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
 
         .login-logo {
@@ -72,22 +100,21 @@
             font-size: 1.8rem;
             font-weight: bold;
             color: var(--amarelo);
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 5px;
-            text-shadow: 0 0 15px rgba(255, 183, 3, 0.3);
+            text-shadow: 0 0 12px rgba(255, 183, 3, 0.3);
         }
 
         .login-subtitle {
             font-size: 0.85rem;
-            color: var(--texto-mutated);
+            color: var(--texto-mutado);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 30px;
         }
 
-        /* Inputs e Formulário */
         .input-grupo {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             text-align: left;
         }
 
@@ -108,16 +135,15 @@
             padding: 12px 15px;
             color: var(--texto-claro);
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            outline: none;
         }
 
         .input-campo:focus {
-            outline: none;
             border-color: var(--amarelo);
             box-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
         }
 
-        /* Botão de Ignição */
         .btn-submeter {
             width: 100%;
             font-family: 'Orbitron', sans-serif;
@@ -140,10 +166,9 @@
             transform: translateY(-1px);
         }
 
-        /* Link de retorno */
         .link-retorno {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 0.85rem;
             color: var(--texto-mutado);
             text-decoration: none;
@@ -159,52 +184,81 @@
 
     <div class="login-container">
         <div class="login-logo">StarKindred</div>
-        <div class="login-subtitle">Acesso de Oficiais</div>
+        <div class="login-subtitle">Acesso de Pilotos</div>
 
-        <!-- O onsubmit impede que o formulário quebre e força o script JavaScript -->
-        <form onsubmit="manipularLogin(event)">
-            
-            <!-- Entrada de Usuário -->
+        <form id="form-login">
             <div class="input-grupo">
-                <label for="usuario">IDENTIFICAÇÃO DO PILOTO</label>
-                <input type="text" id="usuario" class="input-campo" placeholder="Ex: .Breki" required autocomplete="off">
+                <label for="usuario">IDENTIFICAÇÃO DO PILOTO (NICK)</label>
+                <input type="text" id="usuario" class="input-campo" placeholder="Ex: Breki" required autocomplete="off">
             </div>
 
-            <!-- Entrada de Senha -->
             <div class="input-grupo">
-                <label for="senha">CÓDIGO DE ACESSO</label>
+                <label for="senha">CÓDIGO DE ACESSO (SENHA)</label>
                 <input type="password" id="senha" class="input-campo" placeholder="••••••••" required>
             </div>
 
-            <!-- Botão de Envio -->
             <button type="submit" class="btn-submeter">Iniciar Ignição</button>
         </form>
 
         <a href="index.html" class="link-retorno">← Abortar Missão (Voltar para a Home)</a>
     </div>
 
-    <!-- Script de Autenticação Tática -->
-    <script>
-        function manipularLogin(event) {
-            // 1. Evita que o navegador recarregue a página ou envie os dados para um servidor inexistente
+    <!-- ==========================================================================
+         INTEGRAÇÃO FIRESTORE COM SUAS CREDENCIAIS REAIS
+         ========================================================================== */ -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Suas credenciais oficiais da guilda:
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
+            authDomain: "starkindred-51af3.firebaseapp.com",
+            projectId: "starkindred-51af3",
+            storageBucket: "starkindred-51af3.firebasestorage.app",
+            messagingSenderId: "833370470650",
+            appId: "1:833370470650:web:162ac3be5b8c24866c7143",
+            measurementId: "G-FFE53C599V"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const form = document.getElementById("form-login");
+
+        form.addEventListener("submit", async function(event) {
             event.preventDefault(); 
-            
-            // 2. Resgata e limpa o valor digitado no input
-            const usuarioInput = document.getElementById("usuario").value.trim();
 
-            if (usuarioInput === "") {
-                alert("Por favor, digite um codinome de piloto!");
-                return;
+            const nickDigitado = document.getElementById("usuario").value.trim();
+            const senhaDigitada = document.getElementById("senha").value;
+
+            try {
+                // Busca o documento do piloto na coleção "membros"
+                const docRef = doc(db, "membros", nickDigitado);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const dadosPiloto = docSnap.data();
+
+                    // Validação de senha
+                    if (dadosPiloto.senha === senhaDigitada) {
+                        // Salva dados importantes na sessão temporária do navegador
+                        localStorage.setItem("sk_usuario", dadosPiloto.nome);
+                        localStorage.setItem("sk_patente", dadosPiloto.patente || "Membro");
+
+                        alert(`Sistemas de bordo autorizados! Bem-vindo, Comandante ${dadosPiloto.nome}.`);
+                        window.location.href = "painel.html"; 
+                    } else {
+                        alert("Código de acesso incorreto! Acesso negado.");
+                    }
+                } else {
+                    alert("Piloto não localizado na base de dados da guilda.");
+                }
+            } catch (error) {
+                console.error("Erro no Firestore:", error);
+                alert("Falha na comunicação cósmica com o banco de dados. Verifique se publicou as Regras de leitura!");
             }
-
-            // 3. Salva temporariamente no navegador o nome digitado
-            localStorage.setItem("sk_usuario", usuarioInput);
-            
-            alert(`Sistemas de bordo iniciados! Bem-vindo, Comandante ${usuarioInput}.`);
-            
-            // 4. Força o redirecionamento direto para a página do painel
-            window.location.href = "painel.html";
-        }
+        });
     </script>
 </body>
 </html>
