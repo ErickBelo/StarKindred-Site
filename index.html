@@ -11,7 +11,7 @@
            ========================================================================== */
         :root {
             --bg-principal: #030914;      /* Azul espacial profundo */
-            --bg-card: #081225;           /* Azul escuro para os blocos */
+            --bg-card: rgba(8, 18, 37, 0.85); /* Azul escuro semi-transparente para as estrelas aparecerem ao fundo */
             --amarelo: #ffb703;           /* Amarelo vibrante para destaques */
             --dourado: #d4af37;           /* Dourado para patentes e conquistas */
             --azul-brilho: #00b4d8;       /* Azul ciano para pequenos detalhes estelares */
@@ -20,7 +20,7 @@
         }
 
         /* ==========================================================================
-           ESTILOS GERAIS
+           ESTILOS GERAIS & FUNDO ESPACIAL (ESTRELAS)
            ========================================================================== */
         * {
             margin: 0;
@@ -34,6 +34,49 @@
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Camada 1: Estrelas estáticas de fundo */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            opacity: 0.4;
+        }
+
+        /* Camada 2: Estrelas douradas/brancas piscando suavemente */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-image: 
+                radial-gradient(rgba(214, 175, 55, 0.4), rgba(214, 175, 55, 0.1) 2px, transparent 30px),
+                radial-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1) 1.5px, transparent 20px);
+            background-size: 400px 400px, 300px 300px;
+            background-position: 80px 120px, 210px 50px;
+            animation: cintilar 6s infinite alternate ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes cintilar {
+            0% { opacity: 0.15; }
+            50% { opacity: 0.45; }
+            100% { opacity: 0.2; }
         }
 
         /* ==========================================================================
@@ -44,12 +87,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            background: rgba(3, 9, 20, 0.95);
+            background: rgba(3, 9, 20, 0.85);
             border-bottom: 1px solid rgba(212, 175, 55, 0.15);
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .logo {
@@ -114,7 +157,7 @@
         .hero {
             text-align: center;
             padding: 100px 20px;
-            background: radial-gradient(circle, rgba(8,18,37,0.8) 0%, rgba(3,9,20,1) 70%);
+            background: radial-gradient(circle, rgba(8,18,37,0.4) 0%, rgba(3,9,20,0) 70%);
         }
 
         .hero h1 {
@@ -145,6 +188,7 @@
             padding: 40px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
+            backdrop-filter: blur(3px);
         }
 
         .sobre-box h2 {
@@ -169,7 +213,7 @@
         }
 
         /* ==========================================================================
-           ÁREA DE MEMBROS (LOOP E DETALHES DE ELITE)
+           ÁREA DE MEMBROS (ESTRUTURA PONTA A PONTA NA TELA)
            ========================================================================== */
         .secao-membros {
             text-align: center;
@@ -182,28 +226,31 @@
             margin-bottom: 25px;
         }
 
-        /* Esteira de Nomes em Loop */
+        /* Força o carrossel a ignorar as margens laterais e tocar as bordas da tela */
         .carrossel-nomes {
-            width: 100%;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
             overflow: hidden;
-            background: rgba(255, 183, 3, 0.02);
-            border-top: 1px solid rgba(212, 175, 55, 0.15);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 15px 0;
-            margin-bottom: 30px;
+            background: rgba(8, 18, 37, 0.8);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 18px 0;
+            margin-bottom: 35px;
+            backdrop-filter: blur(3px);
         }
 
         .esteira-loop {
             display: flex;
-            gap: 40px;
+            gap: 50px;
             width: max-content;
-            animation: moverNomes 15s linear infinite;
+            animation: moverNomes 18s linear infinite;
         }
 
         .nome-jogador-loop {
             font-family: 'Orbitron', sans-serif;
             color: var(--texto-claro);
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: bold;
             letter-spacing: 1px;
         }
@@ -250,6 +297,7 @@
             padding: 25px;
             text-align: left;
             transition: transform 0.3s, border-color 0.3s;
+            backdrop-filter: blur(3px);
         }
 
         .card-elite:hover {
@@ -279,12 +327,13 @@
            COMUNIDADE (DISCORD)
            ========================================================================== */
         .comunidade-box {
-            background: linear-gradient(135deg, #081225 0%, #0c1c38 100%);
+            background: linear-gradient(135deg, rgba(8, 18, 37, 0.9) 0%, rgba(12, 28, 56, 0.9) 100%);
             border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 8px;
             padding: 50px 40px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
         }
 
         .comunidade-box h2 {
@@ -367,7 +416,7 @@
     <div class="secao-container secao-membros" id="membros">
         <h2>Membros da StarKindred</h2>
         
-        <!-- Loop Infinito dos Nomes na Horizontal -->
+        <!-- Loop Infinito dos Nomes na Horizontal - Agora ocupando 100% da tela física -->
         <div class="carrossel-nomes">
             <div class="esteira-loop">
                 <!-- Grupo 1 -->
