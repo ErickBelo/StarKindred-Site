@@ -344,7 +344,7 @@
             text-align: right;
         }
 
-        /* Estilo para Cards internos de Tutoriais/Combos */
+        /* Estilo para Cards internos de Tutoriais/Combos/Eventos */
         .grade-recursos {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -352,10 +352,14 @@
         }
 
         .card-recurso {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--borda-suave);
+            border-radius: 8px;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .card-recurso h3 {
@@ -363,6 +367,51 @@
             color: var(--amarelo);
             margin-bottom: 10px;
             font-size: 1rem;
+        }
+
+        .iframe-video {
+            width: 100%;
+            height: 180px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Botão gigante para o ComboCodex */
+        .btn-combo-codex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(8, 18, 37, 0.95) 0%, rgba(212, 175, 55, 0.15) 100%);
+            border: 2px solid var(--dourado);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin: 20px 0;
+        }
+
+        .btn-combo-codex:hover {
+            transform: translateY(-5px);
+            border-color: var(--amarelo);
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.3);
+        }
+
+        .btn-combo-codex h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--amarelo);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-combo-codex p {
+            color: var(--texto-mutado);
+            max-width: 500px;
         }
 
         /* ==========================================================================
@@ -377,7 +426,7 @@
 
         .admin-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
@@ -428,7 +477,7 @@
                 <p style="margin-top: 10px;"><strong>Corehalla:</strong> <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none;">Acessar Perfil</a></p>
             </div>
 
-            <!-- FORMULÁRIO: MEU PERFIL (Qualquer membro pode se auto-editar aqui!) -->
+            <!-- FORMULÁRIO: MEU PERFIL -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Atualizar Meu Perfil</h2>
@@ -445,8 +494,8 @@
         </div>
 
         <!-- ==========================================================================
-             MENU DE NAVEGAÇÃO DOS MEMBROS (Membros Comuns & Adm)
-             ========================================================================== -->
+             MENU DE NAVEGAÇÃO DOS MEMBROS
+             ========================================================================== */ -->
         <div class="menu-abas">
             <button class="btn-aba ativa" onclick="alternarAba('aba-membros')">👥 Membros</button>
             <button class="btn-aba" onclick="alternarAba('aba-tutoriais')">📚 Tutoriais</button>
@@ -475,45 +524,25 @@
             </div>
         </div>
 
-        <!-- ABA 2: CENTRAL DE TUTORIAIS -->
+        <!-- ABA 2: CENTRAL DE TUTORIAIS (DINÂMICO) -->
         <div id="aba-tutoriais" class="conteudo-aba">
-            <div class="grade-recursos">
-                <div class="card-recurso">
-                    <h3>🚀 Fundamentos do Espaço (Movimentação)</h3>
-                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Domine Fast Fall, Dash Defensivo e recuperação de stage sem gastar todos os seus jumps prematuramente.</p>
-                </div>
-                <div class="card-recurso">
-                    <h3>🎯 Leitura de Esquivas (Dodge Reads)</h3>
-                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Padrões clássicos de punição para neutral dodge e esquivas direcionais para dentro/fora com Scythe e Blasters.</p>
-                </div>
+            <div class="grade-recursos" id="lista-tutoriais">
+                <!-- Carregado do Firestore -->
             </div>
         </div>
 
-        <!-- ABA 3: COMBOS 2V2 -->
+        <!-- ABA 3: COMBOS 2V2 (REDIRECIONAMENTO DIRETO) -->
         <div id="aba-combos" class="conteudo-aba">
-            <div class="grade-recursos">
-                <div class="card-recurso">
-                    <h3>⚔️ Sinergia de Scythe + Spear</h3>
-                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Combo Preto clássico: N-Light de Spear carregado seguindo de N-Air de Scythe para isolamento vertical do inimigo.</p>
-                </div>
-                <div class="card-recurso">
-                    <h3>💥 Finalizações de Área (Blackholes)</h3>
-                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Como travar o inimigo alternando D-Lights consecutivos coordenando o tempo de stun sem causar friendly fire.</p>
-                </div>
-            </div>
+            <a href="https://combocodex.com/combos/search/" target="_blank" class="btn-combo-codex">
+                <h3>ACESSAR COMBOCODEX ↗</h3>
+                <p>Navegue pela maior biblioteca pública de True Combos e Sinergias estruturadas para 2v2 de Brawlhalla.</p>
+            </a>
         </div>
 
-        <!-- ABA 4: CALENDÁRIO DE EVENTOS -->
+        <!-- ABA 4: CALENDÁRIO DE EVENTOS (DINÂMICO) -->
         <div id="aba-eventos" class="conteudo-aba">
-            <div class="grade-recursos">
-                <div class="card-recurso">
-                    <h3>🏆 Torneio Interno StarKindred</h3>
-                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Status: <strong>Planejado</strong><br>Formato 1v1 dupla eliminação. Inscrições abertas em breve nos canais oficiais.</p>
-                </div>
-                <div class="card-recurso">
-                    <h3>🪐 Treino Coletivo de Finais de Semana</h3>
-                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Status: <strong>Todo Sábado</strong><br>Salas customizadas abertas a partir das 19h para lobby de rotação e análise de replays.</p>
-                </div>
+            <div class="grade-recursos" id="lista-eventos">
+                <!-- Carregado do Firestore -->
             </div>
         </div>
 
@@ -552,6 +581,31 @@
                         <button type="submit" class="btn-painel-submit">Sobrescrever Ficha</button>
                     </form>
                 </div>
+
+                <!-- Painel 3: Gerenciar Recursos (Tutoriais & Eventos) -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h2>Publicar Novo Recurso</h2>
+                        <span>🚀</span>
+                    </div>
+                    <div class="form-painel" style="gap: 20px;">
+                        <!-- Adicionar Tutorial -->
+                        <div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                            <h4 style="color: var(--amarelo); margin-bottom: 8px; font-family: 'Orbitron';">Novo Tutorial</h4>
+                            <input type="text" id="adm-tut-titulo" class="input-painel" placeholder="Título do Vídeo" style="margin-bottom: 8px;">
+                            <input type="url" id="adm-tut-link" class="input-painel" placeholder="URL do YouTube (Completa)" style="margin-bottom: 8px;">
+                            <button onclick="publicarTutorial()" class="btn-painel-submit" style="width: 100%;">Postar Vídeo</button>
+                        </div>
+                        <!-- Adicionar Evento -->
+                        <div>
+                            <h4 style="color: var(--amarelo); margin-bottom: 8px; font-family: 'Orbitron';">Novo Evento</h4>
+                            <input type="text" id="adm-evt-titulo" class="input-painel" placeholder="Nome do Evento" style="margin-bottom: 8px;">
+                            <input type="text" id="adm-evt-status" class="input-painel" placeholder="Status / Data (ex: Planejado)" style="margin-bottom: 8px;">
+                            <textarea id="adm-evt-desc" class="input-painel" placeholder="Descrição rápida do formato..." style="margin-bottom: 8px;"></textarea>
+                            <button onclick="publicarEvento()" class="btn-painel-submit" style="width: 100%;">Postar Evento</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -559,11 +613,9 @@
     <!-- Lógica Exclusiva de Abas -->
     <script>
         function alternarAba(abaId) {
-            // Desativa botões e abas antigas
             document.querySelectorAll('.btn-aba').forEach(btn => btn.classList.remove('ativa'));
             document.querySelectorAll('.conteudo-aba').forEach(aba => aba.classList.remove('ativa'));
             
-            // Ativa o botão selecionado e sua respectiva seção
             event.currentTarget.classList.add('ativa');
             document.getElementById(abaId).classList.add('ativa');
         }
@@ -574,7 +626,7 @@
          ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
@@ -633,7 +685,6 @@
                     document.getElementById("auto-armas").value = dados["ArmaMain's"] || "";
                     document.getElementById("auto-elo").value = dados.elomax || "";
 
-                    // Liberação do Hangar de Liderança caso a patente seja superior
                     if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
                         eAdministrador = true;
                         document.getElementById("sessao-admin").style.display = "block";
@@ -641,13 +692,15 @@
                     }
 
                     carregarTabelaTripulacao();
+                    carregarTutoriais();
+                    carregarEventos();
                 }
             } catch (err) {
                 console.error("Erro ao puxar dados do banco:", err);
             }
         });
 
-        // AUTO-EDIÇÃO DE DADOS COSMÉTICOS
+        // AUTO-EDIÇÃO DE MEUS DADOS
         document.getElementById("form-auto-edicao").addEventListener("submit", async function(e) {
             e.preventDefault();
             const novoLegend = document.getElementById("auto-legend").value.trim();
@@ -670,7 +723,7 @@
             }
         });
 
-        // CARREGAMENTO GLOBAL DA TRIPULAÇÃO
+        // CARREGAR PILOTOS (TABELA)
         async function carregarTabelaTripulacao() {
             const tbody = document.getElementById("corpo-tabela-membros");
             try {
@@ -720,6 +773,120 @@
             }
         }
 
+        // CARREGAR TUTORIAIS DINAMICAMENTE
+        async function carregarTutoriais() {
+            const container = document.getElementById("lista-tutoriais");
+            container.innerHTML = "";
+            try {
+                const snap = await getDocs(collection(db, "tutoriais"));
+                if (snap.empty) {
+                    container.innerHTML = `<p style="color: var(--texto-mutado);">Nenhum tutorial tático ativo no momento.</p>`;
+                    return;
+                }
+                snap.forEach(d => {
+                    const t = d.data();
+                    let videoId = "";
+                    if(t.url) {
+                        videoId = t.url.split('v=')[1] || t.url.split('/').pop();
+                        if(videoId.includes('&')) {
+                            videoId = videoId.split('&')[0];
+                        }
+                    }
+                    
+                    const card = document.createElement("div");
+                    card.className = "card-recurso";
+                    card.innerHTML = `
+                        <div>
+                            <h3>${t.titulo}</h3>
+                            <iframe class="iframe-video" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 10px; width: 100%;" onclick="removerDado('tutoriais', '${d.id}')">Excluir Tutorial</button>` : ""}
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {}
+        }
+
+        // CARREGAR EVENTOS DINAMICAMENTE
+        async function carregarEventos() {
+            const container = document.getElementById("lista-eventos");
+            container.innerHTML = "";
+            try {
+                const snap = await getDocs(collection(db, "eventos"));
+                if (snap.empty) {
+                    container.innerHTML = `<p style="color: var(--texto-mutado);">Nenhum evento operacional agendado.</p>`;
+                    return;
+                }
+                snap.forEach(d => {
+                    const ev = d.data();
+                    const card = document.createElement("div");
+                    card.className = "card-recurso";
+                    card.innerHTML = `
+                        <div>
+                            <h3>${ev.titulo}</h3>
+                            <p style="color: var(--texto-mutado); font-size: 0.9rem; margin-bottom: 8px;">Status: <strong style="color: var(--amarelo);">${ev.status}</strong></p>
+                            <p style="color: var(--texto-mutado); font-size: 0.9rem;">${ev.descricao || "Sem detalhes adicionais."}</p>
+                        </div>
+                        ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 15px; width: 100%;" onclick="removerDado('eventos', '${d.id}')">Excluir Evento</button>` : ""}
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {}
+        }
+
+        // INTERAÇÃO DO ADMINISTRADOR: POSTAR TUTORIAL
+        window.publicarTutorial = async function() {
+            const titulo = document.getElementById("adm-tut-titulo").value.trim();
+            const url = document.getElementById("adm-tut-link").value.trim();
+
+            if(!titulo || !url) {
+                alert("Preencha todos os campos do tutorial!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "tutoriais"), { titulo, url });
+                alert("Novo tutorial publicado!");
+                location.reload();
+            } catch(e) {
+                alert("Erro ao publicar tutorial.");
+            }
+        };
+
+        // INTERAÇÃO DO ADMINISTRADOR: POSTAR EVENTO
+        window.publicarEvento = async function() {
+            const titulo = document.getElementById("adm-evt-titulo").value.trim();
+            const status = document.getElementById("adm-evt-status").value.trim();
+            const descricao = document.getElementById("adm-evt-desc").value.trim();
+
+            if(!titulo || !status || !descricao) {
+                alert("Preencha todos os campos do evento!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "eventos"), { titulo, status, descricao });
+                alert("Novo evento publicado!");
+                location.reload();
+            } catch(e) {
+                alert("Erro ao publicar evento.");
+            }
+        };
+
+        // EXCLUIR RECURSOS (TUTORIAIS / EVENTOS)
+        window.removerDado = async function(colecao, id) {
+            if (confirm("Deseja apagar permanentemente esse recurso das centrais de rádio?")) {
+                try {
+                    await deleteDoc(doc(db, colecao, id));
+                    alert("Recurso removido com sucesso!");
+                    location.reload();
+                } catch(e) {
+                    alert("Erro ao remover recurso.");
+                }
+            }
+        };
+
+        // COMUNICADOS GERAIS DO TOPO
         async function carregarComunicados() {
             const container = document.getElementById("conteiner-avisos");
             try {
@@ -729,8 +896,8 @@
                     const dados = docSnap.data();
                     container.innerHTML = `
                         <div class="aviso-item">
-                            <div class="aviso-data">${dados.data || 'DATA ESTELAR'}</div>
-                            <div class="aviso-texto">${dados.texto || 'Nenhum comunicado ativo.'}</div>
+                            <div class="aviso-data" style="font-family: 'Orbitron'; color: var(--amarelo); font-size: 0.8rem; margin-bottom: 5px;">${dados.data || 'DATA ESTELAR'}</div>
+                            <div class="aviso-texto" style="font-size: 0.9rem;">${dados.texto || 'Nenhum comunicado ativo.'}</div>
                         </div>
                     `;
                 }
@@ -773,6 +940,6 @@
                 window.location.href = "login.html";
             }
         }
-    </script>
+    </script>   
 </body>
 </html>
