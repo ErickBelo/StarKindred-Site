@@ -372,3 +372,49 @@ nav ul li a:hover {
         gap: 20px;
     }
 }
+/* Container que esconde o scroll lateral e limita a área visível */
+.membros-carrossel-container {
+    overflow: hidden;
+    width: 100%;
+    background: rgba(3, 9, 20, 0.8);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+/* A trilha que move os nomes em linha contínua */
+.membros-track {
+    display: flex;
+    width: max-content; /* Garante que o tamanho seja definido pelo conteúdo */
+    gap: 60px;          /* Espaçamento uniforme entre os nomes */
+    animation: rolarNomes 25s linear infinite;
+    will-change: transform; /* Otimiza a renderização da animação no navegador */
+}
+
+/* Estilo individual de cada nome */
+.membro-nome {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    white-space: nowrap; /* Impede que o nome quebre em duas linhas */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Animação que faz o loop infinito perfeito */
+@keyframes rolarNomes {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Move exatamente metade da largura total da track duplicada */
+        transform: translateX(-50%); 
+    }
+}
+
+/* Pausa o carrossel quando o usuário passa o mouse por cima (efeito tático extra!) */
+.membros-carrossel-container:hover .membros-track {
+    animation-play-state: paused;
+}
