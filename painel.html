@@ -7,20 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
-           PALETA DE CORES TÁTICA (Consistente com a Index/Login)
+           PALETA DE CORES TÁTICA
            ========================================================================== */
         :root {
-            --bg-principal: #030914;      /* Azul espacial profundo */
-            --bg-card: rgba(8, 18, 37, 0.85); /* Azul escuro semi-transparente */
-            --amarelo: #ffb703;           /* Amarelo vibrante */
-            --dourado: #d4af37;           /* Dourado para patentes e conquistas */
+            --bg-principal: #030914;      
+            --bg-card: rgba(8, 18, 37, 0.85); 
+            --amarelo: #ffb703;           
+            --dourado: #d4af37;           
             --texto-claro: #ffffff;
             --texto-mutado: #94a3b8;
             --borda-suave: rgba(212, 175, 55, 0.15);
+            --vermelho-erro: #ef4444;
+            --verde-sucesso: #10b981;
         }
 
         /* ==========================================================================
-           ESTILOS GERAIS & FUNDO ESPACIAL (CD)
+           ESTILOS GERAIS & FUNDO ESPACIAL
            ========================================================================== */
         * {
             margin: 0;
@@ -38,7 +40,6 @@
             position: relative;
         }
 
-        /* Estrelas estáticas de fundo */
         body::before {
             content: "";
             position: fixed;
@@ -55,7 +56,6 @@
             opacity: 0.35;
         }
 
-        /* Estrelas cintilantes com animação */
         body::after {
             content: "";
             position: fixed;
@@ -80,7 +80,7 @@
         }
 
         /* ==========================================================================
-           HEADER DO PAINEL (Barra de Status do Piloto)
+           HEADER E STATUS DO PILOTO
            ========================================================================== */
         header {
             display: flex;
@@ -116,7 +116,6 @@
         .saudacao {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.9rem;
-            color: var(--texto-claro);
         }
 
         .saudacao span {
@@ -138,8 +137,8 @@
         .btn-logoff {
             font-family: 'Orbitron', sans-serif;
             background: transparent;
-            border: 1px solid #ef4444;
-            color: #ef4444;
+            border: 1px solid var(--vermelho-erro);
+            color: var(--vermelho-erro);
             padding: 6px 15px;
             font-size: 0.8rem;
             border-radius: 4px;
@@ -148,13 +147,13 @@
         }
 
         .btn-logoff:hover {
-            background: #ef4444;
+            background: var(--vermelho-erro);
             color: #ffffff;
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
         }
 
         /* ==========================================================================
-           CONTEÚDO E GRID DO PAINEL
+           CONTEÚDO DO DASHBOARD
            ========================================================================== */
         .painel-container {
             max-width: 1200px;
@@ -169,10 +168,8 @@
             margin-bottom: 30px;
             border-left: 4px solid var(--amarelo);
             padding-left: 15px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
         }
 
-        /* Grade Principal do Dashboard */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -187,12 +184,6 @@
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(3px);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .painel-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 183, 3, 0.25);
         }
 
         .card-header {
@@ -208,204 +199,328 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
             color: var(--amarelo);
-            letter-spacing: 0.5px;
         }
 
-        .card-icone {
-            font-size: 1.3rem;
-            color: var(--dourado);
+        /* ==========================================================================
+           ÁREA EXCLUSIVA DE ADMINISTRAÇÃO (Oculta por Padrão)
+           ========================================================================== */
+        .admin-section {
+            display: none; /* Só aparece via JS para Líder Supremo / Adm */
+            margin-top: 50px;
+            border-top: 2px dashed var(--dourado);
+            padding-top: 40px;
         }
 
-        /* Conteúdos Internos dos Cards */
-        .aviso-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
         }
 
-        .aviso-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
+        .admin-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid var(--dourado);
+            border-radius: 8px;
+            padding: 30px;
         }
 
-        .aviso-data {
-            font-size: 0.75rem;
-            color: var(--dourado);
-            font-family: 'Orbitron', sans-serif;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .aviso-texto {
-            font-size: 0.95rem;
-            color: var(--texto-claro);
-        }
-
-        .treino-info {
+        /* Formulários Administrativos */
+        .form-admin {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
-        .status-badge {
-            align-self: flex-start;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid #10b981;
-            color: #10b981;
-            padding: 2px 8px;
+        .input-admin {
+            width: 100%;
+            background: #030914;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 4px;
-            text-transform: uppercase;
+            padding: 10px 15px;
+            color: var(--texto-claro);
+            outline: none;
         }
 
-        .status-badge.pendente {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid #f59e0b;
-            color: #f59e0b;
+        .input-admin:focus {
+            border-color: var(--amarelo);
         }
 
-        .metrica-box {
+        .btn-admin-submit {
+            font-family: 'Orbitron', sans-serif;
+            background: var(--dourado);
+            color: var(--bg-principal);
+            border: none;
+            border-radius: 4px;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-admin-submit:hover {
+            background: var(--amarelo);
+            box-shadow: 0 0 12px rgba(255, 183, 3, 0.3);
+        }
+
+        /* Tabela de Controle de Membros */
+        .membros-lista {
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .membro-linha {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .metrica-label {
-            font-size: 0.9rem;
-            color: var(--texto-mutado);
+        .btn-excluir {
+            background: transparent;
+            border: 1px solid var(--vermelho-erro);
+            color: var(--vermelho-erro);
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 4px;
         }
 
-        .metrica-valor {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-            color: var(--texto-claro);
-            font-size: 1.1rem;
-        }
-
-        .metrica-valor.destaque {
-            color: var(--amarelo);
-            text-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            .piloto-info {
-                flex-direction: column;
-                gap: 10px;
-            }
+        .btn-excluir:hover {
+            background: var(--vermelho-erro);
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header do Painel (Sincronizado) -->
+    <!-- Header -->
     <header>
         <div class="logo-painel">STAR<span>KINDRED</span></div>
-        
         <div class="piloto-info">
-            <div class="saudacao">Bem-vindo, Comandante <span id="nome-piloto">Piloto</span></div>
-            <div class="badge-patente">Oficial de Elite</div>
+            <div class="saudacao">Bem-vindo, Comandante <span id="nome-piloto">...</span></div>
+            <div id="display-patente" class="badge-patente">Piloto</div>
             <button class="btn-logoff" onclick="efetuarLogoff()">Logoff</button>
         </div>
     </header>
 
-    <!-- Container Principal do Painel -->
+    <!-- Conteúdo Geral do Membro -->
     <main class="painel-container">
         <h1 class="titulo-secao">Cabine de Comando</h1>
 
         <div class="dashboard-grid">
-            
-            <!-- CARD 1: Canal de Avisos -->
+            <!-- Avisos Gerais -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Mensagens da Liderança</h2>
-                    <span class="card-icone">📡</span>
+                    <span>📡</span>
                 </div>
-                <div class="aviso-item">
-                    <span class="aviso-data">14 JUL 2026</span>
-                    <p class="aviso-texto">Preparar para a próxima seletiva de 2v2 no final de semana. Afiem os combos de espada e foice.</p>
-                </div>
-                <div class="aviso-item">
-                    <span class="aviso-data">10 JUL 2026</span>
-                    <p class="aviso-texto">Novo recorde de atividade alcançado no nosso Discord oficial! Parabéns a toda a tripulação.</p>
+                <div id="conteiner-avisos">
+                    <p style="color: var(--texto-mutado);">Acessando canais de comunicação...</p>
                 </div>
             </div>
 
-            <!-- CARD 2: Cronograma de Treinos -->
+            <!-- Dados Operacionais do Jogador Logado -->
             <div class="painel-card">
                 <div class="card-header">
-                    <h2>Cronograma Tático</h2>
-                    <span class="card-icone">⚔️</span>
+                    <h2>Meus Dados de Voo</h2>
+                    <span>📊</span>
                 </div>
-                <div class="treino-info">
-                    <span class="status-badge">Confirmado</span>
-                    <p><strong>Atividade:</strong> Treino Aberto da Guilda (Saguão Customizado)</p>
-                    <p class="aviso-texto" style="font-size: 0.9rem;"><strong>Horário:</strong> Hoje às 20:00h</p>
-                </div>
-                <div class="treino-info" style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 15px;">
-                    <span class="status-badge pendente">Pendente</span>
-                    <p><strong>Atividade:</strong> Treino Seletivo de 2v2 (Comunidade)</p>
-                    <p class="aviso-texto" style="font-size: 0.9rem;"><strong>Horário:</strong> Sábado às 16:00h</p>
-                </div>
+                <p><strong>Main:</strong> <span id="main-jogador">Carregando...</span></p>
+                <p><strong>Elo Atual:</strong> <span id="elo-jogador">Carregando...</span></p>
+                <p style="margin-top: 10px;"><strong>Corehalla Link:</strong> <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none;">Acessar Perfil</a></p>
             </div>
-
-            <!-- CARD 3: Estatísticas de Órbita -->
-            <div class="painel-card">
-                <div class="card-header">
-                    <h2>Dados Operacionais</h2>
-                    <span class="card-icone">📊</span>
-                </div>
-                <div class="metrica-box">
-                    <span class="metrica-label">Total de Membros</span>
-                    <span class="metrica-valor">8 Ativos</span>
-                </div>
-                <div class="metrica-box">
-                    <span class="metrica-label">Estatuto da Frota</span>
-                    <span class="metrica-valor destaque">Em Órbita</span>
-                </div>
-                <div class="metrica-box">
-                    <span class="metrica-label">Peak Elo da Guilda</span>
-                    <span class="metrica-valor" style="color: var(--dourado);">2400 (Arisu)</span>
-                </div>
-            </div>
-
         </div>
+
+        <!-- ==========================================================================
+             COMPONENTE: CONSOLE DE ADMINISTRAÇÃO (SÓ ABRE SE FOR ADM NO BANCO)
+             ========================================================================== -->
+        <section id="sessao-admin" class="admin-section">
+            <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
+            
+            <div class="admin-grid">
+                <!-- Painel 1: Gerenciar Tripulante -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h2>Ajustar Piloto (Elo/Corehalla)</h2>
+                        <span>⚙️</span>
+                    </div>
+                    <form id="form-ajuste-membro" class="form-admin">
+                        <input type="text" id="adm-membro-nick" class="input-admin" placeholder="Nick exato do piloto (ex: Breki)" required>
+                        <input type="number" id="adm-membro-elo" class="input-admin" placeholder="Novo Elo Máximo" required>
+                        <input type="url" id="adm-membro-corehalla" class="input-admin" placeholder="Link do Corehalla" required>
+                        <button type="submit" class="btn-admin-submit">Atualizar Ficha do Piloto</button>
+                    </form>
+                </div>
+
+                <!-- Painel 2: Controle de Tripulantes / Exclusão -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h2>Lista da Tripulação (Remover Membros)</h2>
+                        <span>👥</span>
+                    </div>
+                    <div id="lista-membros-controle" class="membros-lista">
+                        <!-- Gerado dinamicamente via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Script de Gestão do Painel de Bordo (CD) -->
-    <script>
-        // Executado ao carregar a página para preencher os dados do piloto e blindar a rota
-        document.addEventListener("DOMContentLoaded", function() {
-            // Puxa o nome guardado no navegador durante o login
-            const nomeSalvo = localStorage.getItem("sk_usuario");
+    <!-- ==========================================================================
+         CÓDIGO DE INTEGRAÇÃO DO CONTROLADOR (Corrigido)
+         ========================================================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            // BLINDAGEM DE ROTA: Se o usuário tentar acessar o painel diretamente sem logar, ele é expulso para a index
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
+            authDomain: "starkindred-51af3.firebaseapp.com",
+            projectId: "starkindred-51af3",
+            storageBucket: "starkindred-51af3.firebasestorage.app",
+            messagingSenderId: "833370470650",
+            appId: "1:833370470650:web:162ac3be5b8c24866c7143",
+            measurementId: "G-FFE53C599V"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const nomeSalvo = localStorage.getItem("sk_usuario");
+
+        document.addEventListener("DOMContentLoaded", async function() {
             if (!nomeSalvo) {
-                alert("Identificação de piloto não encontrada! Redirecionando para a central de acesso...");
+                alert("Identificação não autorizada! Retornando ao login...");
                 window.location.href = "login.html";
                 return;
             }
 
-            // Exibe o nome do comandante no painel
-            document.getElementById("nome-piloto").textContent = nomeSalvo;
+            // Busca os dados do piloto logado no Firestore
+            try {
+                const docRef = doc(db, "membros", nomeSalvo);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const dados = docSnap.data();
+
+                    // Preenche a barra de status no topo
+                    document.getElementById("nome-piloto").textContent = dados.nome;
+                    document.getElementById("display-patente").textContent = dados.patente || "Membro";
+                    
+                    // CORREÇÃO AQUI: Acesso seguro à propriedade ArmaMain's com colchetes para não quebrar o código
+                    const armaMain = dados["ArmaMain's"] || "Não definido";
+                    document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
+                    document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
+                    
+                    const linkCore = document.getElementById("corehalla-jogador");
+                    if (dados.corehalla) {
+                        linkCore.href = dados.corehalla;
+                        linkCore.textContent = "Ver no Corehalla ↗";
+                    } else {
+                        linkCore.textContent = "Link não associado";
+                        linkCore.removeAttribute("href");
+                    }
+
+                    // VALIDOR DE PERMISSÃO: Se o cargo for "Líder Supremo" ou "Administrador"
+                    if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
+                        document.getElementById("sessao-admin").style.display = "block";
+                        carregarGerenciadorMembros();
+                    }
+                }
+            } catch (err) {
+                console.error("Erro ao puxar dados do banco:", err);
+            }
         });
 
-        // Função de Logoff para limpar a sessão de comando
+        // ==========================================================================
+        // FUNÇÃO DE ATUALIZAÇÃO (SALVAR DADOS DO MEMBRO)
+        // ==========================================================================
+        document.getElementById("form-ajuste-membro").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const nickAlvo = document.getElementById("adm-membro-nick").value.trim();
+            const eloAlvo = document.getElementById("adm-membro-elo").value;
+            const corehallaAlvo = document.getElementById("adm-membro-corehalla").value.trim();
+
+            try {
+                const docRef = doc(db, "membros", nickAlvo);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    // Atualiza o documento no Firestore com os dados novos
+                    await updateDoc(docRef, {
+                        elomax: eloAlvo,
+                        corehalla: corehallaAlvo
+                    });
+                    alert(`Ficha do Piloto ${nickAlvo} atualizada com sucesso no banco!`);
+                    location.reload(); // Recarrega para refletir as alterações
+                } else {
+                    alert("Piloto não encontrado no banco de dados.");
+                }
+            } catch (err) {
+                console.error("Erro ao atualizar piloto:", err);
+                alert("Erro ao realizar operação.");
+            }
+        });
+
+        // ==========================================================================
+        // CARREGA E GERA A LISTA DE CONTROLE DE EXCLUSÃO
+        // ==========================================================================
+        async function carregarGerenciadorMembros() {
+            const container = document.getElementById("lista-membros-controle");
+            container.innerHTML = "<p>Puxando tripulação...</p>";
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "membros"));
+                container.innerHTML = ""; // Limpa
+
+                querySnapshot.forEach((docSnap) => {
+                    const m = docSnap.data();
+                    const idMembro = docSnap.id;
+
+                    const div = document.createElement("div");
+                    div.className = "membro-linha";
+                    div.innerHTML = `
+                        <span><strong>${m.nome}</strong> (${m.patente || 'Membro'})</span>
+                        <button class="btn-excluir" data-id="${idMembro}">Remover</button>
+                    `;
+                    container.appendChild(div);
+                });
+
+                // Adiciona os listeners nos botões de excluir
+                const botoes = container.querySelectorAll(".btn-excluir");
+                botoes.forEach(btn => {
+                    btn.addEventListener("click", async function() {
+                        const idParaRemover = this.getAttribute("data-id");
+                        
+                        if (idParaRemover === nomeSalvo) {
+                            alert("Comandante, você não pode excluir o seu próprio registro de voo!");
+                            return;
+                        }
+
+                        if (confirm(`Tem certeza de que deseja banir/remover o piloto ${idParaRemover} da base da guilda?`)) {
+                            await deleteDoc(doc(db, "membros", idParaRemover));
+                            alert(`Piloto ${idParaRemover} foi removido com sucesso.`);
+                            location.reload();
+                        }
+                    });
+                });
+
+            } catch (err) {
+                console.error("Erro ao listar tripulantes:", err);
+            }
+        }
+    </script>
+
+    <script>
         function efetuarLogoff() {
             if (confirm("Deseja fechar os sistemas e sair da cabine de comando?")) {
-                // Remove a chave do usuário para desautenticar
                 localStorage.removeItem("sk_usuario");
-                
-                alert("Sistemas de bordo encerrados com sucesso!");
-                // Redireciona para o login
+                localStorage.removeItem("sk_patente");
                 window.location.href = "login.html";
             }
         }
