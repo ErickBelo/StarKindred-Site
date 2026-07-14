@@ -3,205 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | Autenticação de Operador</title>
-    <link rel="stylesheet" href="style.css">
+    <title>StarKindred | Login Estelar</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos específicos para centralizar e formatar a tela de login */
-        body {
-            margin: 0;
-            padding: 0;
-            background: #050b14;
-            color: #fff;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        /* ==========================================================================
+           PALETA DE CORES TÁTICA (Consistente com a Index)
+           ========================================================================== */
+        :root {
+            --bg-principal: #030914;      /* Azul espacial profundo */
+            --bg-card: rgba(8, 18, 37, 0.85); /* Azul escuro semi-transparente */
+            --amarelo: #ffb703;           /* Amarelo vibrante */
+            --dourado: #d4af37;           /* Dourado para detalhes e bordas */
+            --texto-claro: #ffffff;
+            --texto-mutado: #94a3b8;
+            --vermelho-erro: #ef4444;     /* Para feedbacks visuais futuros */
         }
 
-        .login-box {
-            background: #0a192f;
-            border: 1px solid rgba(0, 180, 216, 0.25);
-            border-radius: 8px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            text-align: center;
+        /* ==========================================================================
+           ESTILOS GERAIS & FUNDO ESPACIAL (ESTRELAS)
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
-        .login-box h1 {
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Camada 1: Estrelas estáticas */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            opacity: 0.4;
+        }
+
+        /* Camada 2: Estrelas douradas/brancas piscando suavemente */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background-image: 
+                radial-gradient(rgba(214, 175, 55, 0.4), rgba(214, 175, 55, 0.1) 2px, transparent 30px),
+                radial-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1) 1.5px, transparent 20px);
+            background-size: 400px 400px, 300px 300px;
+            background-position: 80px 120px, 210px 50px;
+            animation: cintilar 6s infinite alternate ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes cintilar {
+            0% { opacity: 0.15; }
+            50% { opacity: 0.45; }
+            100% { opacity: 0.2; }
+        }
+
+        /* ==========================================================================
+           HEADER SIMPLIFICADO (Para manter foco no login, mas permitir voltar)
+           ========================================================================== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(3, 9, 20, 0.85);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        .logo {
             font-family: 'Orbitron', sans-serif;
-            color: #00b4d8;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dourado);
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            transition: color 0.3s;
+        }
+
+        .logo:hover {
+            color: var(--amarelo);
+        }
+
+        .btn-voltar {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--texto-claro);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .btn-voltar:hover {
+            color: var(--amarelo);
+        }
+
+        /* ==========================================================================
+           CARD DE LOGIN
+           ========================================================================== */
+        .main-login {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            animation: surgirCard 0.5s ease-out;
+        }
+
+        @keyframes surgirCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-box h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--amarelo);
             font-size: 1.8rem;
+            text-align: center;
             margin-bottom: 10px;
             letter-spacing: 1px;
         }
 
         .login-box p {
-            color: #94a3b8;
-            font-size: 0.9rem;
+            color: var(--texto-mutado);
+            font-size: 0.95rem;
+            text-align: center;
             margin-bottom: 30px;
         }
 
-        .form-login {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            text-align: left;
+        /* Campos do Formulário */
+        .input-grupo {
+            position: relative;
+            margin-bottom: 22px;
         }
 
-        .input-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .input-wrapper label {
+        .input-grupo label {
+            display: block;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            color: #00b4d8;
+            color: var(--dourado);
+            font-size: 0.8rem;
             font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
         }
 
-        .input-sk {
-            background: #050b14;
-            border: 1px solid rgba(0, 180, 216, 0.3);
+        .input-grupo input {
+            width: 100%;
+            background: rgba(3, 9, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 4px;
-            padding: 12px;
-            color: white;
-            font-size: 0.95rem;
-            transition: all 0.3s;
-        }
-
-        .input-sk:focus {
+            padding: 12px 16px;
+            color: var(--texto-claro);
+            font-size: 1rem;
             outline: none;
-            border-color: #00b4d8;
-            box-shadow: 0 0 8px rgba(0, 180, 216, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .btn-login {
-            background: #00b4d8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 14px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            margin-top: 10px;
-            text-align: center;
+        /* Foco no Input (Efeito de brilho estelar) */
+        .input-grupo input:focus {
+            border-color: var(--amarelo);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.25);
+            background: rgba(3, 9, 20, 0.95);
         }
 
-        .btn-login:hover {
-            background: #0077b6;
-        }
-
-        .btn-login:active {
-            transform: scale(0.98);
-        }
-
-        .erro-mensagem {
-            color: #ff4d4d;
+        /* Link de Esqueceu a Senha */
+        .esqueceu-senha {
+            display: block;
+            text-align: right;
             font-size: 0.85rem;
+            color: var(--texto-mutado);
+            text-decoration: none;
+            margin-top: -12px;
+            margin-bottom: 25px;
+            transition: color 0.3s;
+        }
+
+        .esqueceu-senha:hover {
+            color: var(--amarelo);
+        }
+
+        /* Botão de Submissão */
+        .btn-entrar {
+            width: 100%;
+            font-family: 'Orbitron', sans-serif;
+            background: var(--amarelo);
+            color: var(--bg-principal);
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+        }
+
+        .btn-entrar:hover {
+            background: var(--dourado);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Rodapé do Card (Registro) */
+        .login-footer {
+            margin-top: 25px;
             text-align: center;
-            margin-top: 10px;
-            display: none;
-            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            color: var(--texto-mutado);
+        }
+
+        .login-footer a {
+            color: var(--amarelo);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .login-footer a:hover {
+            color: var(--dourado);
+        }
+
+        /* ==========================================================================
+           FOOTER DA PÁGINA
+           ========================================================================== */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: var(--texto-mutado);
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            background: rgba(3, 9, 20, 0.9);
         }
     </style>
 </head>
 <body>
 
-    <div class="login-box">
-        <h1>StarKindred</h1>
-        <p>Insira suas credenciais para acessar o QG</p>
+    <!-- Topo da Página -->
+    <header>
+        <a href="index.html" class="logo">StarKindred</a>
+        <a href="index.html" class="btn-voltar">← Voltar para a Home</a>
+    </header>
 
-        <form id="form-autenticacao" class="form-login">
-            <div class="input-wrapper">
-                <label>Codinome / Nick de Jogo</label>
-                <input type="text" id="login-usuario" class="input-sk" placeholder="Ex: Operador01" required autocomplete="off">
+    <!-- Área de Login Centralizada -->
+    <main class="main-login">
+        <div class="login-box">
+            <h2>Acessar Painel</h2>
+            <p>Conecte-se à rede de elite da StarKindred</p>
+
+            <form id="form-login" onsubmit="manipularLogin(event)">
+                <!-- Input Usuário -->
+                <div class="input-grupo">
+                    <label for="usuario">USUÁRIO OU EMAIL</label>
+                    <input type="text" id="usuario" placeholder="Insira seu login" required autocomplete="username">
+                </div>
+
+                <!-- Input Senha -->
+                <div class="input-grupo">
+                    <label for="senha">SENHA ESTELAR</label>
+                    <input type="password" id="senha" placeholder="••••••••••••" required autocomplete="current-password">
+                </div>
+
+                <!-- Link recuperar -->
+                <a href="#" class="esqueceu-senha">Esqueceu a senha?</a>
+
+                <!-- Botão de Ação -->
+                <button type="submit" class="btn-entrar">Iniciar Ignição</button>
+            </form>
+
+            <div class="login-footer">
+                Não faz parte da frota? <a href="#">Recrutar-se</a>
             </div>
+        </div>
+    </main>
 
-            <div class="input-wrapper">
-                <label>Chave de Acesso Tática</label>
-                <input type="password" id="login-senha" class="input-sk" placeholder="••••••••" required>
-            </div>
+    <!-- Rodapé -->
+    <footer>
+        &copy; 2026 StarKindred. Todos os direitos reservados.
+    </footer>
 
-            <div id="msg-erro" class="erro-mensagem">⚠️ Credenciais incorretas ou inválidas.</div>
-
-            <button type="submit" class="btn-login">Autenticar Terminal</button>
-        </form>
-    </div>
-
+    <!-- Lógica de Simulação de Login -->
     <script>
-        // Lista de usuários autorizados no sistema (Hardcoded / Fixo)
-        // Adicione ou mude os usuários e senhas aqui conforme necessário
-        const listaUsuariosValidos = {
-            "admin": "admin123",
-            "Breki": "breki2026",
-            "Isaias": "senha123",
-            "Kurona": "senha456",
-            "Alberto": "senha789"
-        };
+        function manipularLogin(event) {
+            event.preventDefault();
+            
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
 
-        document.getElementById("form-autenticacao").addEventListener("submit", function(e) {
-            e.preventDefault();
-
-            const usuarioInput = document.getElementById("login-usuario").value.trim();
-            const senhaInput = document.getElementById("login-senha").value;
-            const msgErro = document.getElementById("msg-erro");
-
-            // Validação simples: ignora maiúsculas/minúsculas apenas na busca da chave do objeto
-            const chaveEncontrada = Object.keys(listaUsuariosValidos).find(
-                key => key.toLowerCase() === usuarioInput.toLowerCase()
-            );
-
-            if (chaveEncontrada && listaUsuariosValidos[chaveEncontrada] === senhaInput) {
-                // Preserva a grafia original cadastrada na lista (ex: "Breki" em vez de "breki")
-                const nickOficial = chaveEncontrada;
-
-                // 1. Ativa a trava de segurança do painel
-                localStorage.setItem("sk_autenticado", "true");
-
-                // 2. Salva o usuário ativo na sessão
-                localStorage.setItem("sk_usuario", nickOficial);
-
-                // 3. Define a role padrão (Admin ou Membro) caso seja o primeiro login
-                if (nickOficial.toLowerCase() === "admin") {
-                    localStorage.setItem("sk_tipo_usuario", "admin");
-                    localStorage.setItem(`sk_role_${nickOficial}`, "admin");
-                    localStorage.setItem(`sk_role_tipo_${nickOficial}`, "admin");
-                } else {
-                    // Só define como membro padrão se o ADM já não tiver alterado a patente antes
-                    if (!localStorage.getItem(`sk_role_${nickOficial}`)) {
-                        localStorage.setItem("sk_tipo_usuario", "membro");
-                        localStorage.setItem(`sk_role_${nickOficial}`, "membro");
-                        localStorage.setItem(`sk_role_tipo_${nickOficial}`, "membro");
-                    }
-                }
-
-                // 4. Registra o operador na persistência local para aparecer no painel staff (admin.html)
-                localStorage.setItem(`sk_user_${nickOficial}`, "ativo");
-
-                // Oculta erro e joga para o Painel Principal
-                msgErro.style.display = "none";
-                window.location.href = "painel.html";
-
-            } else {
-                // Exibe mensagem de erro tático
-                msgErro.style.display = "block";
-                document.getElementById("login-senha").value = "";
-                document.getElementById("login-senha").focus();
-            }
-        });
-
-        // Limpa resquícios de sessões antigas ao carregar a página de login
-        localStorage.removeItem("sk_autenticado");
+            // Simulação de login bem sucedido
+            alert(`Sistemas iniciados! Bem-vindo de volta, comandante ${usuario}.`);
+            
+            // Aqui você redirecionaria para o painel ou dashboard da guilda no futuro
+            window.location.href = "index.html";
+        }
     </script>
 </body>
 </html>
