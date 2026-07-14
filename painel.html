@@ -153,7 +153,7 @@
         }
 
         /* ==========================================================================
-           CONTEÚDO DO DASHBOARD
+           CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS (MEMBROS)
            ========================================================================== */
         .painel-container {
             max-width: 1200px;
@@ -201,26 +201,50 @@
             color: var(--amarelo);
         }
 
-        /* Estilos do Aviso do Painel */
-        .aviso-item {
-            border-left: 2px solid var(--amarelo);
-            padding-left: 12px;
-            margin-bottom: 15px;
+        /* Menu de Opções dos Membros */
+        .menu-abas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
         }
 
-        .aviso-data {
+        .btn-aba {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            color: var(--dourado);
-            margin-bottom: 4px;
+            background: rgba(8, 18, 37, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--texto-mutado);
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
         }
 
-        .aviso-texto {
-            font-size: 0.95rem;
-            color: #e2e8f0;
+        .btn-aba:hover, .btn-aba.ativa {
+            border-color: var(--amarelo);
+            color: var(--texto-claro);
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.1);
         }
 
-        /* Formulários Compartilhados / Edição */
+        .conteudo-aba {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .conteudo-aba.ativa {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Formulários / Inputs */
         .form-painel {
             display: flex;
             flex-direction: column;
@@ -241,11 +265,6 @@
             border-color: var(--amarelo);
         }
 
-        textarea.input-painel {
-            resize: vertical;
-            min-height: 60px;
-        }
-
         .btn-painel-submit {
             font-family: 'Orbitron', sans-serif;
             background: var(--dourado);
@@ -263,7 +282,6 @@
             box-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
         }
 
-        /* Botão Vermelho de Remover Membro */
         .btn-excluir {
             font-family: 'Orbitron', sans-serif;
             background: transparent;
@@ -282,12 +300,8 @@
         }
 
         /* ==========================================================================
-           COMPONENTE: LISTA DA TRIPULAÇÃO (ACESSO GERAL)
+           TABELA DA TRIPULAÇÃO
            ========================================================================== */
-        .secao-tripulacao {
-            margin-top: 40px;
-        }
-
         .tabela-membros {
             width: 100%;
             border-collapse: collapse;
@@ -295,7 +309,6 @@
             border: 1px solid var(--borda-suave);
             border-radius: 8px;
             overflow: hidden;
-            margin-top: 15px;
         }
 
         .tabela-membros th, .tabela-membros td {
@@ -310,10 +323,6 @@
             background: rgba(8, 18, 37, 0.95);
             color: var(--amarelo);
             text-transform: uppercase;
-        }
-
-        .tabela-membros tr:hover {
-            background: rgba(255, 255, 255, 0.02);
         }
 
         .badge-tabela {
@@ -333,6 +342,27 @@
 
         .coluna-acoes {
             text-align: right;
+        }
+
+        /* Estilo para Cards internos de Tutoriais/Combos */
+        .grade-recursos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card-recurso {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .card-recurso h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--amarelo);
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
 
         /* ==========================================================================
@@ -395,7 +425,7 @@
                 </div>
                 <p><strong>Main:</strong> <span id="main-jogador">Carregando...</span></p>
                 <p><strong>Elo Atual:</strong> <span id="elo-jogador">Carregando...</span></p>
-                <p style="margin-top: 10px;"><strong>Corehalla Link:</strong> <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none;">Acessar Perfil</a></p>
+                <p style="margin-top: 10px;"><strong>Corehalla:</strong> <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none;">Acessar Perfil</a></p>
             </div>
 
             <!-- FORMULÁRIO: MEU PERFIL (Qualquer membro pode se auto-editar aqui!) -->
@@ -415,10 +445,17 @@
         </div>
 
         <!-- ==========================================================================
-             COMPONENTE: TABELA DE TRIPULAÇÃO COMPARTILHADA (PARA TODOS OS JOGADORES)
+             MENU DE NAVEGAÇÃO DOS MEMBROS (Membros Comuns & Adm)
              ========================================================================== -->
-        <section class="secao-tripulacao">
-            <h2 class="titulo-secao">Tripulação da Guilda</h2>
+        <div class="menu-abas">
+            <button class="btn-aba ativa" onclick="alternarAba('aba-membros')">👥 Membros</button>
+            <button class="btn-aba" onclick="alternarAba('aba-tutoriais')">📚 Tutoriais</button>
+            <button class="btn-aba" onclick="alternarAba('aba-combos')">⚔️ Combos 2v2</button>
+            <button class="btn-aba" onclick="alternarAba('aba-eventos')">🏆 Eventos</button>
+        </div>
+
+        <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
+        <div id="aba-membros" class="conteudo-aba ativa">
             <div style="overflow-x: auto;">
                 <table class="tabela-membros">
                     <thead>
@@ -432,11 +469,53 @@
                         </tr>
                     </thead>
                     <tbody id="corpo-tabela-membros">
-                        <!-- Gerado via JS dinamicamente para todos os usuários -->
+                        <!-- Inserido dinamicamente -->
                     </tbody>
                 </table>
             </div>
-        </section>
+        </div>
+
+        <!-- ABA 2: CENTRAL DE TUTORIAIS -->
+        <div id="aba-tutoriais" class="conteudo-aba">
+            <div class="grade-recursos">
+                <div class="card-recurso">
+                    <h3>🚀 Fundamentos do Espaço (Movimentação)</h3>
+                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Domine Fast Fall, Dash Defensivo e recuperação de stage sem gastar todos os seus jumps prematuramente.</p>
+                </div>
+                <div class="card-recurso">
+                    <h3>🎯 Leitura de Esquivas (Dodge Reads)</h3>
+                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Padrões clássicos de punição para neutral dodge e esquivas direcionais para dentro/fora com Scythe e Blasters.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 3: COMBOS 2V2 -->
+        <div id="aba-combos" class="conteudo-aba">
+            <div class="grade-recursos">
+                <div class="card-recurso">
+                    <h3>⚔️ Sinergia de Scythe + Spear</h3>
+                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Combo Preto clássico: N-Light de Spear carregado seguindo de N-Air de Scythe para isolamento vertical do inimigo.</p>
+                </div>
+                <div class="card-recurso">
+                    <h3>💥 Finalizações de Área (Blackholes)</h3>
+                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Como travar o inimigo alternando D-Lights consecutivos coordenando o tempo de stun sem causar friendly fire.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 4: CALENDÁRIO DE EVENTOS -->
+        <div id="aba-eventos" class="conteudo-aba">
+            <div class="grade-recursos">
+                <div class="card-recurso">
+                    <h3>🏆 Torneio Interno StarKindred</h3>
+                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Status: <strong>Planejado</strong><br>Formato 1v1 dupla eliminação. Inscrições abertas em breve nos canais oficiais.</p>
+                </div>
+                <div class="card-recurso">
+                    <h3>🪐 Treino Coletivo de Finais de Semana</h3>
+                    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Status: <strong>Todo Sábado</strong><br>Salas customizadas abertas a partir das 19h para lobby de rotação e análise de replays.</p>
+                </div>
+            </div>
+        </div>
 
         <!-- ==========================================================================
              COMPONENTE: CONSOLE DE ADMINISTRAÇÃO (APENAS LIDERANÇA / ADMS)
@@ -458,7 +537,7 @@
                     </form>
                 </div>
 
-                <!-- Painel 2: Ajustar Qualquer Piloto (Para Adm editar outros membros) -->
+                <!-- Painel 2: Ajustar Qualquer Piloto -->
                 <div class="admin-card">
                     <div class="card-header">
                         <h2>Ajustar Piloto Alheio</h2>
@@ -476,6 +555,19 @@
             </div>
         </section>
     </main>
+
+    <!-- Lógica Exclusiva de Abas -->
+    <script>
+        function alternarAba(abaId) {
+            // Desativa botões e abas antigas
+            document.querySelectorAll('.btn-aba').forEach(btn => btn.classList.remove('ativa'));
+            document.querySelectorAll('.conteudo-aba').forEach(aba => aba.classList.remove('ativa'));
+            
+            // Ativa o botão selecionado e sua respectiva seção
+            event.currentTarget.classList.add('ativa');
+            document.getElementById(abaId).classList.add('ativa');
+        }
+    </script>
 
     <!-- ==========================================================================
          INTEGRAÇÃO FIRESTORE E MECÂNICA DO PAINEL
@@ -507,18 +599,15 @@
                 return;
             }
 
-            // Puxa avisos da liderança em tempo real
             carregarComunicados();
 
             try {
-                // Busca o perfil do piloto que acabou de logar
                 const docRef = doc(db, "membros", nomeSalvo);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const dados = docSnap.data();
 
-                    // Preenche saudações e dados de voo
                     document.getElementById("nome-piloto").textContent = dados.nome;
                     document.getElementById("display-patente").textContent = dados.patente || "Membro";
                     
@@ -526,34 +615,31 @@
                     document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
                     document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
                     
-                    // CORREÇÃO: Busca o link tanto minúsculo quanto maiúsculo
                     const valorCorehalla = dados.corehalla || dados.Corehalla;
                     const linkCore = document.getElementById("corehalla-jogador");
 
-                    if (valorCorehalla && valorCorehalla.trim() !== "" && valorCorehalla !== '""' && valorCorehalla !== '"" ""') {
+                    if (valorCorehalla && valorCorehalla.trim() !== "" && valorCorehalla !== '""') {
                         const linkLimpo = valorCorehalla.replace(/"/g, '').trim();
                         linkCore.href = linkLimpo;
-                        linkCore.textContent = "Ver no Corehalla ↗";
+                        linkCore.textContent = "Ver Perfil ↗";
                         document.getElementById("auto-corehalla").value = linkLimpo;
                     } else {
-                        linkCore.textContent = "Link não associado";
+                        linkCore.textContent = "Não associado";
                         linkCore.removeAttribute("href");
                         document.getElementById("auto-corehalla").value = "";
                     }
 
-                    // Preenche os campos remanescentes do formulário "Meu Perfil"
                     document.getElementById("auto-legend").value = dados.mainLegend || "";
                     document.getElementById("auto-armas").value = dados["ArmaMain's"] || "";
                     document.getElementById("auto-elo").value = dados.elomax || "";
 
-                    // Valida privilégios administrativos
+                    // Liberação do Hangar de Liderança caso a patente seja superior
                     if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
                         eAdministrador = true;
                         document.getElementById("sessao-admin").style.display = "block";
-                        document.getElementById("th-acoes").style.display = "table-cell"; // Exibe cabeçalho de exclusão
+                        document.getElementById("th-acoes").style.display = "table-cell"; 
                     }
 
-                    // Carrega a tabela de membros pública para todos
                     carregarTabelaTripulacao();
                 }
             } catch (err) {
@@ -561,9 +647,7 @@
             }
         });
 
-        // ==========================================================================
-        // SISTEMA: QUALQUER MEMBRO SE AUTO-EDITAR
-        // ==========================================================================
+        // AUTO-EDIÇÃO DE DADOS COSMÉTICOS
         document.getElementById("form-auto-edicao").addEventListener("submit", async function(e) {
             e.preventDefault();
             const novoLegend = document.getElementById("auto-legend").value.trim();
@@ -582,29 +666,21 @@
                 alert("Seu perfil tático foi atualizado com sucesso!");
                 location.reload();
             } catch (err) {
-                console.error("Erro ao salvar auto-edição:", err);
                 alert("Falha ao atualizar o seu perfil.");
             }
         });
 
-        // ==========================================================================
-        // TABELA DE MEMBROS (VISÍVEL PARA ADMS E MEMBROS)
-        // ==========================================================================
+        // CARREGAMENTO GLOBAL DA TRIPULAÇÃO
         async function carregarTabelaTripulacao() {
             const tbody = document.getElementById("corpo-tabela-membros");
-            tbody.innerHTML = "<tr><td colspan='6'>Puxando dados da frota...</td></tr>";
-
             try {
                 const querySnapshot = await getDocs(collection(db, "membros"));
-                tbody.innerHTML = ""; // Limpa
+                tbody.innerHTML = "";
 
                 querySnapshot.forEach((docSnap) => {
                     const m = docSnap.data();
                     const idMembro = docSnap.id;
-
                     const classeBadge = (m.patente === "Líder Supremo" || m.patente === "Administrador") ? "lider" : "";
-                    
-                    // Pega o link do corehalla da tabela tratando maiúsculas/minúsculas
                     const campoLink = m.corehalla || m.Corehalla;
                     const linkCorehalla = campoLink ? campoLink.replace(/"/g, '').trim() : "";
 
@@ -617,49 +693,38 @@
                         <td>
                             ${linkCorehalla ? `<a href="${linkCorehalla}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
                         </td>
-                        <td class="coluna-acoes t-acao" style="display: ${eAdministrador ? 'table-cell' : 'none'};">
+                        <td class="coluna-acoes" style="display: ${eAdministrador ? 'table-cell' : 'none'};">
                             <button class="btn-excluir" data-id="${idMembro}">Remover</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
 
-                // Se for administrador, ativa os botões de remoção de pilotos
                 if (eAdministrador) {
-                    const botoes = tbody.querySelectorAll(".btn-excluir");
-                    botoes.forEach(btn => {
+                    tbody.querySelectorAll(".btn-excluir").forEach(btn => {
                         btn.addEventListener("click", async function() {
                             const idParaRemover = this.getAttribute("data-id");
-                            
                             if (idParaRemover === nomeSalvo) {
                                 alert("Você não pode ejetar a si mesmo da própria frota!");
                                 return;
                             }
-
-                            if (confirm(`Tem certeza de que deseja banir/remover o piloto ${idParaRemover}?`)) {
+                            if (confirm(`Remover o piloto ${idParaRemover} da guilda?`)) {
                                 await deleteDoc(doc(db, "membros", idParaRemover));
-                                alert(`Piloto ${idParaRemover} foi desconectado da guilda.`);
                                 location.reload();
                             }
                         });
                     });
                 }
-
             } catch (err) {
-                console.error("Erro ao montar a tabela:", err);
                 tbody.innerHTML = "<tr><td colspan='6'>Erro na conexão do rádio de frota.</td></tr>";
             }
         }
 
-        // ==========================================================================
-        // CARREGA COMUNICADOS DO FIRESTORE
-        // ==========================================================================
         async function carregarComunicados() {
             const container = document.getElementById("conteiner-avisos");
             try {
                 const docRef = doc(db, "avisos", "comunicado");
                 const docSnap = await getDoc(docRef);
-
                 if (docSnap.exists()) {
                     const dados = docSnap.data();
                     container.innerHTML = `
@@ -668,72 +733,43 @@
                             <div class="aviso-texto">${dados.texto || 'Nenhum comunicado ativo.'}</div>
                         </div>
                     `;
-                } else {
-                    container.innerHTML = `<p style="color: var(--texto-mutado);">Nenhuma transmissão activa de momento.</p>`;
                 }
-            } catch (err) {
-                console.error("Erro ao obter aviso:", err);
-            }
+            } catch (err) {}
         }
 
-        // ==========================================================================
-        // TRANSMITE NOVO COMUNICADO (ADMINISTRAÇÃO)
-        // ==========================================================================
         document.getElementById("form-comunicado").addEventListener("submit", async function(e) {
             e.preventDefault();
-            const dataAviso = document.getElementById("adm-aviso-data").value.trim();
-            const textoAviso = document.getElementById("adm-aviso-texto").value.trim();
-
             try {
                 await setDoc(doc(db, "avisos", "comunicado"), {
-                    data: dataAviso,
-                    texto: textoAviso
+                    data: document.getElementById("adm-aviso-data").value.trim(),
+                    texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
-                alert("Sinal de transmissão atualizado para toda a guilda!");
+                alert("Transmissão atualizada!");
                 location.reload();
-            } catch (err) {
-                console.error("Erro ao enviar aviso:", err);
-            }
+            } catch (err) {}
         });
 
-        // ==========================================================================
-        // AJUSTAR DADOS DE QUALQUER MEMBRO (ADMINISTRAÇÃO)
-        // ==========================================================================
         document.getElementById("form-ajuste-membro").addEventListener("submit", async function(e) {
             e.preventDefault();
             const nickAlvo = document.getElementById("adm-membro-nick").value.trim();
-            const legendAlvo = document.getElementById("adm-membro-legend").value.trim();
-            const armasAlvas = document.getElementById("adm-membro-armas").value.trim();
-            const eloAlvo = document.getElementById("adm-membro-elo").value;
-            const corehallaAlvo = document.getElementById("adm-membro-corehalla").value.trim();
-
             try {
                 const docRef = doc(db, "membros", nickAlvo);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    await updateDoc(docRef, {
-                        mainLegend: legendAlvo,
-                        "ArmaMain's": armasAlvas,
-                        elomax: eloAlvo,
-                        corehalla: corehallaAlvo
-                    });
-                    alert(`Ficha de voo do Piloto ${nickAlvo} foi ajustada administrativamente!`);
-                    location.reload();
-                } else {
-                    alert("Piloto não localizado na tripulação da StarKindred.");
-                }
-            } catch (err) {
-                console.error("Erro ao atualizar piloto:", err);
-            }
+                await updateDoc(docRef, {
+                    mainLegend: document.getElementById("adm-membro-legend").value.trim(),
+                    "ArmaMain's": document.getElementById("adm-membro-armas").value.trim(),
+                    elomax: document.getElementById("adm-membro-elo").value,
+                    corehalla: document.getElementById("adm-membro-corehalla").value.trim()
+                });
+                alert(`Ficha do Piloto ${nickAlvo} ajustada!`);
+                location.reload();
+            } catch (err) {}
         });
     </script>
 
     <script>
-        function efectuarLogoff() {
+        function efetuarLogoff() {
             if (confirm("Deseja fechar os sistemas e sair da cabine de comando?")) {
                 localStorage.removeItem("sk_usuario");
-                localStorage.removeItem("sk_patente");
                 window.location.href = "login.html";
             }
         }
