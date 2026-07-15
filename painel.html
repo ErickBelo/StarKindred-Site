@@ -198,7 +198,6 @@
             }
         }
 
-        /* AJUSTE AQUI: Mudado para flex-start e adicionado gap para alinhar no topo */
         .painel-card {
             background: var(--bg-card);
             border: 1px solid var(--borda-suave);
@@ -384,15 +383,86 @@
         }
 
         /* ==========================================================================
+           CONTROLES DA LISTA DE MEMBROS (Barra de Busca e Divisores)
+           ========================================================================== */
+        .barra-busca-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-busca {
+            width: 100%;
+            background: rgba(8, 18, 37, 0.9);
+            border: 1px solid var(--dourado);
+            border-radius: 6px;
+            padding: 12px 15px 12px 45px;
+            color: var(--texto-claro);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .input-busca:focus {
+            border-color: var(--amarelo);
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.2);
+        }
+
+        .icone-busca {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            color: var(--dourado);
+            pointer-events: none;
+        }
+
+        .subtitulo-divisao {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--amarelo);
+            margin: 25px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .subtitulo-divisao::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255, 183, 3, 0.4), transparent);
+        }
+
+        /* Contenção de rolagem para os membros não entupirem a tela */
+        .limitador-tabela-membros {
+            max-height: 480px; /* Mostra cerca de 6 a 7 membros sem precisar rolar */
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid var(--borda-suave);
+            background: var(--bg-card);
+        }
+
+        .limitador-tabela-membros::-webkit-scrollbar {
+            width: 6px;
+        }
+        .limitador-tabela-membros::-webkit-scrollbar-thumb {
+            background: var(--dourado);
+            border-radius: 3px;
+        }
+
+        /* ==========================================================================
            TABELA DA TRIPULAÇÃO RESPONSIVA
            ========================================================================== */
         .tabela-membros {
             width: 100%;
             border-collapse: collapse;
-            background: var(--bg-card);
-            border: 1px solid var(--borda-suave);
-            border-radius: 8px;
-            overflow: hidden;
+            background: transparent;
         }
 
         @media (max-width: 767px) {
@@ -459,9 +529,12 @@
             }
 
             .tabela-membros th {
+                position: sticky;
+                top: 0;
+                z-index: 5;
                 font-family: 'Orbitron', sans-serif;
                 font-size: 0.85rem;
-                background: rgba(8, 18, 37, 0.95);
+                background: #061124;
                 color: var(--amarelo);
                 text-transform: uppercase;
             }
@@ -701,7 +774,15 @@
 
         <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
         <div id="aba-membros" class="conteudo-aba ativa">
-            <div>
+            <!-- Barra de Busca Avançada -->
+            <div class="barra-busca-container">
+                <span class="icone-busca">🔍</span>
+                <input type="text" id="campo-busca-membros" class="input-busca" placeholder="Buscar piloto por nick, legend ou arma...">
+            </div>
+
+            <!-- SEÇÃO: COMANDO DA FROTA -->
+            <div class="subtitulo-divisao">⚓ Comando da Frota</div>
+            <div style="border: 1px solid var(--borda-suave); border-radius: 8px; background: var(--bg-card); overflow: hidden; margin-bottom: 25px;">
                 <table class="tabela-membros">
                     <thead>
                         <tr>
@@ -710,11 +791,31 @@
                             <th>Main Legend (Armas)</th>
                             <th>Elo Máximo</th>
                             <th>Ficha Tática</th>
-                            <th class="coluna-acoes" id="th-acoes" style="display: none;">Controle</th>
+                            <th class="coluna-acoes classe-th-controle" style="display: none;">Controle</th>
                         </tr>
                     </thead>
-                    <tbody id="corpo-tabela-membros">
-                        <!-- Inserido dinamicamente -->
+                    <tbody id="tabela-corpo-lideranca">
+                        <!-- Carregados dinamicamente via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SEÇÃO: TRIPULAÇÃO -->
+            <div class="subtitulo-divisao">🚀 Pilotos da Tripulação</div>
+            <div class="limitador-tabela-membros">
+                <table class="tabela-membros">
+                    <thead class="esconder-cabecalho-mobile">
+                        <tr>
+                            <th>Piloto</th>
+                            <th>Patente</th>
+                            <th>Main Legend (Armas)</th>
+                            <th>Elo Máximo</th>
+                            <th>Ficha Tática</th>
+                            <th class="coluna-acoes classe-th-controle" style="display: none;">Controle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-corpo-membros">
+                        <!-- Carregados dinamicamente via JS -->
                     </tbody>
                 </table>
             </div>
@@ -835,6 +936,7 @@
 
         const nomeSalvo = localStorage.getItem("sk_usuario");
         let eAdministrador = false;
+        let todosMembrosCache = []; // Cache local para busca instantânea
 
         document.addEventListener("DOMContentLoaded", async function() {
             if (!nomeSalvo) {
@@ -881,7 +983,7 @@
                     if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
                         eAdministrador = true;
                         document.getElementById("sessao-admin").style.display = "block";
-                        document.getElementById("th-acoes").style.display = "table-cell"; 
+                        document.querySelectorAll(".classe-th-controle").forEach(th => th.style.display = "table-cell");
                     }
 
                     carregarTabelaTripulacao();
@@ -966,57 +1068,121 @@
             }
         });
 
-        // CARREGAR PILOTOS (TABELA)
-        async function carregarTabelaTripulacao() {
-            const tbody = document.getElementById("corpo-tabela-membros");
-            try {
-                const querySnapshot = await getDocs(collection(db, "membros"));
-                tbody.innerHTML = "";
+        // PROCESSAR E MONTAR TABELAS SEPARADAS E FILTRADAS
+        function renderizarTabelasMembros(membrosFiltrados) {
+            const tbodyLideranca = document.getElementById("tabela-corpo-lideranca");
+            const tbodyMembros = document.getElementById("tabela-corpo-membros");
 
-                querySnapshot.forEach((docSnap) => {
-                    const m = docSnap.data();
-                    const idMembro = docSnap.id;
-                    const classeBadge = (m.patente === "Líder Supremo" || m.patente === "Administrador") ? "lider" : "";
-                    const campoLink = m.corehalla || m.Corehalla;
-                    const linkCorehalla = campoLink ? campoLink.replace(/"/g, '').trim() : "";
+            tbodyLideranca.innerHTML = "";
+            tbodyMembros.innerHTML = "";
 
-                    const tr = document.createElement("tr");
-                    tr.innerHTML = `
-                        <td><strong>${m.nome}</strong></td>
-                        <td><span class="badge-tabela ${classeBadge}">${m.patente || 'Membro'}</span></td>
-                        <td>${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</td>
-                        <td>${m.elomax || 'Sem registro'}</td>
-                        <td>
-                            ${linkCorehalla ? `<a href="${linkCorehalla}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
-                        </td>
-                        <td class="coluna-acoes" style="display: ${eAdministrador ? 'block' : 'none'};">
-                            <button class="btn-excluir" data-id="${idMembro}" data-nome="${m.nome}">Remover</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+            let temLideranca = false;
+            let temMembros = false;
 
-                if (eAdministrador) {
-                    tbody.querySelectorAll(".btn-excluir").forEach(btn => {
-                        btn.addEventListener("click", async function() {
-                            const idParaRemover = this.getAttribute("data-id");
-                            const nomeParaRemover = this.getAttribute("data-nome");
-                            if (idParaRemover === nomeSalvo) {
-                                alert("Você não pode ejetar a si mesmo da própria frota!");
-                                return;
-                            }
-                            if (confirm(`Remover o piloto ${nomeParaRemover} da guilda?`)) {
-                                await deleteDoc(doc(db, "membros", idParaRemover));
-                                await registrarAtividade(`⚠️ O comandante ${nomeSalvo} desligou o piloto ${nomeParaRemover} da tripulação.`);
-                                location.reload();
-                            }
-                        });
-                    });
+            membrosFiltrados.forEach((m) => {
+                const classeBadge = (m.patente === "Líder Supremo" || m.patente === "Administrador") ? "lider" : "";
+                const linkCorehalla = m.corehalla ? m.corehalla.replace(/"/g, '').trim() : "";
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${m.nome}</strong></td>
+                    <td><span class="badge-tabela ${classeBadge}">${m.patente || 'Membro'}</span></td>
+                    <td>${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</td>
+                    <td>${m.elomax || 'Sem registro'}</td>
+                    <td>
+                        ${linkCorehalla ? `<a href="${linkCorehalla}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
+                    </td>
+                    <td class="coluna-acoes" style="display: ${eAdministrador ? 'table-cell' : 'none'};">
+                        <button class="btn-excluir btn-excluir-acao" data-id="${m.id}" data-nome="${m.nome}">Remover</button>
+                    </td>
+                `;
+
+                // Divisão de destino baseada no cargo
+                if (m.patente === "Líder Supremo" || m.patente === "Administrador") {
+                    tbodyLideranca.appendChild(tr);
+                    temLideranca = true;
+                } else {
+                    tbodyMembros.appendChild(tr);
+                    temMembros = true;
                 }
-            } catch (err) {
-                tbody.innerHTML = "<tr><td colspan='6'>Erro na conexão do rádio de frota.</td></tr>";
+            });
+
+            // Feedbacks visuais caso a busca esvazie alguma categoria
+            if (!temLideranca) {
+                tbodyLideranca.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum líder correspondente.</td></tr>`;
+            }
+            if (!temMembros) {
+                tbodyMembros.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum piloto correspondente nesta busca.</td></tr>`;
+            }
+
+            // Atribuir ações de click para os botões gerados
+            if (eAdministrador) {
+                document.querySelectorAll(".btn-excluir-acao").forEach(btn => {
+                    btn.onclick = async function() {
+                        const idParaRemover = this.getAttribute("data-id");
+                        const nomeParaRemover = this.getAttribute("data-nome");
+                        if (idParaRemover === nomeSalvo) {
+                            alert("Você não pode ejetar a si mesmo da própria frota!");
+                            return;
+                        }
+                        if (confirm(`Remover o piloto ${nomeParaRemover} da guilda?`)) {
+                            await deleteDoc(doc(db, "membros", idParaRemover));
+                            await registrarAtividade(`⚠️ O comandante ${nomeSalvo} desligou o piloto ${nomeParaRemover} da tripulação.`);
+                            location.reload();
+                        }
+                    };
+                });
             }
         }
+
+        // CARREGAR PILOTOS DO FIREBASE E GUARDAR EM CACHE
+        async function carregarTabelaTripulacao() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "membros"));
+                todosMembrosCache = [];
+
+                querySnapshot.forEach((docSnap) => {
+                    const dados = docSnap.data();
+                    todosMembrosCache.push({
+                        id: docSnap.id,
+                        nome: dados.nome,
+                        patente: dados.patente || 'Membro',
+                        mainLegend: dados.mainLegend,
+                        "ArmaMain's": dados["ArmaMain's"],
+                        elomax: dados.elomax,
+                        corehalla: dados.corehalla || dados.Corehalla
+                    });
+                });
+
+                // Renderiza inicialmente com tudo carregado
+                renderizarTabelasMembros(todosMembrosCache);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById("tabela-corpo-membros").innerHTML = "<tr><td colspan='6'>Erro na conexão do rádio de frota.</td></tr>";
+            }
+        }
+
+        // EVENTO DA BARRA DE BUSCA EM TEMPO REAL
+        document.getElementById("campo-busca-membros").addEventListener("input", function(e) {
+            const termo = e.target.value.toLowerCase().trim();
+
+            if (!termo) {
+                renderizarTabelasMembros(todosMembrosCache);
+                return;
+            }
+
+            const filtrados = todosMembrosCache.filter(m => {
+                const nomeMatch = m.nome && m.nome.toLowerCase().includes(termo);
+                const legendMatch = m.mainLegend && m.mainLegend.toLowerCase().includes(termo);
+                const armasMatch = m["ArmaMain's"] && m["ArmaMain's"].toLowerCase().includes(termo);
+                const patenteMatch = m.patente && m.patente.toLowerCase().includes(termo);
+
+                return nomeMatch || legendMatch || armasMatch || patenteMatch;
+            });
+
+            renderizarTabelasMembros(filtrados);
+        });
 
         // CARREGAR TUTORIAIS DINAMICAMENTE
         async function carregarTutoriais() {
