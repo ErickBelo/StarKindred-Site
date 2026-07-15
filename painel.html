@@ -849,11 +849,11 @@
 
         <!-- Menu de Navegação dos Membros -->
         <div class="menu-abas">
-            <button class="btn-aba ativa" onclick="alternarAba('aba-membros')">👥 Membros</button>
-            <button class="btn-aba" onclick="alternarAba('aba-builds')">📊 Builds (Meta)</button>
-            <button class="btn-aba" onclick="alternarAba('aba-tutoriais')">📚 Tutoriais</button>
-            <button class="btn-aba" onclick="alternarAba('aba-combos')">⚔️ Combos 2v2</button>
-            <button class="btn-aba" onclick="alternarAba('aba-eventos')">🏆 Eventos</button>
+            <button class="btn-aba ativa" onclick="alternarAba(event, 'aba-membros')">👥 Membros</button>
+            <button class="btn-aba" onclick="alternarAba(event, 'aba-builds')">📊 Builds (Meta)</button>
+            <button class="btn-aba" onclick="alternarAba(event, 'aba-tutoriais')">📚 Tutoriais</button>
+            <button class="btn-aba" onclick="alternarAba(event, 'aba-combos')">⚔️ Combos 2v2</button>
+            <button class="btn-aba" onclick="alternarAba(event, 'aba-eventos')">🏆 Eventos</button>
         </div>
 
         <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
@@ -1056,7 +1056,7 @@
     </main>
 
     <script>
-        function alternarAba(abaId) {
+        function alternarAba(event, abaId) {
             document.querySelectorAll('.btn-aba').forEach(btn => btn.classList.remove('ativa'));
             document.querySelectorAll('.conteudo-aba').forEach(aba => aba.classList.remove('ativa'));
             
