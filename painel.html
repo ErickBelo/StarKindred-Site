@@ -332,7 +332,7 @@
             width: 100%;
         }
 
-        .input-painel {
+        .input-painel, .select-painel {
             width: 100%;
             background: #030914;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -343,7 +343,12 @@
             font-size: 0.9rem;
         }
 
-        .input-painel:focus {
+        .select-painel option {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+        }
+
+        .input-painel:focus, .select-painel:focus {
             border-color: var(--amarelo);
         }
 
@@ -441,7 +446,7 @@
 
         /* Contenção de rolagem para os membros não entupirem a tela */
         .limitador-tabela-membros {
-            max-height: 480px; /* Mostra cerca de 6 a 7 membros sem precisar rolar */
+            max-height: 480px; 
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid var(--borda-suave);
@@ -507,9 +512,10 @@
             .tabela-membros td:nth-of-type(1)::before { content: "PILOTO"; }
             .tabela-membros td:nth-of-type(2)::before { content: "PATENTE"; }
             .tabela-membros td:nth-of-type(3)::before { content: "MAIN (ARMAS)"; }
-            .tabela-membros td:nth-of-type(4)::before { content: "ELO MÁXIMO"; }
-            .tabela-membros td:nth-of-type(5)::before { content: "FICHA TÁTICA"; }
-            .tabela-membros td:nth-of-type(6)::before { content: "CONTROLE"; }
+            .tabela-membros td:nth-of-type(4)::before { content: "STANCE ATIVA"; }
+            .tabela-membros td:nth-of-type(5)::before { content: "ELO MÁXIMO"; }
+            .tabela-membros td:nth-of-type(6)::before { content: "FICHA TÁTICA"; }
+            .tabela-membros td:nth-of-type(7)::before { content: "CONTROLE"; }
 
             .tabela-membros td.coluna-acoes {
                 text-align: left;
@@ -556,6 +562,50 @@
             color: var(--dourado);
             border-color: var(--dourado);
             background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* ESTILOS DA NOVA ABA DE BUILDS */
+        .grade-meta {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grade-meta {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card-meta-lenda {
+            background: rgba(8, 18, 37, 0.6);
+            border: 1px solid var(--borda-suave);
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .card-meta-lenda:hover {
+            border-color: var(--amarelo);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.1);
+        }
+
+        .barra-porcentagem {
+            height: 8px;
+            background: #030914;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .progresso-porcentagem {
+            height: 100%;
+            background: linear-gradient(to right, var(--dourado), var(--amarelo));
+            border-radius: 4px;
         }
 
         /* ==========================================================================
@@ -746,8 +796,24 @@
                     <span>✍️</span>
                 </div>
                 <form id="form-auto-edicao" class="form-painel">
-                    <input type="text" id="auto-legend" class="input-painel" placeholder="Main Legend (ex: Nix)" required>
+                    <input type="text" id="auto-legend" class="input-painel" placeholder="Lenda Principal (ex: Nix)" required>
                     <input type="text" id="auto-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
+                    
+                    <!-- Novo Seletor de Stance Ativa -->
+                    <select id="auto-stance" class="select-painel" required>
+                        <option value="" disabled selected>Selecione sua Stance ativa</option>
+                        <option value="Padrão">Padrão</option>
+                        <option value="Velocidade">Velocidade (+1 Spd, -1 Dex)</option>
+                        <option value="Destreza">Destreza (+1 Dex, -1 Atk)</option>
+                        <option value="Força">Força (+1 Atk, -1 Def)</option>
+                        <option value="Defesa">Defesa (+1 Def, -1 Spd)</option>
+                        <option value="Super Velocidade">Super Velocidade (+2 Spd, -2 Atk)</option>
+                        <option value="Super Destreza">Super Destreza (+2 Dex, -2 Def)</option>
+                        <option value="Super Força">Super Força (+2 Atk, -2 Spd)</option>
+                        <option value="Super Defesa">Super Defesa (+2 Def, -2 Dex)</option>
+                        <option value="Challenger">Challenger (Equilíbrio Tático)</option>
+                    </select>
+
                     <input type="number" id="auto-elo" class="input-painel" placeholder="Meu Elo Máximo (ex: 2300)" required>
                     <input type="url" id="auto-corehalla" class="input-painel" placeholder="Meu Link do Corehalla" required>
                     <button type="submit" class="btn-painel-submit">Salvar Alterações</button>
@@ -759,6 +825,7 @@
         <div class="painel-card" style="margin-bottom: 30px; padding: 15px 20px; display: block;">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
                 <span><strong>Meu Caça:</strong> <span id="main-jogador">Carregando...</span></span>
+                <span><strong>Stance Ativa:</strong> <span id="stance-jogador" style="color: var(--amarelo); font-weight: bold;">...</span></span>
                 <span><strong>Meu Recorde:</strong> <span id="elo-jogador">Carregando...</span></span>
                 <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none; font-weight: bold;">Acessar Corehalla ↗</a>
             </div>
@@ -767,6 +834,7 @@
         <!-- Menu de Navegação dos Membros -->
         <div class="menu-abas">
             <button class="btn-aba ativa" onclick="alternarAba('aba-membros')">👥 Membros</button>
+            <button class="btn-aba" onclick="alternarAba('aba-builds')">📊 Builds (Meta)</button>
             <button class="btn-aba" onclick="alternarAba('aba-tutoriais')">📚 Tutoriais</button>
             <button class="btn-aba" onclick="alternarAba('aba-combos')">⚔️ Combos 2v2</button>
             <button class="btn-aba" onclick="alternarAba('aba-eventos')">🏆 Eventos</button>
@@ -789,6 +857,7 @@
                             <th>Piloto</th>
                             <th>Patente</th>
                             <th>Main Legend (Armas)</th>
+                            <th>Stance Ativa</th>
                             <th>Elo Máximo</th>
                             <th>Ficha Tática</th>
                             <th class="coluna-acoes classe-th-controle" style="display: none;">Controle</th>
@@ -809,6 +878,7 @@
                             <th>Piloto</th>
                             <th>Patente</th>
                             <th>Main Legend (Armas)</th>
+                            <th>Stance Ativa</th>
                             <th>Elo Máximo</th>
                             <th>Ficha Tática</th>
                             <th class="coluna-acoes classe-th-controle" style="display: none;">Controle</th>
@@ -821,14 +891,44 @@
             </div>
         </div>
 
-        <!-- ABA 2: CENTRAL DE TUTORIAIS -->
+        <!-- ABA 2: CENTRAL DE BUILDS (NOVA) -->
+        <div id="aba-builds" class="conteudo-aba">
+            <h2 class="titulo-secao" style="margin-bottom: 15px;">Estatísticas de Configurações da Frota</h2>
+            <p style="color: var(--texto-mutado); margin-bottom: 25px;">Mapeamento dinâmico das Stances e Lendas preferidas pelos pilotos da StarKindred para dominar as ranqueadas.</p>
+            
+            <div class="grade-meta">
+                <!-- Coluna Esquerda: Análise de Lendas e suas Stances -->
+                <div class="painel-card">
+                    <div class="card-header">
+                        <h2>Fichas de Armamento e Preferência</h2>
+                        <span>⚙️</span>
+                    </div>
+                    <div id="container-estatisticas-lendas" style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Carregado via JS -->
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Ranking de popularidade -->
+                <div class="painel-card">
+                    <div class="card-header">
+                        <h2>Top Lendas Usadas</h2>
+                        <span>🔥</span>
+                    </div>
+                    <div id="container-ranking-lendas" style="display: flex; flex-direction: column; gap: 15px;">
+                        <!-- Carregado via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 3: CENTRAL DE TUTORIAIS -->
         <div id="aba-tutoriais" class="conteudo-aba">
             <div class="grade-recursos" id="lista-tutoriais">
                 <!-- Carregado do Firestore -->
             </div>
         </div>
 
-        <!-- ABA 3: COMBOS 2V2 -->
+        <!-- ABA 4: COMBOS 2V2 -->
         <div id="aba-combos" class="conteudo-aba">
             <a href="https://combocodex.com/combos/search/" target="_blank" class="btn-combo-codex">
                 <h3>ACESSAR COMBOCODEX ↗</h3>
@@ -836,7 +936,7 @@
             </a>
         </div>
 
-        <!-- ABA 4: CALENDÁRIO DE EVENTOS -->
+        <!-- ABA 5: CALENDÁRIO DE EVENTOS -->
         <div id="aba-eventos" class="conteudo-aba">
             <div class="grade-recursos" id="lista-eventos">
                 <!-- Carregado do Firestore -->
@@ -871,6 +971,21 @@
                         <input type="text" id="adm-membro-nick" class="input-painel" placeholder="Nick exato do piloto (ex: Breki)" required>
                         <input type="text" id="adm-membro-legend" class="input-painel" placeholder="Main Legend (ex: Nix)" required>
                         <input type="text" id="adm-membro-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
+                        
+                        <!-- Novo seletor no ajuste remoto -->
+                        <select id="adm-membro-stance" class="select-painel" required>
+                            <option value="Padrão" selected>Padrão</option>
+                            <option value="Velocidade">Velocidade (+1 Spd, -1 Dex)</option>
+                            <option value="Destreza">Destreza (+1 Dex, -1 Atk)</option>
+                            <option value="Força">Força (+1 Atk, -1 Def)</option>
+                            <option value="Defesa">Defesa (+1 Def, -1 Spd)</option>
+                            <option value="Super Velocidade">Super Velocidade (+2 Spd, -2 Atk)</option>
+                            <option value="Super Destreza">Super Destreza (+2 Dex, -2 Def)</option>
+                            <option value="Super Força">Super Força (+2 Atk, -2 Spd)</option>
+                            <option value="Super Defesa">Super Defesa (+2 Def, -2 Dex)</option>
+                            <option value="Challenger">Challenger</option>
+                        </select>
+
                         <input type="number" id="adm-membro-elo" class="input-painel" placeholder="Novo Elo Máximo" required>
                         <input type="url" id="adm-membro-corehalla" class="input-painel" placeholder="Link do Corehalla" required>
                         <button type="submit" class="btn-painel-submit">Sobrescrever Ficha</button>
@@ -936,7 +1051,7 @@
 
         const nomeSalvo = localStorage.getItem("sk_usuario");
         let eAdministrador = false;
-        let todosMembrosCache = []; // Cache local para busca instantânea
+        let todosMembrosCache = []; 
 
         document.addEventListener("DOMContentLoaded", async function() {
             if (!nomeSalvo) {
@@ -961,6 +1076,7 @@
                     const armaMain = dados["ArmaMain's"] || "Não definido";
                     document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
                     document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
+                    document.getElementById("stance-jogador").textContent = dados.stanceAtiva || "Padrão";
                     
                     const valorCorehalla = dados.corehalla || dados.Corehalla;
                     const linkCore = document.getElementById("corehalla-jogador");
@@ -979,6 +1095,9 @@
                     document.getElementById("auto-legend").value = dados.mainLegend || "";
                     document.getElementById("auto-armas").value = dados["ArmaMain's"] || "";
                     document.getElementById("auto-elo").value = dados.elomax || "";
+                    if(dados.stanceAtiva) {
+                        document.getElementById("auto-stance").value = dados.stanceAtiva;
+                    }
 
                     if (dados.patente === "Líder Supremo" || dados.patente === "Administrador") {
                         eAdministrador = true;
@@ -986,7 +1105,7 @@
                         document.querySelectorAll(".classe-th-controle").forEach(th => th.style.display = "table-cell");
                     }
 
-                    carregarTabelaTripulacao();
+                    await carregarTabelaTripulacao();
                     carregarTutoriais();
                     carregarEventos();
                 }
@@ -1048,6 +1167,7 @@
             const novasArmas = document.getElementById("auto-armas").value.trim();
             const novoElo = document.getElementById("auto-elo").value;
             const novoCorehalla = document.getElementById("auto-corehalla").value.trim();
+            const novaStance = document.getElementById("auto-stance").value;
 
             try {
                 const docRef = doc(db, "membros", nomeSalvo);
@@ -1055,11 +1175,12 @@
                     mainLegend: novoLegend,
                     "ArmaMain's": novasArmas,
                     elomax: novoElo,
-                    corehalla: novoCorehalla
+                    corehalla: novoCorehalla,
+                    stanceAtiva: novaStance
                 });
 
                 // Registrar a atividade no Histórico
-                await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou seu perfil de combate (Elo Máx: ${novoElo} | Main: ${novoLegend}).`);
+                await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou sua nave de combate: ${novoLegend} (${novaStance}).`);
 
                 alert("Seu perfil tático foi atualizado com sucesso!");
                 location.reload();
@@ -1067,6 +1188,92 @@
                 alert("Falha ao atualizar o seu perfil.");
             }
         });
+
+        // CALCULAR E EXIBIR METRICS DE BUILDS (META DA FROTA)
+        function calcularMetaDaFrota(membros) {
+            const contagemLendas = {};
+            const lendaStances = {}; // Armazena a contagem de stances por lenda
+
+            membros.forEach(m => {
+                const lenda = m.mainLegend ? m.mainLegend.trim() : "Não definido";
+                if (lenda === "Não definido") return;
+
+                const stance = m.stanceAtiva || "Padrão";
+
+                // Contar lendas
+                contagemLendas[lenda] = (contagemLendas[lenda] || 0) + 1;
+
+                // Mapear stances por lenda
+                if (!lendaStances[lenda]) {
+                    lendaStances[lenda] = {};
+                }
+                lendaStances[lenda][stance] = (lendaStances[lenda][stance] || 0) + 1;
+            });
+
+            // 1. Renderizar Painel de Lendas & Suas Stances (Coluna Esquerda)
+            const containerLendas = document.getElementById("container-estatisticas-lendas");
+            containerLendas.innerHTML = "";
+
+            if (Object.keys(lendaStances).length === 0) {
+                containerLendas.innerHTML = `<p style="color: var(--texto-mutado);">Sem dados de lenda cadastrados.</p>`;
+            } else {
+                for (const [lenda, stances] of Object.entries(lendaStances)) {
+                    const totalPilotos = contagemLendas[lenda];
+                    
+                    // Montar o HTML para cada lenda
+                    const lendaDiv = document.createElement("div");
+                    lendaDiv.className = "card-meta-lenda";
+                    
+                    let htmlStances = "";
+                    for (const [stance, qtd] of Object.entries(stances)) {
+                        const porcentagem = Math.round((qtd / totalPilotos) * 100);
+                        htmlStances += `
+                            <div style="margin-top: 10px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                    <span>⚙️ Stance: <strong>${stance}</strong></span>
+                                    <span style="color: var(--amarelo);">${qtd} piloto(s) (${porcentagem}%)</span>
+                                </div>
+                                <div class="barra-porcentagem">
+                                    <div class="progresso-porcentagem" style="width: ${porcentagem}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    lendaDiv.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;">
+                            <span style="font-family: 'Orbitron'; font-weight: bold; color: var(--amarelo);">${lenda}</span>
+                            <span style="font-size: 0.85rem; color: var(--texto-mutado);">${totalPilotos} piloto(s) ativo(s)</span>
+                        </div>
+                        ${htmlStances}
+                    `;
+                    containerLendas.appendChild(lendaDiv);
+                }
+            }
+
+            // 2. Renderizar o Top Ranking de Popularidade (Coluna Direita)
+            const containerRanking = document.getElementById("container-ranking-lendas");
+            containerRanking.innerHTML = "";
+
+            const rankingOrdenado = Object.entries(contagemLendas).sort((a, b) => b[1] - a[1]);
+
+            if (rankingOrdenado.length === 0) {
+                containerRanking.innerHTML = `<p style="color: var(--texto-mutado);">Nenhuma lenda registrada.</p>`;
+            } else {
+                rankingOrdenado.forEach(([lenda, qtd], index) => {
+                    const rankItem = document.createElement("div");
+                    rankItem.style = "display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(8, 18, 37, 0.4); border-radius: 4px; border-left: 3px solid var(--amarelo);";
+                    rankItem.innerHTML = `
+                        <div>
+                            <span style="font-family: 'Orbitron'; font-weight: bold; color: var(--amarelo); margin-right: 10px;">#${index + 1}</span>
+                            <span>${lenda}</span>
+                        </div>
+                        <span style="font-weight: bold; color: white;">${qtd}</span>
+                    `;
+                    containerRanking.appendChild(rankItem);
+                });
+            }
+        }
 
         // PROCESSAR E MONTAR TABELAS SEPARADAS E FILTRADAS
         function renderizarTabelasMembros(membrosFiltrados) {
@@ -1082,12 +1289,14 @@
             membrosFiltrados.forEach((m) => {
                 const classeBadge = (m.patente === "Líder Supremo" || m.patente === "Administrador") ? "lider" : "";
                 const linkCorehalla = m.corehalla ? m.corehalla.replace(/"/g, '').trim() : "";
+                const stanceAtiva = m.stanceAtiva || "Padrão";
 
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td><strong>${m.nome}</strong></td>
                     <td><span class="badge-tabela ${classeBadge}">${m.patente || 'Membro'}</span></td>
                     <td>${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</td>
+                    <td style="color: var(--amarelo); font-family: 'Orbitron'; font-size: 0.85rem;"><strong>${stanceAtiva}</strong></td>
                     <td>${m.elomax || 'Sem registro'}</td>
                     <td>
                         ${linkCorehalla ? `<a href="${linkCorehalla}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
@@ -1109,10 +1318,10 @@
 
             // Feedbacks visuais caso a busca esvazie alguma categoria
             if (!temLideranca) {
-                tbodyLideranca.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum líder correspondente.</td></tr>`;
+                tbodyLideranca.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum líder correspondente.</td></tr>`;
             }
             if (!temMembros) {
-                tbodyMembros.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum piloto correspondente nesta busca.</td></tr>`;
+                tbodyMembros.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum piloto correspondente nesta busca.</td></tr>`;
             }
 
             // Atribuir ações de click para os botões gerados
@@ -1150,16 +1359,20 @@
                         mainLegend: dados.mainLegend,
                         "ArmaMain's": dados["ArmaMain's"],
                         elomax: dados.elomax,
-                        corehalla: dados.corehalla || dados.Corehalla
+                        corehalla: dados.corehalla || dados.Corehalla,
+                        stanceAtiva: dados.stanceAtiva || "Padrão"
                     });
                 });
 
-                // Renderiza inicialmente com tudo carregado
+                // Renderiza a lista de tripulação
                 renderizarTabelasMembros(todosMembrosCache);
+
+                // Processa o Meta da Frota na aba de builds!
+                calcularMetaDaFrota(todosMembrosCache);
 
             } catch (err) {
                 console.error(err);
-                document.getElementById("tabela-corpo-membros").innerHTML = "<tr><td colspan='6'>Erro na conexão do rádio de frota.</td></tr>";
+                document.getElementById("tabela-corpo-membros").innerHTML = "<tr><td colspan='7'>Erro na conexão do rádio de frota.</td></tr>";
             }
         }
 
@@ -1177,8 +1390,9 @@
                 const legendMatch = m.mainLegend && m.mainLegend.toLowerCase().includes(termo);
                 const armasMatch = m["ArmaMain's"] && m["ArmaMain's"].toLowerCase().includes(termo);
                 const patenteMatch = m.patente && m.patente.toLowerCase().includes(termo);
+                const stanceMatch = m.stanceAtiva && m.stanceAtiva.toLowerCase().includes(termo);
 
-                return nomeMatch || legendMatch || armasMatch || patenteMatch;
+                return nomeMatch || legendMatch || armasMatch || patenteMatch || stanceMatch;
             });
 
             renderizarTabelasMembros(filtrados);
@@ -1340,13 +1554,15 @@
             const nickAlvo = document.getElementById("adm-membro-nick").value.trim();
             const novoLegend = document.getElementById("adm-membro-legend").value.trim();
             const novoElo = document.getElementById("adm-membro-elo").value;
+            const novaStance = document.getElementById("adm-membro-stance").value;
             try {
                 const docRef = doc(db, "membros", nickAlvo);
                 await updateDoc(docRef, {
                     mainLegend: novoLegend,
                     "ArmaMain's": document.getElementById("adm-membro-armas").value.trim(),
                     elomax: novoElo,
-                    corehalla: document.getElementById("adm-membro-corehalla").value.trim()
+                    corehalla: document.getElementById("adm-membro-corehalla").value.trim(),
+                    stanceAtiva: novaStance
                 });
                 await registrarAtividade(`⚙️ Os dados do piloto ${nickAlvo} foram editados remotamente por ${nomeSalvo}.`);
                 alert(`Ficha do Piloto ${nickAlvo} ajustada!`);
