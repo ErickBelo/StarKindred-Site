@@ -84,6 +84,7 @@
            ========================================================================== */
         header {
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: center;
             padding: 15px 5%;
@@ -93,29 +94,35 @@
             top: 0;
             z-index: 100;
             backdrop-filter: blur(8px);
+            gap: 10px;
         }
 
         .logo-painel {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--texto-claro);
+            white-space: nowrap;
         }
 
+        /* CORREÇÃO DO AMARELO APAGADO: Agora com amarelo vivo e efeito neon */
         .logo-painel span {
-            color: var(--dourado);
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            color: var(--amarelo);
+            text-shadow: 0 0 12px rgba(255, 183, 3, 0.6), 0 0 4px rgba(255, 183, 3, 0.3);
         }
 
         .piloto-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .saudacao {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            text-align: right;
         }
 
         .saudacao span {
@@ -125,11 +132,11 @@
 
         .badge-patente {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--dourado);
             color: var(--dourado);
-            padding: 3px 10px;
+            padding: 2px 8px;
             border-radius: 20px;
             text-transform: uppercase;
         }
@@ -139,8 +146,8 @@
             background: transparent;
             border: 1px solid var(--vermelho-erro);
             color: var(--vermelho-erro);
-            padding: 6px 15px;
-            font-size: 0.8rem;
+            padding: 4px 10px;
+            font-size: 0.75rem;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
@@ -153,62 +160,89 @@
         }
 
         /* ==========================================================================
-           CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS (MEMBROS)
+           CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS (Responsivo)
            ========================================================================== */
         .painel-container {
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 20px auto 60px auto;
+            padding: 0 15px;
         }
 
         .titulo-secao {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             color: var(--texto-claro);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-left: 4px solid var(--amarelo);
-            padding-left: 15px;
+            padding-left: 10px;
         }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+            .titulo-secao {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+                padding-left: 15px;
+            }
+            .painel-container {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
         }
 
         .painel-card {
             background: var(--bg-card);
             border: 1px solid var(--borda-suave);
             border-radius: 8px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(3px);
+        }
+
+        @media (min-width: 768px) {
+            .painel-card {
+                padding: 30px;
+            }
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         .card-header h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--amarelo);
         }
 
-        /* Menu de Opções dos Membros */
+        /* Menu de Abas Deslizável no Mobile */
         .menu-abas {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 8px;
+            margin-bottom: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 15px;
+            padding-bottom: 10px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .menu-abas::-webkit-scrollbar {
+            display: none;
         }
 
         .btn-aba {
@@ -216,11 +250,19 @@
             background: rgba(8, 18, 37, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--texto-mutado);
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .btn-aba {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+            }
         }
 
         .btn-aba:hover, .btn-aba.ativa {
@@ -256,9 +298,10 @@
             background: #030914;
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 4px;
-            padding: 10px 15px;
+            padding: 10px 12px;
             color: var(--texto-claro);
             outline: none;
+            font-size: 0.9rem;
         }
 
         .input-painel:focus {
@@ -275,6 +318,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 0.85rem;
         }
 
         .btn-painel-submit:hover {
@@ -300,7 +344,7 @@
         }
 
         /* ==========================================================================
-           TABELA DA TRIPULAÇÃO
+           TABELA DA TRIPULAÇÃO RESPONSIVA
            ========================================================================== */
         .tabela-membros {
             width: 100%;
@@ -311,18 +355,79 @@
             overflow: hidden;
         }
 
-        .tabela-membros th, .tabela-membros td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        @media (max-width: 767px) {
+            .tabela-membros, .tabela-membros thead, .tabela-membros tbody, .tabela-membros th, .tabela-membros td, .tabela-membros tr { 
+                display: block; 
+            }
+            
+            .tabela-membros thead {
+                display: none;
+            }
+            
+            .tabela-membros tr {
+                border-bottom: 2px solid var(--borda-suave);
+                padding: 15px 10px;
+                background: rgba(8, 18, 37, 0.4);
+                margin-bottom: 10px;
+                border-radius: 8px;
+            }
+            
+            .tabela-membros td { 
+                border: none;
+                padding: 6px 0;
+                position: relative;
+                padding-left: 45%; 
+                text-align: left;
+                font-size: 0.9rem;
+            }
+            
+            .tabela-membros td::before { 
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 40%; 
+                padding-right: 10px; 
+                white-space: nowrap;
+                font-family: 'Orbitron', sans-serif;
+                font-size: 0.75rem;
+                color: var(--amarelo);
+                font-weight: bold;
+            }
+
+            .tabela-membros td:nth-of-type(1)::before { content: "PILOTO"; }
+            .tabela-membros td:nth-of-type(2)::before { content: "PATENTE"; }
+            .tabela-membros td:nth-of-type(3)::before { content: "MAIN (ARMAS)"; }
+            .tabela-membros td:nth-of-type(4)::before { content: "ELO MÁXIMO"; }
+            .tabela-membros td:nth-of-type(5)::before { content: "FICHA TÁTICA"; }
+            .tabela-membros td:nth-of-type(6)::before { content: "CONTROLE"; }
+
+            .tabela-membros td.coluna-acoes {
+                text-align: left;
+                padding-left: 45%;
+            }
+            .tabela-membros td.coluna-acoes button {
+                width: 100%;
+                max-width: 150px;
+            }
         }
 
-        .tabela-membros th {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            background: rgba(8, 18, 37, 0.95);
-            color: var(--amarelo);
-            text-transform: uppercase;
+        @media (min-width: 768px) {
+            .tabela-membros th, .tabela-membros td {
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .tabela-membros th {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 0.85rem;
+                background: rgba(8, 18, 37, 0.95);
+                color: var(--amarelo);
+                text-transform: uppercase;
+            }
+            .coluna-acoes {
+                text-align: right;
+            }
         }
 
         .badge-tabela {
@@ -340,15 +445,19 @@
             background: rgba(212, 175, 55, 0.08);
         }
 
-        .coluna-acoes {
-            text-align: right;
-        }
-
-        /* Estilo para Cards internos de Tutoriais/Combos/Eventos */
+        /* ==========================================================================
+           RECURSOS DINÂMICOS (Grid de Vídeos e Eventos)
+           ========================================================================== */
         .grade-recursos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: 1fr;
             gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .grade-recursos {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
         }
 
         .card-recurso {
@@ -369,15 +478,25 @@
             font-size: 1rem;
         }
 
-        .iframe-video {
+        .iframe-container {
+            position: relative;
             width: 100%;
-            height: 180px;
-            border-radius: 6px;
+            padding-bottom: 56.25%;
+            height: 0;
             margin: 10px 0;
+            border-radius: 6px;
+            overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Botão gigante para o ComboCodex */
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         .btn-combo-codex {
             display: flex;
             flex-direction: column;
@@ -386,7 +505,7 @@
             background: linear-gradient(135deg, rgba(8, 18, 37, 0.95) 0%, rgba(212, 175, 55, 0.15) 100%);
             border: 2px solid var(--dourado);
             border-radius: 8px;
-            padding: 40px;
+            padding: 25px 15px;
             text-align: center;
             text-decoration: none;
             color: white;
@@ -394,6 +513,12 @@
             cursor: pointer;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             margin: 20px 0;
+        }
+
+        @media (min-width: 768px) {
+            .btn-combo-codex {
+                padding: 40px;
+            }
         }
 
         .btn-combo-codex:hover {
@@ -405,13 +530,20 @@
         .btn-combo-codex h3 {
             font-family: 'Orbitron', sans-serif;
             color: var(--amarelo);
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             margin-bottom: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .btn-combo-codex h3 {
+                font-size: 1.8rem;
+            }
         }
 
         .btn-combo-codex p {
             color: var(--texto-mutado);
             max-width: 500px;
+            font-size: 0.85rem;
         }
 
         /* ==========================================================================
@@ -419,22 +551,39 @@
            ========================================================================== */
         .admin-section {
             display: none; 
-            margin-top: 50px;
+            margin-top: 40px;
             border-top: 2px dashed var(--dourado);
-            padding-top: 40px;
+            padding-top: 30px;
         }
 
         .admin-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .admin-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+            }
+            .admin-section {
+                margin-top: 50px;
+                padding-top: 40px;
+            }
         }
 
         .admin-card {
             background: rgba(15, 23, 42, 0.95);
             border: 2px solid var(--dourado);
             border-radius: 8px;
-            padding: 30px;
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .admin-card {
+                padding: 30px;
+            }
         }
     </style>
 </head>
@@ -493,9 +642,7 @@
             </div>
         </div>
 
-        <!-- ==========================================================================
-             MENU DE NAVEGAÇÃO DOS MEMBROS
-             ========================================================================== */ -->
+        <!-- Menu de Navegação dos Membros -->
         <div class="menu-abas">
             <button class="btn-aba ativa" onclick="alternarAba('aba-membros')">👥 Membros</button>
             <button class="btn-aba" onclick="alternarAba('aba-tutoriais')">📚 Tutoriais</button>
@@ -505,7 +652,7 @@
 
         <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
         <div id="aba-membros" class="conteudo-aba ativa">
-            <div style="overflow-x: auto;">
+            <div>
                 <table class="tabela-membros">
                     <thead>
                         <tr>
@@ -524,14 +671,14 @@
             </div>
         </div>
 
-        <!-- ABA 2: CENTRAL DE TUTORIAIS (DINÂMICO) -->
+        <!-- ABA 2: CENTRAL DE TUTORIAIS -->
         <div id="aba-tutoriais" class="conteudo-aba">
             <div class="grade-recursos" id="lista-tutoriais">
                 <!-- Carregado do Firestore -->
             </div>
         </div>
 
-        <!-- ABA 3: COMBOS 2V2 (REDIRECIONAMENTO DIRETO) -->
+        <!-- ABA 3: COMBOS 2V2 -->
         <div id="aba-combos" class="conteudo-aba">
             <a href="https://combocodex.com/combos/search/" target="_blank" class="btn-combo-codex">
                 <h3>ACESSAR COMBOCODEX ↗</h3>
@@ -539,16 +686,14 @@
             </a>
         </div>
 
-        <!-- ABA 4: CALENDÁRIO DE EVENTOS (DINÂMICO) -->
+        <!-- ABA 4: CALENDÁRIO DE EVENTOS -->
         <div id="aba-eventos" class="conteudo-aba">
             <div class="grade-recursos" id="lista-eventos">
                 <!-- Carregado do Firestore -->
             </div>
         </div>
 
-        <!-- ==========================================================================
-             COMPONENTE: CONSOLE DE ADMINISTRAÇÃO (APENAS LIDERANÇA / ADMS)
-             ========================================================================== -->
+        <!-- CONSOLE DE ADMINISTRAÇÃO -->
         <section id="sessao-admin" class="admin-section">
             <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
             
@@ -582,7 +727,7 @@
                     </form>
                 </div>
 
-                <!-- Painel 3: Gerenciar Recursos (Tutoriais & Eventos) -->
+                <!-- Painel 3: Gerenciar Recursos -->
                 <div class="admin-card">
                     <div class="card-header">
                         <h2>Publicar Novo Recurso</h2>
@@ -621,9 +766,7 @@
         }
     </script>
 
-    <!-- ==========================================================================
-         INTEGRAÇÃO FIRESTORE E MECÂNICA DO PAINEL
-         ========================================================================== -->
+    <!-- INTEGRACAO FIRESTORE E MECÂNICA DO PAINEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -651,7 +794,7 @@
                 return;
             }
 
-            carregarComunicados();
+            carcarComunicados();
 
             try {
                 const docRef = doc(db, "membros", nomeSalvo);
@@ -746,7 +889,7 @@
                         <td>
                             ${linkCorehalla ? `<a href="${linkCorehalla}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
                         </td>
-                        <td class="coluna-acoes" style="display: ${eAdministrador ? 'table-cell' : 'none'};">
+                        <td class="coluna-acoes" style="display: ${eAdministrador ? 'block' : 'none'};">
                             <button class="btn-excluir" data-id="${idMembro}">Remover</button>
                         </td>
                     `;
@@ -798,7 +941,9 @@
                     card.innerHTML = `
                         <div>
                             <h3>${t.titulo}</h3>
-                            <iframe class="iframe-video" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                            <div class="iframe-container">
+                                <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                            </div>
                         </div>
                         ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 10px; width: 100%;" onclick="removerDado('tutoriais', '${d.id}')">Excluir Tutorial</button>` : ""}
                     `;
@@ -873,7 +1018,7 @@
             }
         };
 
-        // EXCLUIR RECURSOS (TUTORIAIS / EVENTOS)
+        // EXCLUIR RECURSOS
         window.removerDado = async function(colecao, id) {
             if (confirm("Deseja apagar permanentemente esse recurso das centrais de rádio?")) {
                 try {
@@ -887,7 +1032,7 @@
         };
 
         // COMUNICADOS GERAIS DO TOPO
-        async function carregarComunicados() {
+        async function carcarComunicados() {
             const container = document.getElementById("conteiner-avisos");
             try {
                 const docRef = doc(db, "avisos", "comunicado");
