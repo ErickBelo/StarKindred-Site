@@ -198,6 +198,7 @@
             }
         }
 
+        /* AJUSTE AQUI: Mudado para flex-start e adicionado gap para alinhar no topo */
         .painel-card {
             background: var(--bg-card);
             border: 1px solid var(--borda-suave);
@@ -207,7 +208,8 @@
             backdrop-filter: blur(3px);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 15px; 
         }
 
         @media (min-width: 768px) {
@@ -220,9 +222,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             padding-bottom: 10px;
+            width: 100%;
         }
 
         .card-header h2 {
@@ -237,9 +239,10 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 160px;
+            max-height: 200px;
             overflow-y: auto;
             padding-right: 5px;
+            width: 100%;
         }
 
         .container-logs::-webkit-scrollbar {
@@ -327,6 +330,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            width: 100%;
         }
 
         .input-painel {
@@ -646,7 +650,7 @@
                     <h2>Mensagens da Liderança</h2>
                     <span>📡</span>
                 </div>
-                <div id="conteiner-avisos">
+                <div id="conteiner-avisos" style="width: 100%;">
                     <p style="color: var(--texto-mutado);">Sintonizando transmissores cósmicos...</p>
                 </div>
             </div>
