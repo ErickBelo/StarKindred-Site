@@ -387,6 +387,23 @@
             color: white;
         }
 
+        .btn-sucesso {
+            font-family: 'Orbitron', sans-serif;
+            background: transparent;
+            color: var(--verde-sucesso);
+            border: 1px solid var(--verde-sucesso);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-sucesso:hover {
+            background: var(--verde-sucesso);
+            color: white;
+        }
+
         /* ==========================================================================
            CONTROLES DA LISTA DE MEMBROS (Barra de Busca e Divisores)
            ========================================================================== */
@@ -524,6 +541,7 @@
             .tabela-membros td.coluna-acoes button {
                 width: 100%;
                 max-width: 150px;
+                margin-bottom: 5px;
             }
         }
 
@@ -799,7 +817,6 @@
                     <input type="text" id="auto-legend" class="input-painel" placeholder="Lenda Principal (ex: Nix)" required>
                     <input type="text" id="auto-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
                     
-                    <!-- Novo Seletor de Stance Ativa (Apenas bônus positivos, sem negativos) -->
                     <select id="auto-stance" class="select-painel" required>
                         <option value="" disabled selected>Selecione sua Stance ativa</option>
                         <option value="Padrão">Padrão</option>
@@ -841,7 +858,6 @@
 
         <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
         <div id="aba-membros" class="conteudo-aba ativa">
-            <!-- Barra de Busca Avançada -->
             <div class="barra-busca-container">
                 <span class="icone-busca">🔍</span>
                 <input type="text" id="campo-busca-membros" class="input-busca" placeholder="Buscar piloto por nick, legend ou arma...">
@@ -890,13 +906,12 @@
             </div>
         </div>
 
-        <!-- ABA 2: CENTRAL DE BUILDS (NOVA) -->
+        <!-- ABA 2: CENTRAL DE BUILDS -->
         <div id="aba-builds" class="conteudo-aba">
             <h2 class="titulo-secao" style="margin-bottom: 15px;">Estatísticas de Configurações da Frota</h2>
             <p style="color: var(--texto-mutado); margin-bottom: 25px;">Mapeamento dinâmico das Stances e Lendas preferidas pelos pilotos da StarKindred para dominar as ranqueadas.</p>
             
             <div class="grade-meta">
-                <!-- Coluna Esquerda: Análise de Lendas e suas Stances -->
                 <div class="painel-card">
                     <div class="card-header">
                         <h2>Fichas de Armamento e Preferência</h2>
@@ -907,7 +922,6 @@
                     </div>
                 </div>
 
-                <!-- Coluna Direita: Ranking de popularidade -->
                 <div class="painel-card">
                     <div class="card-header">
                         <h2>Top Lendas Usadas</h2>
@@ -946,6 +960,32 @@
         <section id="sessao-admin" class="admin-section">
             <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
             
+            <!-- EXCLUSIVO: TABELA DE ALISTAMENTOS PENDENTES -->
+            <div class="painel-card" style="margin-bottom: 30px;">
+                <div class="card-header">
+                    <h2>📥 Alistamentos Pendentes (Triagem de Recrutas)</h2>
+                    <span>📋</span>
+                </div>
+                <div class="limitador-tabela-membros">
+                    <table class="tabela-membros">
+                        <thead>
+                            <tr>
+                                <th>Candidato (Nick)</th>
+                                <th>Lenda Principal</th>
+                                <th>Armas</th>
+                                <th>Stance Desejada</th>
+                                <th>Elo Máximo</th>
+                                <th>Corehalla</th>
+                                <th class="coluna-acoes">Ações de Triagem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-corpo-alistamentos">
+                            <!-- Carregado do Firebase via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="admin-grid">
                 <!-- Painel 1: Transmissor de Comunicados -->
                 <div class="admin-card">
@@ -971,7 +1011,6 @@
                         <input type="text" id="adm-membro-legend" class="input-painel" placeholder="Main Legend (ex: Nix)" required>
                         <input type="text" id="adm-membro-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
                         
-                        <!-- Novo Seletor de Ajuste Remoto (Apenas bônus positivos, sem negativos) -->
                         <select id="adm-membro-stance" class="select-painel" required>
                             <option value="Padrão" selected>Padrão</option>
                             <option value="Velocidade">Velocidade (+1)</option>
@@ -997,14 +1036,12 @@
                         <span>🚀</span>
                     </div>
                     <div class="form-painel" style="gap: 20px;">
-                        <!-- Adicionar Tutorial -->
                         <div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
                             <h4 style="color: var(--amarelo); margin-bottom: 8px; font-family: 'Orbitron';">Novo Tutorial</h4>
                             <input type="text" id="adm-tut-titulo" class="input-painel" placeholder="Título do Vídeo" style="margin-bottom: 8px;">
                             <input type="url" id="adm-tut-link" class="input-painel" placeholder="URL do YouTube (Completa)" style="margin-bottom: 8px;">
                             <button onclick="publicarTutorial()" class="btn-painel-submit" style="width: 100%;">Postar Vídeo</button>
                         </div>
-                        <!-- Adicionar Evento -->
                         <div>
                             <h4 style="color: var(--amarelo); margin-bottom: 8px; font-family: 'Orbitron';">Novo Evento</h4>
                             <input type="text" id="adm-evt-titulo" class="input-painel" placeholder="Nome do Evento" style="margin-bottom: 8px;">
@@ -1018,7 +1055,6 @@
         </section>
     </main>
 
-    <!-- Lógica Exclusiva de Abas -->
     <script>
         function alternarAba(abaId) {
             document.querySelectorAll('.btn-aba').forEach(btn => btn.classList.remove('ativa'));
@@ -1101,6 +1137,9 @@
                         eAdministrador = true;
                         document.getElementById("sessao-admin").style.display = "block";
                         document.querySelectorAll(".classe-th-controle").forEach(th => th.style.display = "table-cell");
+                        
+                        // Executa funções de administração exclusivas
+                        carregarSolicitacoesAlistamento();
                     }
 
                     await carregarTabelaTripulacao();
@@ -1177,7 +1216,6 @@
                     stanceAtiva: novaStance
                 });
 
-                // Registrar a atividade no Histórico
                 await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou sua nave de combate: ${novoLegend} (${novaStance}).`);
 
                 alert("Seu perfil tático foi atualizado com sucesso!");
@@ -1190,7 +1228,7 @@
         // CALCULAR E EXIBIR METRICS DE BUILDS (META DA FROTA)
         function calcularMetaDaFrota(membros) {
             const contagemLendas = {};
-            const lendaStances = {}; // Armazena a contagem de stances por lenda
+            const lendaStances = {};
 
             membros.forEach(m => {
                 const lenda = m.mainLegend ? m.mainLegend.trim() : "Não definido";
@@ -1198,17 +1236,14 @@
 
                 const stance = m.stanceAtiva || "Padrão";
 
-                // Contar lendas
                 contagemLendas[lenda] = (contagemLendas[lenda] || 0) + 1;
 
-                // Mapear stances por lenda
                 if (!lendaStances[lenda]) {
                     lendaStances[lenda] = {};
                 }
                 lendaStances[lenda][stance] = (lendaStances[lenda][stance] || 0) + 1;
             });
 
-            // 1. Renderizar Painel de Lendas & Suas Stances (Coluna Esquerda)
             const containerLendas = document.getElementById("container-estatisticas-lendas");
             containerLendas.innerHTML = "";
 
@@ -1218,7 +1253,6 @@
                 for (const [lenda, stances] of Object.entries(lendaStances)) {
                     const totalPilotos = contagemLendas[lenda];
                     
-                    // Montar o HTML para cada lenda
                     const lendaDiv = document.createElement("div");
                     lendaDiv.className = "card-meta-lenda";
                     
@@ -1249,7 +1283,6 @@
                 }
             }
 
-            // 2. Renderizar o Top Ranking de Popularidade (Coluna Direita)
             const containerRanking = document.getElementById("container-ranking-lendas");
             containerRanking.innerHTML = "";
 
@@ -1304,7 +1337,6 @@
                     </td>
                 `;
 
-                // Divisão de destino baseada no cargo
                 if (m.patente === "Líder Supremo" || m.patente === "Administrador") {
                     tbodyLideranca.appendChild(tr);
                     temLideranca = true;
@@ -1314,7 +1346,6 @@
                 }
             });
 
-            // Feedbacks visuais caso a busca esvazie alguma categoria
             if (!temLideranca) {
                 tbodyLideranca.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum líder correspondente.</td></tr>`;
             }
@@ -1322,7 +1353,6 @@
                 tbodyMembros.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--texto-mutado); padding: 20px;">Nenhum piloto correspondente nesta busca.</td></tr>`;
             }
 
-            // Atribuir ações de click para os botões gerados
             if (eAdministrador) {
                 document.querySelectorAll(".btn-excluir-acao").forEach(btn => {
                     btn.onclick = async function() {
@@ -1362,10 +1392,7 @@
                     });
                 });
 
-                // Renderiza a lista de tripulação
                 renderizarTabelasMembros(todosMembrosCache);
-
-                // Processa o Meta da Frota na aba de builds!
                 calcularMetaDaFrota(todosMembrosCache);
 
             } catch (err) {
@@ -1374,7 +1401,7 @@
             }
         }
 
-        // EVENTO DA BARRA DE BUSCA EM TEMPO REAL
+        // BUSCA EM TEMPO REAL
         document.getElementById("campo-busca-membros").addEventListener("input", function(e) {
             const termo = e.target.value.toLowerCase().trim();
 
@@ -1395,6 +1422,117 @@
 
             renderizarTabelasMembros(filtrados);
         });
+
+        // ==========================================================================
+        // FLUXO DE RECRUTAMENTO / GESTÃO DE SOLICITAÇÕES (ADMIN)
+        // ==========================================================================
+        async function carregarSolicitacoesAlistamento() {
+            const tbody = document.getElementById("tabela-corpo-alistamentos");
+            tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--texto-mutado);'>Varrendo sinais de transmissão...</td></tr>";
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "solicitacoes"));
+                if (querySnapshot.empty) {
+                    tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--texto-mutado); padding: 20px;'>Nenhuma solicitação de alistamento na fila de triagem.</td></tr>";
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                querySnapshot.forEach((docSnap) => {
+                    const dados = docSnap.data();
+                    const idSolicitacao = docSnap.id;
+                    const coreLink = dados.corehalla ? dados.corehalla.replace(/"/g, '').trim() : "";
+
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td><strong>${dados.nome}</strong></td>
+                        <td>${dados.mainLegend || 'Não definido'}</td>
+                        <td>${dados["ArmaMain's"] || 'Não definido'}</td>
+                        <td style="color: var(--amarelo); font-family: 'Orbitron'; font-size: 0.85rem;"><strong>${dados.stanceAtiva || 'Padrão'}</strong></td>
+                        <td>${dados.elomax || '0'}</td>
+                        <td>
+                            ${coreLink ? `<a href="${coreLink}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Ficha ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
+                        </td>
+                        <td class="coluna-acoes">
+                            <button class="btn-sucesso btn-aprovar-recruta" data-id="${idSolicitacao}">Aprovar</button>
+                            <button class="btn-excluir btn-recusar-recruta" data-id="${idSolicitacao}" data-nome="${dados.nome}">Recusar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Eventos dinâmicos dos botões de Alistamento
+                document.querySelectorAll(".btn-aprovar-recruta").forEach(btn => {
+                    btn.onclick = async function() {
+                        const id = this.getAttribute("data-id");
+                        await processarAlistamento(id, true);
+                    };
+                });
+
+                document.querySelectorAll(".btn-recusar-recruta").forEach(btn => {
+                    btn.onclick = async function() {
+                        const id = this.getAttribute("data-id");
+                        const nomeRecruta = this.getAttribute("data-nome");
+                        if (confirm(`Deseja rejeitar e apagar o alistamento de ${nomeRecruta}?`)) {
+                            await processarAlistamento(id, false);
+                        }
+                    };
+                });
+
+            } catch (err) {
+                console.error("Erro ao puxar solicitações:", err);
+                tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--vermelho-erro);'>Sinal de recrutamento instável.</td></tr>";
+            }
+        }
+
+        // PROCESSAR ALISTAMENTO (APROVAR OU REJEITAR)
+        async function processarAlistamento(idDocumento, aprovado) {
+            try {
+                const docRefOriginal = doc(db, "solicitacoes", idDocumento);
+                const docSnap = await getDoc(docRefOriginal);
+
+                if (!docSnap.exists()) {
+                    alert("A solicitação expirou ou já foi processada.");
+                    carregarSolicitacoesAlistamento();
+                    return;
+                }
+
+                const dadosRecruta = docSnap.data();
+
+                if (aprovado) {
+                    // 1. Move para a coleção 'membros' mantendo o nick como ID exclusivo do documento
+                    await setDoc(doc(db, "membros", dadosRecruta.nome), {
+                        nome: dadosRecruta.nome,
+                        patente: "Piloto", // Entra com a patente inicial
+                        mainLegend: dadosRecruta.mainLegend || "",
+                        "ArmaMain's": dadosRecruta["ArmaMain's"] || "",
+                        stanceAtiva: dadosRecruta.stanceAtiva || "Padrão",
+                        elomax: dadosRecruta.elomax || "0",
+                        corehalla: dadosRecruta.corehalla || ""
+                    });
+
+                    // 2. Apaga da fila de solicitações
+                    await deleteDoc(docRefOriginal);
+
+                    await registrarAtividade(`🟢 Novo piloto recrutado! ${dadosRecruta.nome} foi aprovado na triagem por ${nomeSalvo}.`);
+                    alert(`O piloto ${dadosRecruta.nome} foi integrado oficialmente à StarKindred!`);
+                } else {
+                    // Se recusado, apenas deleta o documento
+                    await deleteDoc(docRefOriginal);
+                    await registrarAtividade(`🔴 Solicitação de alistamento do candidato ${dadosRecruta.nome} recusada por ${nomeSalvo}.`);
+                    alert("Solicitação removida.");
+                }
+
+                // Recarrega as áreas de dados dinâmicas
+                carregarSolicitacoesAlistamento();
+                carregarTabelaTripulacao();
+                carregarLogs();
+
+            } catch (err) {
+                console.error("Erro ao processar recrutamento:", err);
+                alert("Falha operacional ao processar solicitação.");
+            }
+        }
 
         // CARREGAR TUTORIAIS DINAMICAMENTE
         async function carregarTutoriais() {
@@ -1541,7 +1679,7 @@
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
                 await registrarAtividade(`📡 Comandante ${nomeSalvo} atualizou os comunicados da nave de comando.`);
-                alert("Transmissão de aviso oficial atualizada!");
+                alert("Transmissão de aviso oficial updated!");
                 location.reload();
             } catch (err) {}
         });
