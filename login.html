@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarKindred | Login de Pilotos</title>
+    <title>StarKindred | Login & Alistamento</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
@@ -35,8 +35,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-y: auto;
             position: relative;
+            padding: 20px 0;
         }
 
         body::before {
@@ -79,7 +80,7 @@
         }
 
         /* ==========================================================================
-           CARD DE LOGIN
+           CARD DE LOGIN / ALISTAMENTO
            ========================================================================== */
         .login-container {
             background: var(--bg-card);
@@ -87,12 +88,13 @@
             border-radius: 8px;
             padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             text-align: center;
             position: relative;
             z-index: 10;
+            transition: all 0.3s ease;
         }
 
         .login-logo {
@@ -166,17 +168,36 @@
             transform: translateY(-1px);
         }
 
-        .link-retorno {
-            display: inline-block;
-            margin-top: 25px;
+        /* Classes Utilitárias de Transição */
+        .escondido {
+            display: none !important;
+        }
+
+        .links-alternar {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .link-acao {
             font-size: 0.85rem;
             color: var(--texto-mutado);
             text-decoration: none;
             transition: color 0.3s;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
         }
 
-        .link-retorno:hover {
+        .link-acao:hover {
             color: var(--amarelo);
+        }
+
+        .link-retorno {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
         }
     </style>
 </head>
@@ -184,31 +205,76 @@
 
     <div class="login-container">
         <div class="login-logo">StarKindred</div>
-        <div class="login-subtitle">Acesso de Pilotos</div>
+        
+        <!-- ==========================================================================
+             FORMULÁRIO DE LOGIN
+             ========================================================================== -->
+        <div id="secao-login">
+            <div class="login-subtitle">Acesso de Pilotos</div>
+            <form id="form-login">
+                <div class="input-grupo">
+                    <label for="usuario">IDENTIFICAÇÃO DO PILOTO (NICK)</label>
+                    <input type="text" id="usuario" class="input-campo" placeholder="Ex: Breki" required autocomplete="off">
+                </div>
 
-        <form id="form-login">
-            <div class="input-grupo">
-                <label for="usuario">IDENTIFICAÇÃO DO PILOTO (NICK)</label>
-                <input type="text" id="usuario" class="input-campo" placeholder="Ex: Breki" required autocomplete="off">
-            </div>
+                <div class="input-grupo">
+                    <label for="senha">CÓDIGO DE ACESSO (SENHA)</label>
+                    <input type="password" id="senha" class="input-campo" placeholder="••••••••" required>
+                </div>
 
-            <div class="input-grupo">
-                <label for="senha">CÓDIGO DE ACESSO (SENHA)</label>
-                <input type="password" id="senha" class="input-campo" placeholder="••••••••" required>
-            </div>
+                <button type="submit" class="btn-submeter">Iniciar Ignição</button>
+            </form>
+        </div>
 
-            <button type="submit" class="btn-submeter">Iniciar Ignição</button>
-        </form>
+        <!-- ==========================================================================
+             FORMULÁRIO DE ALISTAMENTO (CADASTRO)
+             ========================================================================== -->
+        <div id="secao-alistamento" class="escondido">
+            <div class="login-subtitle">Alistamento de Recrutas</div>
+            <form id="form-alistamento">
+                <div class="input-grupo">
+                    <label for="cad-nome">NOME COMPLETO (OU COMO QUER SER CHAMADO)</label>
+                    <input type="text" id="cad-nome" class="input-campo" placeholder="Ex: Lucas Silva" required autocomplete="off">
+                </div>
 
-        <a href="index.html" class="link-retorno">← Abortar Missão (Voltar para a Home)</a>
+                <div class="input-grupo">
+                    <label for="cad-usuario">IDENTIFICAÇÃO DO PILOTO (NICK/LOGIN)</label>
+                    <input type="text" id="cad-usuario" class="input-campo" placeholder="Ex: Breki" required autocomplete="off">
+                </div>
+
+                <div class="input-grupo">
+                    <label for="cad-discord">USUÁRIO DO DISCORD</label>
+                    <input type="text" id="cad-discord" class="input-campo" placeholder="Ex: breki_oficial" required autocomplete="off">
+                </div>
+
+                <div class="input-grupo">
+                    <label for="cad-steam">LINK DA STEAM (OU PLATAFORMA QUE JOGA)</label>
+                    <input type="url" id="cad-steam" class="input-campo" placeholder="Ex: https://steamcommunity.com/id/seu-perfil" required autocomplete="off">
+                </div>
+
+                <div class="input-grupo">
+                    <label for="cad-senha">CRIAR CÓDIGO DE ACESSO (SENHA)</label>
+                    <input type="password" id="cad-senha" class="input-campo" placeholder="Crie uma senha de acesso" required>
+                </div>
+
+                <button type="submit" class="btn-submeter">Enviar Ficha Militar</button>
+            </form>
+        </div>
+
+        <!-- Menu de Navegação Inferior -->
+        <div class="links-alternar">
+            <button id="btn-ir-alistamento" class="link-acao">🚀 Não tem login? Aliste-se na Frota!</button>
+            <button id="btn-ir-login" class="link-acao escondido">🛸 Já é cadastrado? Voltar para o Login</button>
+            <a href="index.html" class="link-acao link-retorno">← Abortar Missão (Voltar para a Home)</a>
+        </div>
     </div>
 
     <!-- ==========================================================================
-         INTEGRAÇÃO FIRESTORE COM SUAS CREDENCIAIS REAIS
-         ========================================================================== */ -->
+         INTEGRAÇÃO FIRESTORE E LÓGICA DE TRANSIÇÃO
+         ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Suas credenciais oficiais da guilda:
         const firebaseConfig = {
@@ -224,25 +290,43 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const form = document.getElementById("form-login");
+        // Elementos de Controle de Interface
+        const secaoLogin = document.getElementById("secao-login");
+        const secaoAlistamento = document.getElementById("secao-alistamento");
+        const btnIrAlistamento = document.getElementById("btn-ir-alistamento");
+        const btnIrLogin = document.getElementById("btn-ir-login");
 
-        form.addEventListener("submit", async function(event) {
+        // Alternância Visual de Telas
+        btnIrAlistamento.addEventListener("click", () => {
+            secaoLogin.classList.add("escondido");
+            secaoAlistamento.classList.remove("escondido");
+            btnIrAlistamento.classList.add("escondido");
+            btnIrLogin.classList.remove("escondido");
+        });
+
+        btnIrLogin.addEventListener("click", () => {
+            secaoAlistamento.classList.add("escondido");
+            secaoLogin.classList.remove("escondido");
+            btnIrLogin.classList.add("escondido");
+            btnIrAlistamento.classList.remove("escondido");
+        });
+
+        // LÓGICA 1: LOGIN (Coleção "membros")
+        const formLogin = document.getElementById("form-login");
+        formLogin.addEventListener("submit", async function(event) {
             event.preventDefault(); 
 
             const nickDigitado = document.getElementById("usuario").value.trim();
             const senhaDigitada = document.getElementById("senha").value;
 
             try {
-                // Busca o documento do piloto na coleção "membros"
                 const docRef = doc(db, "membros", nickDigitado);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const dadosPiloto = docSnap.data();
 
-                    // Validação de senha
                     if (dadosPiloto.senha === senhaDigitada) {
-                        // Salva dados importantes na sessão temporária do navegador
                         localStorage.setItem("sk_usuario", dadosPiloto.nome);
                         localStorage.setItem("sk_patente", dadosPiloto.patente || "Membro");
 
@@ -252,13 +336,55 @@
                         alert("Código de acesso incorreto! Acesso negado.");
                     }
                 } else {
-                    alert("Piloto não localizado na base de dados da guilda.");
+                    alert("Piloto não localizado na base de dados oficial da guilda.");
                 }
             } catch (error) {
                 console.error("Erro no Firestore:", error);
-                alert("Falha na comunicação cósmica com o banco de dados. Verifique se publicou as Regras de leitura!");
+                alert("Falha na comunicação cósmica com o banco de dados.");
+            }
+        });
+
+        // LÓGICA 2: ALISTAMENTO (Coleção temporária "solicitacoes")
+        const formAlistamento = document.getElementById("form-alistamento");
+        formAlistamento.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            // Captura os dados dos novos inputs do formulário
+            const nome = document.getElementById("cad-nome").value.trim();
+            const nickSolicitado = document.getElementById("cad-usuario").value.trim();
+            const discord = document.getElementById("cad-discord").value.trim();
+            const steamLink = document.getElementById("cad-steam").value.trim(); //[cite: 2]
+            const senhaDefinida = document.getElementById("cad-senha").value;
+
+            try {
+                // 1. Evita que o recruta envie uma solicitação com um Nick que já é membro oficial
+                const checarMembroDoc = await getDoc(doc(db, "membros", nickSolicitado));
+                if (checarMembroDoc.exists()) {
+                    alert("Este Nick já está ativo na frota oficial! Escolha outro.");
+                    return;
+                }
+
+                // 2. Salva o alistamento na coleção temporária "solicitacoes" usando o Nick como ID do documento
+                await setDoc(doc(db, "solicitacoes", nickSolicitado), {
+                    nome: nome,
+                    nick: nickSolicitado,
+                    discord: discord,
+                    steam: steamLink, //[cite: 2]
+                    senha: senhaDefinida,
+                    dataSolicitacao: new Date().toISOString()
+                });
+
+                alert("Sinal de alistamento enviado! Sua ficha agora está na fila de aprovação dos oficiais. Avise no Discord!");
+                
+                // Limpa o formulário de cadastro e volta para a tela de login
+                formAlistamento.reset();
+                btnIrLogin.click();
+
+            } catch (error) {
+                console.error("Erro ao enviar alistamento:", error);
+                alert("Houve um erro nos sistemas de transmissão da sua ficha. Tente novamente.");
             }
         });
     </script>
 </body>
-</html>
+</html> 
