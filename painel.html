@@ -105,7 +105,6 @@
             white-space: nowrap;
         }
 
-        /* CORREÇÃO DO AMARELO APAGADO: Agora com amarelo vivo e efeito neon */
         .logo-painel span {
             color: var(--amarelo);
             text-shadow: 0 0 12px rgba(255, 183, 3, 0.6), 0 0 4px rgba(255, 183, 3, 0.3);
@@ -206,6 +205,9 @@
             padding: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(3px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         @media (min-width: 768px) {
@@ -227,6 +229,40 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 1rem;
             color: var(--amarelo);
+        }
+
+        /* ESTILO DOS LOGS DE ATIVIDADE */
+        .container-logs {
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .container-logs::-webkit-scrollbar {
+            width: 4px;
+        }
+        .container-logs::-webkit-scrollbar-thumb {
+            background: var(--dourado);
+            border-radius: 2px;
+        }
+
+        .log-item {
+            padding: 6px 10px;
+            border-left: 2px solid var(--dourado);
+            background: rgba(212, 175, 55, 0.03);
+            border-radius: 0 4px 4px 0;
+            line-height: 1.4;
+        }
+
+        .log-data {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            color: var(--amarelo);
+            margin-bottom: 3px;
         }
 
         /* Menu de Abas Deslizável no Mobile */
@@ -615,15 +651,15 @@
                 </div>
             </div>
 
-            <!-- Dados Operacionais do Jogador Logado -->
+            <!-- REGISTRO DE ATIVIDADES DA FROTA (LOGS) -->
             <div class="painel-card">
                 <div class="card-header">
-                    <h2>Meus Dados de Voo</h2>
-                    <span>📊</span>
+                    <h2>Registro de Atividades</h2>
+                    <span>🛰️</span>
                 </div>
-                <p><strong>Main:</strong> <span id="main-jogador">Carregando...</span></p>
-                <p><strong>Elo Atual:</strong> <span id="elo-jogador">Carregando...</span></p>
-                <p style="margin-top: 10px;"><strong>Corehalla:</strong> <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none;">Acessar Perfil</a></p>
+                <div id="historico-logs" class="container-logs">
+                    <p style="color: var(--texto-mutado);">Escaneando dados de telemetria...</p>
+                </div>
             </div>
 
             <!-- FORMULÁRIO: MEU PERFIL -->
@@ -639,6 +675,15 @@
                     <input type="url" id="auto-corehalla" class="input-painel" placeholder="Meu Link do Corehalla" required>
                     <button type="submit" class="btn-painel-submit">Salvar Alterações</button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Dados do Usuário Logado (Tabela Rápida Inferior) -->
+        <div class="painel-card" style="margin-bottom: 30px; padding: 15px 20px; display: block;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
+                <span><strong>Meu Caça:</strong> <span id="main-jogador">Carregando...</span></span>
+                <span><strong>Meu Recorde:</strong> <span id="elo-jogador">Carregando...</span></span>
+                <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none; font-weight: bold;">Acessar Corehalla ↗</a>
             </div>
         </div>
 
@@ -769,7 +814,7 @@
     <!-- INTEGRACAO FIRESTORE E MECÂNICA DO PAINEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc, addDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
@@ -794,7 +839,8 @@
                 return;
             }
 
-            carcarComunicados();
+            carregarComunicados();
+            carregarLogs();
 
             try {
                 const docRef = doc(db, "membros", nomeSalvo);
@@ -804,7 +850,7 @@
                     const dados = docSnap.data();
 
                     document.getElementById("nome-piloto").textContent = dados.nome;
-                    document.getElementById("display-patente").textContent = dados.patente || "Membro";
+                    document.getElementById("display-patente").textContent = dados.patente || "Piloto";
                     
                     const armaMain = dados["ArmaMain's"] || "Não definido";
                     document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
@@ -843,6 +889,52 @@
             }
         });
 
+        // REGISTRADOR DE LOGS AUXILIAR
+        async function registrarAtividade(textoLog) {
+            try {
+                await addDoc(collection(db, "historico"), {
+                    texto: textoLog,
+                    timestamp: new Date()
+                });
+            } catch (e) {
+                console.error("Erro ao registrar log de auditoria:", e);
+            }
+        }
+
+        // CARREGAR LOGS (ÚLTIMOS 5)
+        async function carregarLogs() {
+            const container = document.getElementById("historico-logs");
+            try {
+                const logsQuery = query(collection(db, "historico"), orderBy("timestamp", "desc"), limit(5));
+                const snap = await getDocs(logsQuery);
+                
+                if (snap.empty) {
+                    container.innerHTML = `<p style="color: var(--texto-mutado);">Sem atividades registradas na frota.</p>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                snap.forEach(d => {
+                    const log = d.data();
+                    let dataFormatada = "Agora";
+                    if (log.timestamp) {
+                        const date = log.timestamp.toDate();
+                        dataFormatada = date.toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' });
+                    }
+
+                    const div = document.createElement("div");
+                    div.className = "log-item";
+                    div.innerHTML = `
+                        <div class="log-data">${dataFormatada}</div>
+                        <div>${log.texto}</div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (err) {
+                container.innerHTML = `<p style="color: var(--texto-mutado);">Falha ao captar sinal de telemetria.</p>`;
+            }
+        }
+
         // AUTO-EDIÇÃO DE MEUS DADOS
         document.getElementById("form-auto-edicao").addEventListener("submit", async function(e) {
             e.preventDefault();
@@ -859,6 +951,10 @@
                     elomax: novoElo,
                     corehalla: novoCorehalla
                 });
+
+                // Registrar a atividade no Histórico
+                await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou seu perfil de combate (Elo Máx: ${novoElo} | Main: ${novoLegend}).`);
+
                 alert("Seu perfil tático foi atualizado com sucesso!");
                 location.reload();
             } catch (err) {
@@ -890,7 +986,7 @@
                             ${linkCorehalla ? `<a href="${linkCorehalla}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
                         </td>
                         <td class="coluna-acoes" style="display: ${eAdministrador ? 'block' : 'none'};">
-                            <button class="btn-excluir" data-id="${idMembro}">Remover</button>
+                            <button class="btn-excluir" data-id="${idMembro}" data-nome="${m.nome}">Remover</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -900,12 +996,14 @@
                     tbody.querySelectorAll(".btn-excluir").forEach(btn => {
                         btn.addEventListener("click", async function() {
                             const idParaRemover = this.getAttribute("data-id");
+                            const nomeParaRemover = this.getAttribute("data-nome");
                             if (idParaRemover === nomeSalvo) {
                                 alert("Você não pode ejetar a si mesmo da própria frota!");
                                 return;
                             }
-                            if (confirm(`Remover o piloto ${idParaRemover} da guilda?`)) {
+                            if (confirm(`Remover o piloto ${nomeParaRemover} da guilda?`)) {
                                 await deleteDoc(doc(db, "membros", idParaRemover));
+                                await registrarAtividade(`⚠️ O comandante ${nomeSalvo} desligou o piloto ${nomeParaRemover} da tripulação.`);
                                 location.reload();
                             }
                         });
@@ -945,7 +1043,7 @@
                                 <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
                             </div>
                         </div>
-                        ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 10px; width: 100%;" onclick="removerDado('tutoriais', '${d.id}')">Excluir Tutorial</button>` : ""}
+                        ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 10px; width: 100%;" onclick="removerDado('tutoriais', '${d.id}', '${t.titulo}')">Excluir Tutorial</button>` : ""}
                     `;
                     container.appendChild(card);
                 });
@@ -972,7 +1070,7 @@
                             <p style="color: var(--texto-mutado); font-size: 0.9rem; margin-bottom: 8px;">Status: <strong style="color: var(--amarelo);">${ev.status}</strong></p>
                             <p style="color: var(--texto-mutado); font-size: 0.9rem;">${ev.descricao || "Sem detalhes adicionais."}</p>
                         </div>
-                        ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 15px; width: 100%;" onclick="removerDado('eventos', '${d.id}')">Excluir Evento</button>` : ""}
+                        ${eAdministrador ? `<button class="btn-excluir" style="margin-top: 15px; width: 100%;" onclick="removerDado('eventos', '${d.id}', '${ev.titulo}')">Excluir Evento</button>` : ""}
                     `;
                     container.appendChild(card);
                 });
@@ -991,6 +1089,7 @@
 
             try {
                 await addDoc(collection(db, "tutoriais"), { titulo, url });
+                await registrarAtividade(`📚 Novo tutorial tático publicado por ${nomeSalvo}: "${titulo}".`);
                 alert("Novo tutorial publicado!");
                 location.reload();
             } catch(e) {
@@ -1011,6 +1110,7 @@
 
             try {
                 await addDoc(collection(db, "eventos"), { titulo, status, descricao });
+                await registrarAtividade(`🏆 Operação agendada por ${nomeSalvo}: "${titulo}" (${status}).`);
                 alert("Novo evento publicado!");
                 location.reload();
             } catch(e) {
@@ -1019,10 +1119,11 @@
         };
 
         // EXCLUIR RECURSOS
-        window.removerDado = async function(colecao, id) {
-            if (confirm("Deseja apagar permanentemente esse recurso das centrais de rádio?")) {
+        window.removerDado = async function(colecao, id, rotulo) {
+            if (confirm(`Deseja apagar permanentemente o recurso "${rotulo}"?`)) {
                 try {
                     await deleteDoc(doc(db, colecao, id));
+                    await registrarAtividade(`🗑️ Recurso da central de "${colecao}" removido por ${nomeSalvo}: "${rotulo}".`);
                     alert("Recurso removido com sucesso!");
                     location.reload();
                 } catch(e) {
@@ -1032,7 +1133,7 @@
         };
 
         // COMUNICADOS GERAIS DO TOPO
-        async function carcarComunicados() {
+        async function carregarComunicados() {
             const container = document.getElementById("conteiner-avisos");
             try {
                 const docRef = doc(db, "avisos", "comunicado");
@@ -1051,27 +1152,33 @@
 
         document.getElementById("form-comunicado").addEventListener("submit", async function(e) {
             e.preventDefault();
+            const dataSinal = document.getElementById("adm-aviso-data").value.trim();
             try {
                 await setDoc(doc(db, "avisos", "comunicado"), {
-                    data: document.getElementById("adm-aviso-data").value.trim(),
+                    data: dataSinal,
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
-                alert("Transmissão atualizada!");
+                await registrarAtividade(`📡 Comandante ${nomeSalvo} atualizou os comunicados da nave de comando.`);
+                alert("Transmissão de aviso oficial atualizada!");
                 location.reload();
             } catch (err) {}
         });
 
+        // SOBRESCREVER PILOTO ALHEIO (ADMIN)
         document.getElementById("form-ajuste-membro").addEventListener("submit", async function(e) {
             e.preventDefault();
             const nickAlvo = document.getElementById("adm-membro-nick").value.trim();
+            const novoLegend = document.getElementById("adm-membro-legend").value.trim();
+            const novoElo = document.getElementById("adm-membro-elo").value;
             try {
                 const docRef = doc(db, "membros", nickAlvo);
                 await updateDoc(docRef, {
-                    mainLegend: document.getElementById("adm-membro-legend").value.trim(),
+                    mainLegend: novoLegend,
                     "ArmaMain's": document.getElementById("adm-membro-armas").value.trim(),
-                    elomax: document.getElementById("adm-membro-elo").value,
+                    elomax: novoElo,
                     corehalla: document.getElementById("adm-membro-corehalla").value.trim()
                 });
+                await registrarAtividade(`⚙️ Os dados do piloto ${nickAlvo} foram editados remotamente por ${nomeSalvo}.`);
                 alert(`Ficha do Piloto ${nickAlvo} ajustada!`);
                 location.reload();
             } catch (err) {}
