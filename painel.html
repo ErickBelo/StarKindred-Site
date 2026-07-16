@@ -1323,7 +1323,6 @@
                         document.getElementById("sessao-admin").style.display = "block";
                         document.querySelectorAll(".classe-th-controle").forEach(th => th.style.display = "table-cell");
                         
-                        // Executa funções de administração exclusivas
                         carregarSolicitacoesAlistamento();
                     }
 
@@ -1331,7 +1330,6 @@
                     carregarTutoriais();
                     carregarEventos();
                     
-                    // Inicialização do Módulo Nativo de Torneios
                     await sincronizarModuloTorneio();
                 }
             } catch (err) {
@@ -1339,7 +1337,6 @@
             }
         });
 
-        // REGISTRADOR DE LOGS AUXILIAR
         async function registrarAtividade(textoLog) {
             try {
                 await addDoc(collection(db, "historico"), {
@@ -1351,7 +1348,6 @@
             }
         }
 
-        // CARREGAR LOGS (ÚLTIMOS 5)
         async function carregarLogs() {
             const container = document.getElementById("historico-logs");
             try {
@@ -1385,7 +1381,6 @@
             }
         }
 
-        // AUTO-EDIÇÃO DE MEUS DADOS
         document.getElementById("form-auto-edicao").addEventListener("submit", async function(e) {
             e.preventDefault();
             const novoLegend = document.getElementById("auto-legend").value.trim();
@@ -1413,7 +1408,6 @@
             }
         });
 
-        // CALCULAR E EXIBIR METRICS DE BUILDS (META DA FROTA)
         function calcularMetaDaFrota(membros) {
             const contagemLendas = {};
             const lendaStances = {};
@@ -1423,7 +1417,6 @@
                 if (lenda === "Não definido") return;
 
                 const stance = m.stanceAtiva || "Padrão";
-
                 contagemLendas[lenda] = (contagemLendas[lenda] || 0) + 1;
 
                 if (!lendaStances[lenda]) {
@@ -1440,7 +1433,6 @@
             } else {
                 for (const [lenda, stances] of Object.entries(lendaStances)) {
                     const totalPilotos = contagemLendas[lenda];
-                    
                     const lendaDiv = document.createElement("div");
                     lendaDiv.className = "card-meta-lenda";
                     
@@ -1494,7 +1486,6 @@
             }
         }
 
-        // PROCESSAR E MONTAR TABELAS SEPARADAS E FILTRADAS
         function renderizarTabelasMembros(membrosFiltrados) {
             const tbodyLideranca = document.getElementById("tabela-corpo-lideranca");
             const tbodyMembros = document.getElementById("tabela-corpo-membros");
@@ -1560,7 +1551,6 @@
             }
         }
 
-        // CARREGAR PILOTOS DO FIREBASE E GUARDAR EM CACHE
         async function carregarTabelaTripulacao() {
             try {
                 const querySnapshot = await getDocs(collection(db, "membros"));
@@ -1589,7 +1579,6 @@
             }
         }
 
-        // BUSCA EM TEMPO REAL
         document.getElementById("campo-busca-membros").addEventListener("input", function(e) {
             const termo = e.target.value.toLowerCase().trim();
 
@@ -1611,9 +1600,6 @@
             renderizarTabelasMembros(filtrados);
         });
 
-        // ==========================================================================
-        // FLUXO DE RECRUTAMENTO / GESTÃO DE SOLICITAÇÕES (ADMIN)
-        // ==========================================================================
         async function carregarSolicitacoesAlistamento() {
             const tbody = document.getElementById("tabela-corpo-alistamentos");
             tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--texto-mutado);'>Varrendo sinais de transmissão...</td></tr>";
@@ -1649,7 +1635,6 @@
                     tbody.appendChild(tr);
                 });
 
-                // Eventos dinâmicos dos botões de Alistamento
                 document.querySelectorAll(".btn-aprovar-recruta").forEach(btn => {
                     btn.onclick = async function() {
                         const id = this.getAttribute("data-id");
@@ -1673,7 +1658,6 @@
             }
         }
 
-        // PROCESSAR ALISTAMENTO (APROVAR OU REJEITAR)
         async function processarAlistamento(idDocumento, aprovado) {
             try {
                 const docRefOriginal = doc(db, "solicitacoes", idDocumento);
@@ -1688,10 +1672,9 @@
                 const dadosRecruta = docSnap.data();
 
                 if (aprovado) {
-                    // 1. Move para a coleção 'membros' mantendo o nick como ID exclusivo do documento
                     await setDoc(doc(db, "membros", dadosRecruta.nome), {
                         nome: dadosRecruta.nome,
-                        patente: "Piloto", // Entra com a patente inicial
+                        patente: "Piloto", 
                         mainLegend: dadosRecruta.mainLegend || "",
                         "ArmaMain's": dadosRecruta["ArmaMain's"] || "",
                         stanceAtiva: dadosRecruta.stanceAtiva || "Padrão",
@@ -1699,19 +1682,15 @@
                         corehalla: dadosRecruta.corehalla || ""
                     });
 
-                    // 2. Apaga da fila de solicitações
                     await deleteDoc(docRefOriginal);
-
                     await registrarAtividade(`🟢 Novo piloto recrutado! ${dadosRecruta.nome} foi aprovado na triagem por ${nomeSalvo}.`);
                     alert(`O piloto ${dadosRecruta.nome} foi integrado oficialmente à StarKindred!`);
                 } else {
-                    // Se recusado, apenas deleta o documento
                     await deleteDoc(docRefOriginal);
                     await registrarAtividade(`🔴 Solicitação de alistamento do candidato ${dadosRecruta.nome} recusada por ${nomeSalvo}.`);
                     alert("Solicitação removida.");
                 }
 
-                // Recarrega as áreas de dados dinâmicas
                 carregarSolicitacoesAlistamento();
                 carregarTabelaTripulacao();
                 carregarLogs();
@@ -1722,7 +1701,6 @@
             }
         }
 
-        // CARREGAR TUTORIAIS DINAMICAMENTE
         async function carregarTutoriais() {
             const container = document.getElementById("lista-tutoriais");
             container.innerHTML = "";
@@ -1758,7 +1736,6 @@
             } catch (err) {}
         }
 
-        // CARREGAR EVENTOS DINAMICAMENTE
         async function carregarEventos() {
             const container = document.getElementById("lista-eventos");
             container.innerHTML = "";
@@ -1785,7 +1762,6 @@
             } catch (err) {}
         }
 
-        // INTERAÇÃO DO ADMINISTRADOR: POSTAR TUTORIAL
         window.publicarTutorial = async function() {
             const titulo = document.getElementById("adm-tut-titulo").value.trim();
             const url = document.getElementById("adm-tut-link").value.trim();
@@ -1805,7 +1781,6 @@
             }
         };
 
-        // INTERAÇÃO DO ADMINISTRADOR: POSTAR EVENTO
         window.publicarEvento = async function() {
             const titulo = document.getElementById("adm-evt-titulo").value.trim();
             const status = document.getElementById("adm-evt-status").value.trim();
@@ -1826,7 +1801,6 @@
             }
         };
 
-        // EXCLUIR RECURSOS
         window.removerDado = async function(colecao, id, rotulo) {
             if (confirm(`Deseja apagar permanentemente o recurso "${rotulo}"?`)) {
                 try {
@@ -1840,7 +1814,6 @@
             }
         };
 
-        // COMUNICADOS GERAIS DO TOPO
         async function carregarComunicados() {
             const container = document.getElementById("conteiner-avisos");
             try {
@@ -1866,13 +1839,12 @@
                     data: dataSinal,
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
-                await registrarAtividade(`📡 Comandante ${nomeSalvo} updated os comunicados da nave de comando.`);
+                await registrarAtividade(`📡 Comandante ${nomeSalvo} atualizou os comunicados da nave de comando.`);
                 alert("Transmissão de aviso oficial atualizada!");
                 location.reload();
             } catch (err) {}
         });
 
-        // SOBRESCREVER PILOTO ALHEIO (ADMIN)
         document.getElementById("form-ajuste-membro").addEventListener("submit", async function(e) {
             e.preventDefault();
             const nickAlvo = document.getElementById("adm-membro-nick").value.trim();
@@ -1910,7 +1882,6 @@
                     await setDoc(configRef, configuracoes);
                 }
 
-                // Carrega pilotos já cadastrados na lista de inscritos
                 const inscritosSnapshot = await getDocs(collection(db, "torneio_inscritos"));
                 const listaInscritos = [];
                 inscritosSnapshot.forEach(d => listaInscritos.push(d.data()));
@@ -1928,7 +1899,6 @@
                     contGamerList.appendChild(span);
                 });
 
-                // Renderizar Botão/Painel de Inscrição conforme o status
                 const painelStatus = document.getElementById("status-inscricoes");
                 const jaInscrito = listaInscritos.some(p => p.nome === nomeSalvo);
 
@@ -1962,10 +1932,8 @@
             }
         }
 
-        // AÇÃO: INSCREVER JOGADOR NO BANCO
         window.inscreverJogador = async function() {
             try {
-                // Obtém os dados mais atualizados do membro
                 const mSnap = await getDoc(doc(db, "membros", nomeSalvo));
                 if (!mSnap.exists()) return;
                 const mDados = mSnap.data();
@@ -1984,7 +1952,6 @@
             }
         };
 
-        // AÇÃO: DESINSCREVER JOGADOR NO BANCO
         window.desinscreverJogador = async function() {
             if (confirm("Deseja retirar sua nave do torneio?")) {
                 try {
@@ -1998,7 +1965,6 @@
             }
         };
 
-        // ADMIN: HABILITAR/DESABILITAR INSCRIÇÕES DO TORNEIO
         window.toggleInscricoesTorneio = async function() {
             try {
                 const configRef = doc(db, "torneio_config", "global");
@@ -2019,23 +1985,19 @@
             }
         };
 
-        // ADMIN: LIMPAR E RESETAR O TORNEIO
         window.limparTorneioCompleto = async function() {
             if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, partidas e o bracket atual. Deseja redefinir tudo?")) {
                 try {
-                    // Deleta todos os inscritos
                     const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
                     for (const docSnap of inscSnapshot.docs) {
                         await deleteDoc(doc(db, "torneio_inscritos", docSnap.id));
                     }
 
-                    // Deleta todas as partidas geradas
                     const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
                     for (const docSnap of partSnapshot.docs) {
                         await deleteDoc(doc(db, "torneio_partidas", docSnap.id));
                     }
 
-                    // Reseta status global para fechado
                     await setDoc(doc(db, "torneio_config", "global"), { status: "fechado" });
 
                     await registrarAtividade(`🧹 Torneio completamente resetado e limpo por Comandante ${nomeSalvo}.`);
@@ -2047,7 +2009,6 @@
             }
         };
 
-        // ADMIN: ALGORITMO NATIVO DE GERAÇÃO DE CHAVES (CHALLONGE CORE)
         window.gerarChaveamento = async function() {
             try {
                 const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
@@ -2059,17 +2020,14 @@
                     return;
                 }
 
-                // Embaralha jogadores de forma pseudo-aleatória
                 pilotos.sort(() => Math.random() - 0.5);
 
-                // Determina tamanho do Bracket (potência de 2 mais próxima: 2, 4, 8, 16)
                 const totalInscritos = pilotos.length;
                 let tamanhoBracket = 2;
                 if (totalInscritos > 2) tamanhoBracket = 4;
                 if (totalInscritos > 4) tamanhoBracket = 8;
                 if (totalInscritos > 8) tamanhoBracket = 16;
 
-                // Deleta partidas anteriores se existirem
                 const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
                 for (const d of partSnapshot.docs) {
                     await deleteDoc(doc(db, "torneio_partidas", d.id));
@@ -2077,7 +2035,6 @@
 
                 const partidasGeradas = [];
 
-                // Geração de Rodada 1
                 const partidasNaRodada1 = tamanhoBracket / 2;
                 for (let i = 0; i < partidasNaRodada1; i++) {
                     const idx1 = i * 2;
@@ -2099,7 +2056,6 @@
                         posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
                     };
 
-                    // Se for W.O (jogador sem adversário na primeira fase devido à chave ímpar)
                     if (p1 && !p2) {
                         partida.vencedor = p1;
                         partida.status = "concluido";
@@ -2108,7 +2064,6 @@
                     partidasGeradas.push(partida);
                 }
 
-                // Geração de Rodada 2 (Quartas ou Semis dependendo do tamanho)
                 const rodadasFinaisTotal = Math.log2(tamanhoBracket);
                 for (let r = 2; r <= rodadasFinaisTotal; r++) {
                     const partidasNaRodada = tamanhoBracket / Math.pow(2, r);
@@ -2129,15 +2084,12 @@
                     }
                 }
 
-                // Salva todas as partidas estruturadas no Firestore
                 for (const p of partidasGeradas) {
                     await setDoc(doc(db, "torneio_partidas", p.id), p);
                 }
 
-                // Move status para em andamento
                 await setDoc(doc(db, "torneio_config", "global"), { status: "andamento" });
 
-                // Alimenta os avanços automáticos de BYE
                 for (const p of partidasGeradas) {
                     if (p.status === "concluido" && p.vencedor) {
                         await atualizarAvancoDeChave(p.proximaPartidaId, p.posicaoNaProxima, p.vencedor);
@@ -2154,9 +2106,8 @@
             }
         };
 
-        // FUNÇÃO DE PROPAGAÇÃO INTERNA DE GANHADORES (VENCEDOR AVANÇA NA ÁRVORE)
         async function atualizarAvancoDeChave(matchAlvoId, posicao, nomeGanhador) {
-            if (matchAlvoId === "final") return; // Fim do campeonato
+            if (matchAlvoId === "final") return; 
             try {
                 const matchRef = doc(db, "torneio_partidas", matchAlvoId);
                 const snap = await getDoc(matchRef);
@@ -2165,7 +2116,6 @@
                     const updateData = {};
                     updateData[posicao] = nomeGanhador;
 
-                    // Se a vaga oposta já estiver preenchida, o jogo pode passar a ficar pronto
                     const oponente = (posicao === "jogador1") ? dados.jogador2 : dados.jogador1;
                     if (oponente) {
                         updateData.status = "jogando";
@@ -2178,7 +2128,6 @@
             }
         }
 
-        // VISUALIZADOR DA ÁRVORE (BRACKETS)
         async function carregarEExibirBrackets() {
             const container = document.getElementById("bracket-view");
             const tabelaModeracao = document.getElementById("tabela-moderacao-jogos");
@@ -2193,7 +2142,6 @@
                 const partidas = [];
                 querySnap.forEach(d => partidas.push(d.data()));
 
-                // Agrupa as partidas por rodada
                 const rodadasMap = {};
                 partidAsSorting(partidas);
 
@@ -2206,7 +2154,6 @@
 
                 container.innerHTML = "";
                 
-                // Desenha as colunas de rodadas na tela
                 const totalDeRodadas = Object.keys(rodadasMap).length;
                 for (let r = 1; r <= totalDeRodadas; r++) {
                     const roundDiv = document.createElement("div");
@@ -2219,7 +2166,6 @@
 
                     roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
 
-                    // Ordena partidas pelo id para ficarem visualmente simétricas
                     rodadasMap[r].sort((a,b) => a.id.localeCompare(b.id));
 
                     rodadasMap[r].forEach(m => {
@@ -2245,7 +2191,6 @@
                     container.appendChild(roundDiv);
                 }
 
-                // ADMIN/MODERAÇÃO: Alimentar lista de controle e súmula
                 if (eAdministrador) {
                     tabelaModeracao.innerHTML = "";
                     const partidasAtivas = partidas.filter(p => p.status === "jogando");
@@ -2281,7 +2226,6 @@
             partidas.sort((a,b) => a.rodada - b.rodada);
         }
 
-        // AÇÃO DO JOGADOR: AUTO-REPORTAR VITÓRIA NA PARTIDA
         window.autoReportarVitoria = async function(matchId) {
             if (confirm("Você confirma que venceu este confronto? (Reportes falsos geram punições).")) {
                 try {
@@ -2300,8 +2244,6 @@
                         };
 
                         await updateDoc(matchRef, updateData);
-
-                        // Avança vencedor na próxima chave
                         await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, nomeSalvo);
                         await registrarAtividade(`⚔️ Partida ${matchId.toUpperCase()}: ${nomeSalvo} reportou vitória sobre seu oponente.`);
                         
@@ -2314,7 +2256,6 @@
             }
         };
 
-        // ADMIN: SALVAR RESULTADO MODERADO E AVANÇAR JOGADORES (JUIZ)
         window.salvarResultadoModerado = async function(matchId) {
             const sc1 = parseInt(document.getElementById(`score1_${matchId}`).value) || 0;
             const sc2 = parseInt(document.getElementById(`score2_${matchId}`).value) || 0;
@@ -2339,7 +2280,6 @@
                         status: "concluido"
                     });
 
-                    // Propaga o campeão para a próxima etapa da árvore
                     await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, vencedorFinal);
                     await registrarAtividade(`⚖️ Arbitragem: Juiz ${nomeSalvo} arbitrou a partida ${matchId.toUpperCase()} (${vencedorFinal} vencedor).`);
 
