@@ -574,6 +574,12 @@
             background: rgba(212, 175, 55, 0.08);
         }
 
+        .badge-tabela.checked-in {
+            color: var(--verde-sucesso);
+            border-color: var(--verde-sucesso);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
         /* ESTILOS DA NOVA ABA DE BUILDS */
         .grade-meta {
             display: grid;
@@ -1064,10 +1070,24 @@
             </div>
         </div>
 
-        <!-- ABA 6: ARENA DE TORNEIOS (NATIVO - CHALLONGE) -->
+        <!-- ABA 6: ARENA DE TORNEIOS -->
         <div id="aba-torneios" class="conteudo-aba">
             <h2 class="titulo-secao">Arena StarKindred de Combates</h2>
             
+            <!-- EXIBIÇÃO DE DATAS DO CAMPEONATO ATIVO -->
+            <div class="painel-card" id="cronograma-torneio-card" style="margin-bottom: 20px; border-left: 4px solid var(--amarelo);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 style="font-family: 'Orbitron'; color: var(--amarelo); font-size: 1rem;">🛰️ AGENDA DA OPERAÇÃO</h3>
+                        <p style="color: var(--texto-claro); font-size: 0.9rem; margin-top: 5px;">
+                            Dia de Combate: <strong id="torneio-data-display" style="color: white;">Definindo...</strong> | 
+                            Decolagem dos Caças: <strong id="torneio-hora-display" style="color: white;">Definindo...</strong>
+                        </p>
+                    </div>
+                    <div id="status-fase-torneio" class="badge-patente" style="background: rgba(255, 183, 3, 0.1);">Fase: Preparação</div>
+                </div>
+            </div>
+
             <div class="grid-registro-campeonato" style="margin-bottom: 30px;">
                 <!-- Painel Esquerdo: Registro / Inscrições -->
                 <div class="painel-card">
@@ -1083,11 +1103,11 @@
                 <!-- Painel Direito: Estatísticas / Infos Rápidas -->
                 <div class="painel-card">
                     <div class="card-header">
-                        <h2>Pilotos Confirmados</h2>
+                        <h2>Pilotos Registrados</h2>
                         <span>📊</span>
                     </div>
                     <div id="total-confirmados-display" style="font-size: 0.9rem;">
-                        <p style="color: var(--texto-mutado);">Total Inscritos: <strong id="contagem-pilotos-torneio" style="color: var(--amarelo);">0</strong></p>
+                        <p style="color: var(--texto-mutado);">Registrados: <strong id="contagem-pilotos-torneio" style="color: var(--amarelo);">0</strong></p>
                         <div id="pilotos-inscritos-lista" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
                             <!-- Carregados dinamicamente via JS -->
                         </div>
@@ -1204,18 +1224,36 @@
                 </div>
             </div>
 
-            <!-- CONTROLE DE CAMPEONATO (PAINEL DE ADMIN TO TORNEIO) -->
+            <!-- CONTROLE DE CAMPEONATO (PAINEL DE ADMIN DO TORNEIO) -->
             <div class="admin-grid" style="margin-top: 30px;">
                 <div class="admin-card" style="grid-column: 1 / -1;">
                     <div class="card-header">
                         <h2>Controle e Moderação do Torneio Ativo</h2>
                         <span>🎯</span>
                     </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
-                        <button class="btn-painel-submit" onclick="toggleInscricoesTorneio()" style="background: var(--dourado);">Habilitar/Desabilitar Inscrições</button>
-                        <button class="btn-painel-submit" onclick="gerarChaveamento()" style="background: var(--verde-sucesso); color: #fff;">Sortear e Gerar Chaves (Iniciar Torneio)</button>
+                    
+                    <!-- CONFIGURADOR DE DIA / HORA E FASE DE CHECK-IN -->
+                    <div class="form-painel" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
+                        <div>
+                            <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Data da Competição</label>
+                            <input type="text" id="adm-torneio-data" class="input-painel" placeholder="Ex: Sábado, 25/07">
+                        </div>
+                        <div>
+                            <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Hora de Decolagem</label>
+                            <input type="text" id="adm-torneio-hora" class="input-painel" placeholder="Ex: 19:00 BRT">
+                        </div>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button class="btn-painel-submit" onclick="atualizarAgendaTorneio()" style="width: 100%; height: 43px;">Salvar Cronograma</button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
+                        <button class="btn-painel-submit" onclick="alterarStatusTorneio('aberto')" style="background: var(--dourado);">Habilitar Registro (Inscrições)</button>
+                        <button class="btn-painel-submit" onclick="alterarStatusTorneio('checkin')" style="background: #3a86ff; color: #fff;">Abrir Portões de Check-in 📢</button>
+                        <button class="btn-painel-submit" onclick="gerarChaveamento()" style="background: var(--verde-sucesso); color: #fff;">Sortear Chaves (Somente Checked-in)</button>
                         <button class="btn-painel-submit" onclick="limparTorneioCompleto()" style="background: var(--vermelho-erro); color: #fff;">Resetar Torneio Atual</button>
                     </div>
+
                     <div id="painel-moderacao-partidas" style="margin-top: 25px;">
                         <h4 style="color: var(--amarelo); margin-bottom: 10px; font-family: 'Orbitron';">Súmula de Partidas para Moderação (Juiz)</h4>
                         <div class="limitador-tabela-membros" style="max-height: 250px;">
@@ -1867,7 +1905,7 @@
         });
 
         // ==========================================================================
-        // SISTEMA NATIVO DE GERENCIAMENTO DE TORNEIOS (CHALLONGE DA STARKINDRED)
+        // SISTEMA NATIVO DE GERENCIAMENTO DE TORNEIOS (STARKINDRED BRACKETS)
         // ==========================================================================
         
         async function sincronizarModuloTorneio() {
@@ -1875,11 +1913,20 @@
                 const configRef = doc(db, "torneio_config", "global");
                 const configSnap = await getDoc(configRef);
                 
-                let configuracoes = { status: "fechado" };
+                let configuracoes = { status: "fechado", data: "Sábado", hora: "19:00 BRT" };
                 if (configSnap.exists()) {
                     configuracoes = configSnap.data();
                 } else {
                     await setDoc(configRef, configuracoes);
+                }
+
+                // Atualizar labels de Data/Hora na tela
+                document.getElementById("torneio-data-display").textContent = configuracoes.data || "Sábado";
+                document.getElementById("torneio-hora-display").textContent = configuracoes.hora || "19:00 BRT";
+                
+                if (eAdministrador) {
+                    document.getElementById("adm-torneio-data").value = configuracoes.data || "";
+                    document.getElementById("adm-torneio-hora").value = configuracoes.hora || "";
                 }
 
                 const inscritosSnapshot = await getDocs(collection(db, "torneio_inscritos"));
@@ -1893,19 +1940,25 @@
                 contGamerList.innerHTML = "";
                 listaInscritos.forEach(p => {
                     const span = document.createElement("span");
-                    span.className = "badge-tabela";
-                    span.style.borderColor = "var(--amarelo)";
-                    span.textContent = p.nome;
+                    span.className = p.checkin ? "badge-tabela checked-in" : "badge-tabela";
+                    span.textContent = p.nome + (p.checkin ? " (✔ Check-in)" : "");
                     contGamerList.appendChild(span);
                 });
 
                 const painelStatus = document.getElementById("status-inscricoes");
-                const jaInscrito = listaInscritos.some(p => p.nome === nomeSalvo);
+                const jogadorInscritoObj = listaInscritos.find(p => p.nome === nomeSalvo);
+                const jaInscrito = !!jogadorInscritoObj;
+                const fezCheckIn = jogadorInscritoObj ? !!jogadorInscritoObj.checkin : false;
+
+                const statusFase = document.getElementById("status-fase-torneio");
 
                 if (configuracoes.status === "aberto") {
+                    statusFase.textContent = "Fase: Inscrições Abertas";
+                    statusFase.style.color = "var(--amarelo)";
                     if (jaInscrito) {
                         painelStatus.innerHTML = `
-                            <p style="color: var(--verde-sucesso); font-weight:bold; margin-bottom: 10px;">🟢 VOCÊ ESTÁ INCRITO NO TORNEIO!</p>
+                            <p style="color: var(--verde-sucesso); font-weight:bold; margin-bottom: 10px;">🟢 VOCÊ ESTÁ INSCRITO NO TORNEIO!</p>
+                            <p style="color: var(--texto-mutado); font-size: 0.85rem; margin-bottom: 15px;">Aguarde a liberação do check-in pela liderança para confirmar que vai jogar.</p>
                             <button class="btn-excluir" onclick="desinscreverJogador()" style="width:100%">Cancelar Inscrição</button>
                         `;
                     } else {
@@ -1914,12 +1967,42 @@
                             <button class="btn-sucesso" onclick="inscreverJogador()" style="width:100%; font-weight:bold; padding:10px;">Inscrever-me Agora</button>
                         `;
                     }
+                } else if (configuracoes.status === "checkin") {
+                    statusFase.textContent = "Fase: CHECK-IN ABERTO";
+                    statusFase.style.color = "#3a86ff";
+                    statusFase.style.borderColor = "#3a86ff";
+
+                    if (jaInscrito) {
+                        if (fezCheckIn) {
+                            painelStatus.innerHTML = `
+                                <p style="color: var(--verde-sucesso); font-weight:bold; margin-bottom: 10px;">✔ CHECK-IN REALIZADO COM SUCESSO!</p>
+                                <p style="color: var(--texto-mutado); font-size: 0.85rem;">Seu caça está na rampa de lançamento. Aguarde a liderança gerar as chaves.</p>
+                            `;
+                        } else {
+                            painelStatus.innerHTML = `
+                                <p style="color: #3a86ff; font-weight:bold; margin-bottom: 10px;">🚨 OS PORTÕES DE CHECK-IN ESTÃO ABERTOS!</p>
+                                <p style="color: var(--texto-claro); font-size: 0.85rem; margin-bottom: 15px;">Você precisa realizar o check-in para confirmar que está ativo agora.</p>
+                                <button class="btn-sucesso" onclick="confirmarCheckIn()" style="width:100%; font-weight:bold; padding:10px; background:#3a86ff; color:#fff; border-color:#3a86ff;">Confirmar Minha Presença (Check-In)</button>
+                            `;
+                        }
+                    } else {
+                        painelStatus.innerHTML = `
+                            <p style="color: var(--vermelho-erro); font-weight:bold; margin-bottom: 10px;">Portas Fechadas.</p>
+                            <p style="color: var(--texto-mutado); font-size: 0.85rem;">As inscrições encerraram e o check-in está ativo para os participantes registrados.</p>
+                        `;
+                    }
                 } else if (configuracoes.status === "andamento") {
+                    statusFase.textContent = "Fase: Em Andamento";
+                    statusFase.style.color = "var(--verde-sucesso)";
+                    statusFase.style.borderColor = "var(--verde-sucesso)";
                     painelStatus.innerHTML = `
                         <p style="color: var(--amarelo); font-weight:bold; margin-bottom: 10px;">⚔️ TORNEIO EM ANDAMENTO!</p>
                         <p style="color: var(--texto-mutado); font-size: 0.85rem;">Confira o chaveamento de partidas ao lado.</p>
                     `;
                 } else {
+                    statusFase.textContent = "Fase: Fechado";
+                    statusFase.style.color = "var(--texto-mutado)";
+                    statusFase.style.borderColor = "var(--borda-suave)";
                     painelStatus.innerHTML = `
                         <p style="color: var(--texto-mutado);">Os portões de inscrição para competições estão fechados no momento.</p>
                     `;
@@ -1941,6 +2024,7 @@
                 await setDoc(doc(db, "torneio_inscritos", nomeSalvo), {
                     nome: nomeSalvo,
                     elo: mDados.elomax || "0",
+                    checkin: false, // Começa sempre sem check-in realizado
                     timestamp: new Date()
                 });
 
@@ -1953,7 +2037,7 @@
         };
 
         window.desinscreverJogador = async function() {
-            if (confirm("Deseja retirar sua nave do torneio?")) {
+            if (confirm("Deseja retirar sua inscrição do torneio?")) {
                 try {
                     await deleteDoc(doc(db, "torneio_inscritos", nomeSalvo));
                     await registrarAtividade(`⚠️ Piloto ${nomeSalvo} cancelou sua inscrição no torneio.`);
@@ -1965,28 +2049,62 @@
             }
         };
 
-        window.toggleInscricoesTorneio = async function() {
+        window.confirmarCheckIn = async function() {
+            try {
+                await updateDoc(doc(db, "torneio_inscritos", nomeSalvo), {
+                    checkin: true
+                });
+                await registrarAtividade(`📡 Piloto ${nomeSalvo} efetuou check-in e está pronto para o combate.`);
+                alert("Check-in efetuado com sucesso! Aguarde o início dos combates.");
+                location.reload();
+            } catch (err) {
+                alert("Erro ao realizar check-in.");
+            }
+        }
+
+        window.alterarStatusTorneio = async function(novoStatus) {
             try {
                 const configRef = doc(db, "torneio_config", "global");
-                const configSnap = await getDoc(configRef);
-                let novoStatus = "aberto";
+                await updateDoc(configRef, { status: novoStatus });
+                
+                let mensagemLog = "";
+                if (novoStatus === "aberto") mensagemLog = "abriu as inscrições para o próximo torneio";
+                else if (novoStatus === "checkin") mensagemLog = "iniciou a fase de CHECK-IN para o torneio ativo";
+                else mensagemLog = "fechou o status do torneio";
 
-                if (configSnap.exists()) {
-                    const dados = configSnap.data();
-                    if (dados.status === "aberto") novoStatus = "fechado";
-                }
-
-                await setDoc(configRef, { status: novoStatus });
-                await registrarAtividade(`⚙️ Comandante ${nomeSalvo} alterou o portão de inscrições do torneio para: ${novoStatus.toUpperCase()}.`);
-                alert(`Inscrições agora estão: ${novoStatus.toUpperCase()}!`);
+                await registrarAtividade(`⚙️ Comandante ${nomeSalvo} ${mensagemLog}.`);
+                alert(`Status do Torneio alterado para: ${novoStatus.toUpperCase()}`);
                 location.reload();
             } catch (err) {
                 alert("Falha ao configurar as inscrições.");
             }
         };
 
+        window.atualizarAgendaTorneio = async function() {
+            const dataTorneio = document.getElementById("adm-torneio-data").value.trim();
+            const horaTorneio = document.getElementById("adm-torneio-hora").value.trim();
+
+            if(!dataTorneio || !horaTorneio) {
+                alert("Insira a data e a hora do torneio!");
+                return;
+            }
+
+            try {
+                const configRef = doc(db, "torneio_config", "global");
+                await updateDoc(configRef, {
+                    data: dataTorneio,
+                    hora: horaTorneio
+                });
+                await registrarAtividade(`📅 Comandante ${nomeSalvo} agendou o torneio ativo para ${dataTorneio} às ${horaTorneio}.`);
+                alert("Cronograma do campeonato salvo!");
+                location.reload();
+            } catch (err) {
+                alert("Erro ao atualizar agenda.");
+            }
+        }
+
         window.limparTorneioCompleto = async function() {
-            if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, partidas e o bracket atual. Deseja redefinir tudo?")) {
+            if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, check-ins, partidas e o bracket atual. Deseja redefinir tudo?")) {
                 try {
                     const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
                     for (const docSnap of inscSnapshot.docs) {
@@ -1998,7 +2116,11 @@
                         await deleteDoc(doc(db, "torneio_partidas", docSnap.id));
                     }
 
-                    await setDoc(doc(db, "torneio_config", "global"), { status: "fechado" });
+                    await setDoc(doc(db, "torneio_config", "global"), { 
+                        status: "fechado",
+                        data: "Sábado",
+                        hora: "19:00 BRT"
+                    });
 
                     await registrarAtividade(`🧹 Torneio completamente resetado e limpo por Comandante ${nomeSalvo}.`);
                     alert("Redefinição total efetuada com sucesso!");
@@ -2012,93 +2134,98 @@
         window.gerarChaveamento = async function() {
             try {
                 const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
-                const pilotos = [];
-                inscSnapshot.forEach(d => pilotos.push(d.data()));
+                const todosInscritos = [];
+                inscSnapshot.forEach(d => todosInscritos.push(d.data()));
+
+                // FILTRAR: Somente quem de fato deu Check-in participa da chave!
+                const pilotos = todosInscritos.filter(p => p.checkin === true);
 
                 if (pilotos.length < 2) {
-                    alert("Você precisa de pelo menos 2 pilotos confirmados para gerar as chaves!");
+                    alert(`Não há pilotos confirmados (Checked-in) suficientes! Total inscrito com check-in: ${pilotos.length}`);
                     return;
                 }
 
-                pilotos.sort(() => Math.random() - 0.5);
+                if (confirm(`Serão geradas chaves para os ${pilotos.length} pilotos que realizaram o check-in. Iniciar geração?`)) {
+                    pilotos.sort(() => Math.random() - 0.5);
 
-                const totalInscritos = pilotos.length;
-                let tamanhoBracket = 2;
-                if (totalInscritos > 2) tamanhoBracket = 4;
-                if (totalInscritos > 4) tamanhoBracket = 8;
-                if (totalInscritos > 8) tamanhoBracket = 16;
+                    const totalInscritos = pilotos.length;
+                    let tamanhoBracket = 2;
+                    if (totalInscritos > 2) tamanhoBracket = 4;
+                    if (totalInscritos > 4) tamanhoBracket = 8;
+                    if (totalInscritos > 8) tamanhoBracket = 16;
 
-                const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
-                for (const d of partSnapshot.docs) {
-                    await deleteDoc(doc(db, "torneio_partidas", d.id));
-                }
-
-                const partidasGeradas = [];
-
-                const partidasNaRodada1 = tamanhoBracket / 2;
-                for (let i = 0; i < partidasNaRodada1; i++) {
-                    const idx1 = i * 2;
-                    const idx2 = i * 2 + 1;
-
-                    const p1 = pilotos[idx1] ? pilotos[idx1].nome : null;
-                    const p2 = pilotos[idx2] ? pilotos[idx2].nome : null;
-
-                    const partida = {
-                        id: `r1_match_${i + 1}`,
-                        rodada: 1,
-                        jogador1: p1,
-                        jogador2: p2,
-                        score1: 0,
-                        score2: 0,
-                        vencedor: null,
-                        status: (p1 && p2) ? "jogando" : "byebye",
-                        proximaPartidaId: `r2_match_${Math.floor(i / 2) + 1}`,
-                        posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
-                    };
-
-                    if (p1 && !p2) {
-                        partida.vencedor = p1;
-                        partida.status = "concluido";
+                    const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
+                    for (const d of partSnapshot.docs) {
+                        await deleteDoc(doc(db, "torneio_partidas", d.id));
                     }
 
-                    partidasGeradas.push(partida);
-                }
+                    const partidasGeradas = [];
 
-                const rodadasFinaisTotal = Math.log2(tamanhoBracket);
-                for (let r = 2; r <= rodadasFinaisTotal; r++) {
-                    const partidasNaRodada = tamanhoBracket / Math.pow(2, r);
-                    for (let i = 0; i < partidasNaRodada; i++) {
+                    const partidasNaRodada1 = tamanhoBracket / 2;
+                    for (let i = 0; i < partidasNaRodada1; i++) {
+                        const idx1 = i * 2;
+                        const idx2 = i * 2 + 1;
+
+                        const p1 = pilotos[idx1] ? pilotos[idx1].nome : null;
+                        const p2 = pilotos[idx2] ? pilotos[idx2].nome : null;
+
                         const partida = {
-                            id: `r${r}_match_${i + 1}`,
-                            rodada: r,
-                            jogador1: null,
-                            jogador2: null,
+                            id: `r1_match_${i + 1}`,
+                            rodada: 1,
+                            jogador1: p1,
+                            jogador2: p2,
                             score1: 0,
                             score2: 0,
                             vencedor: null,
-                            status: "aguardando",
-                            proximaPartidaId: r === rodadasFinaisTotal ? "final" : `r${r+1}_match_${Math.floor(i / 2) + 1}`,
+                            status: (p1 && p2) ? "jogando" : "byebye",
+                            proximaPartidaId: `r2_match_${Math.floor(i / 2) + 1}`,
                             posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
                         };
+
+                        if (p1 && !p2) {
+                            partida.vencedor = p1;
+                            partida.status = "concluido";
+                        }
+
                         partidasGeradas.push(partida);
                     }
-                }
 
-                for (const p of partidasGeradas) {
-                    await setDoc(doc(db, "torneio_partidas", p.id), p);
-                }
-
-                await setDoc(doc(db, "torneio_config", "global"), { status: "andamento" });
-
-                for (const p of partidasGeradas) {
-                    if (p.status === "concluido" && p.vencedor) {
-                        await atualizarAvancoDeChave(p.proximaPartidaId, p.posicaoNaProxima, p.vencedor);
+                    const rodadasFinaisTotal = Math.log2(tamanhoBracket);
+                    for (let r = 2; r <= rodadasFinaisTotal; r++) {
+                        const partidasNaRodada = tamanhoBracket / Math.pow(2, r);
+                        for (let i = 0; i < partidasNaRodada; i++) {
+                            const partida = {
+                                id: `r${r}_match_${i + 1}`,
+                                rodada: r,
+                                jogador1: null,
+                                jogador2: null,
+                                score1: 0,
+                                score2: 0,
+                                vencedor: null,
+                                status: "aguardando",
+                                proximaPartidaId: r === rodadasFinaisTotal ? "final" : `r${r+1}_match_${Math.floor(i / 2) + 1}`,
+                                posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
+                            };
+                            partidasGeradas.push(partida);
+                        }
                     }
-                }
 
-                await registrarAtividade(`🏆 Novo chaveamento de torneio estelar para ${totalInscritos} pilotos gerado por ${nomeSalvo}.`);
-                alert("Brackets e cronograma de combates inicializados!");
-                location.reload();
+                    for (const p of partidasGeradas) {
+                        await setDoc(doc(db, "torneio_partidas", p.id), p);
+                    }
+
+                    await setDoc(doc(db, "torneio_config", "global"), { status: "andamento" }, { merge: true });
+
+                    for (const p of partidasGeradas) {
+                        if (p.status === "concluido" && p.vencedor) {
+                            await atualizarAvancoDeChave(p.proximaPartidaId, p.posicaoNaProxima, p.vencedor);
+                        }
+                    }
+
+                    await registrarAtividade(`🏆 Novo chaveamento gerado por ${nomeSalvo} com ${totalInscritos} pilotos confirmados.`);
+                    alert("Chaves geradas decoladas com sucesso!");
+                    location.reload();
+                }
 
             } catch (err) {
                 console.error("Erro na geração de brackets:", err);
