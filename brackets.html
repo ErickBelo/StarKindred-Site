@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarKindred | Arena de Torneios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-principal: #030914;      
+            --bg-card: rgba(8, 18, 37, 0.85); 
+            --amarelo: #ffb703;           
+            --dourado: #d4af37;           
+            --texto-claro: #ffffff;
+            --texto-mutado: #94a3b8;
+            --borda-suave: rgba(212, 175, 55, 0.15);
+            --verde-sucesso: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 50px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px;
+            background-position: 0 0, 40px 60px;
+            opacity: 0.25;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(3, 9, 20, 0.95);
+            border-bottom: 1px solid var(--borda-suave);
+            backdrop-filter: blur(8px);
+        }
+
+        .logo-painel {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--texto-claro);
+            text-decoration: none;
+        }
+
+        .logo-painel span {
+            color: var(--amarelo);
+            text-shadow: 0 0 12px rgba(255, 183, 3, 0.6);
+        }
+
+        .btn-portal {
+            font-family: 'Orbitron', sans-serif;
+            background: transparent;
+            border: 1px solid var(--dourado);
+            color: var(--dourado);
+            padding: 6px 15px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-portal:hover {
+            background: var(--dourado);
+            color: var(--bg-principal);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .titulo-secao {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--texto-claro);
+            margin-bottom: 10px;
+            border-left: 4px solid var(--amarelo);
+            padding-left: 15px;
+            text-transform: uppercase;
+        }
+
+        .subtitulo {
+            color: var(--texto-mutado);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .painel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--borda-suave);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--amarelo);
+            letter-spacing: 1px;
+        }
+
+        /* ESTILOS DO BRACKET */
+        .bracket-container {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            width: 100%;
+            scrollbar-width: thin;
+        }
+
+        .bracket-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .bracket-container::-webkit-scrollbar-thumb {
+            background: var(--dourado);
+            border-radius: 3px;
+        }
+
+        .bracket-round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-width: 240px;
+            gap: 20px;
+        }
+
+        .bracket-round-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--amarelo);
+            text-align: center;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--borda-suave);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .matchup-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--borda-suave);
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .matchup-card.active-match {
+            border-color: var(--amarelo);
+            box-shadow: 0 0 12px rgba(255, 183, 3, 0.15);
+        }
+
+        .matchup-team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .matchup-team.winner {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--verde-sucesso);
+            font-weight: bold;
+            border-left: 3px solid var(--verde-sucesso);
+        }
+
+        .matchup-team.bye {
+            color: var(--texto-mutado);
+            font-style: italic;
+        }
+
+        .score-display {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+        }
+
+        .indicador-live {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--verde-sucesso);
+            font-weight: bold;
+        }
+
+        .ponto-pulsa {
+            width: 8px;
+            height: 8px;
+            background-color: var(--verde-sucesso);
+            border-radius: 50%;
+            animation: pulsar 1.5s infinite;
+        }
+
+        @keyframes pulsar {
+            0% { transform: scale(0.9); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.4; }
+            100% { transform: scale(0.9); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo-painel">STAR<span>KINDRED</span></a>
+        <a href="login.html" class="btn-portal">Portal do Piloto ↗</a>
+    </header>
+
+    <main class="container">
+        <h1 class="titulo-secao">Transmissão Tática</h1>
+        <p class="subtitulo">Acompanhe o chaveamento de combates da guilda em tempo real.</p>
+
+        <div class="painel-card">
+            <div class="card-header">
+                <h2>Chaves do Torneio Ativo</h2>
+                <div class="indicador-live">
+                    <span class="ponto-pulsa"></span>
+                    Sincronizado ao Vivo
+                </div>
+            </div>
+            
+            <div id="bracket-view" class="bracket-container">
+                <p style="color: var(--texto-mutado); text-align: center; width: 100%; padding: 40px 0;">
+                    Aguardando inicialização do sinal da arena...
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- SCRIPT DE SINCRONIZAÇÃO EM TEMPO REAL -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Sua mesma configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
+            authDomain: "starkindred-51af3.firebaseapp.com",
+            projectId: "starkindred-51af3",
+            storageBucket: "starkindred-51af3.firebasestorage.app",
+            messagingSenderId: "833370470650",
+            appId: "1:833370470650:web:162ac3be5b8c24866c7143",
+            measurementId: "G-FFE53C599V"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // O SEGREDO DO "TEMPO REAL": onSnapshot fica ouvindo alterações no banco e atualiza na hora!
+        onSnapshot(collection(db, "torneio_partidas"), (snapshot) => {
+            const container = document.getElementById("bracket-view");
+            
+            if (snapshot.empty) {
+                container.innerHTML = `
+                    <p style="color: var(--texto-mutado); text-align: center; width: 100%; padding: 40px 0;">
+                        Nenhum torneio ativo configurado na arena no momento.
+                    </p>
+                `;
+                return;
+            }
+
+            const partidas = [];
+            snapshot.forEach(doc => partidas.push(doc.data()));
+
+            // Agrupa por rodada e ordena
+            const rodadasMap = {};
+            partidas.sort((a, b) => a.rodada - b.rodada);
+
+            partidas.forEach(p => {
+                if (!rodadasMap[p.rodada]) {
+                    rodadasMap[p.rodada] = [];
+                }
+                rodadasMap[p.rodada].push(p);
+            });
+
+            container.innerHTML = "";
+            const totalDeRodadas = Object.keys(rodadasMap).length;
+
+            for (let r = 1; r <= totalDeRodadas; r++) {
+                const roundDiv = document.createElement("div");
+                roundDiv.className = "bracket-round";
+                
+                let rotuloRodada = `Rodada ${r}`;
+                if (r === totalDeRodadas) rotuloRodada = "Final";
+                else if (r === totalDeRodadas - 1) rotuloRodada = "Semifinal";
+                else if (r === totalDeRodadas - 2) rotuloRodada = "Quartas de Final";
+
+                roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
+
+                // Ordena as partidas dentro da rodada para manter o desenho alinhado
+                rodadasMap[r].sort((a, b) => a.id.localeCompare(b.id));
+
+                rodadasMap[r].forEach(m => {
+                    const matchCard = document.createElement("div");
+                    matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
+                    matchCard.innerHTML = `
+                        <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
+                            <span>${m.jogador1 || 'Aguardando...'}</span>
+                            <span class="score-display">${m.jogador1 ? m.score1 : ''}</span>
+                        </div>
+                        <div class="matchup-team ${m.vencedor === m.jogador2 && m.vencedor ? 'winner' : ''} ${!m.jogador2 ? 'bye' : ''}">
+                            <span>${m.jogador2 || 'Aguardando...'}</span>
+                            <span class="score-display">${m.jogador2 ? m.score2 : ''}</span>
+                        </div>
+                    `;
+                    roundDiv.appendChild(matchCard);
+                });
+
+                container.appendChild(roundDiv);
+            }
+        }, (error) => {
+            console.error("Erro na escuta do sinal da arena:", error);
+        });
+    </script>
+</body>
+</html>

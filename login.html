@@ -37,7 +37,7 @@
             justify-content: center;
             overflow-y: auto;
             position: relative;
-            padding: 20px 0;
+            padding: 40px 0;
         }
 
         body::before {
@@ -88,7 +88,7 @@
             border-radius: 8px;
             padding: 40px;
             width: 100%;
-            max-width: 420px;
+            max-width: 460px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             text-align: center;
@@ -139,6 +139,21 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             outline: none;
+        }
+
+        /* Estilização para o elemento select e suas options */
+        select.input-campo {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffb703' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        select.input-campo option {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
         }
 
         .input-campo:focus {
@@ -233,7 +248,7 @@
             <div class="login-subtitle">Alistamento de Recrutas</div>
             <form id="form-alistamento">
                 <div class="input-grupo">
-                    <label for="cad-nome">NOME COMPLETO (OU COMO QUER SER CHAMADO)</label>
+                    <label for="cad-nome">NOME COMPLETO</label>
                     <input type="text" id="cad-nome" class="input-campo" placeholder="Ex: Lucas Silva" required autocomplete="off">
                 </div>
 
@@ -250,6 +265,101 @@
                 <div class="input-grupo">
                     <label for="cad-steam">LINK DA STEAM (OU PLATAFORMA QUE JOGA)</label>
                     <input type="url" id="cad-steam" class="input-campo" placeholder="Ex: https://steamcommunity.com/id/seu-perfil" required autocomplete="off">
+                </div>
+
+                <!-- SELECT PARA BONECOS / LENDAS -->
+                <div class="input-grupo">
+                    <label for="cad-lenda">LENDA PRINCIPAL (MAIN LEGEND)</label>
+                    <select id="cad-lenda" class="input-campo" required>
+                        <option value="" disabled selected>Selecione sua lenda...</option>
+                        <option value="Ada">Ada</option>
+                        <option value="Arcadia">Arcadia</option>
+                        <option value="Artemis">Artemis</option>
+                        <option value="Asuri">Asuri</option>
+                        <option value="Azoth">Azoth</option>
+                        <option value="Barraza">Barraza</option>
+                        <option value="Bodvar">Bödvar</option>
+                        <option value="Brynn">Brynn</option>
+                        <option value="Caspian">Caspian</option>
+                        <option value="Cassidy">Cassidy</option>
+                        <option value="Cross">Cross</option>
+                        <option value="Diana">Diana</option>
+                        <option value="Dusk">Dusk</option>
+                        <option value="Ember">Ember</option>
+                        <option value="Ezio">Ezio</option>
+                        <option value="Fait">Fait</option>
+                        <option value="Gnash">Gnash</option>
+                        <option value="Hattori">Hattori</option>
+                        <option value="Imugi">Imugi</option>
+                        <option value="Isaiah">Isaiah</option>
+                        <option value="Jaeyun">Jaeyun</option>
+                        <option value="Jhala">Jhala</option>
+                        <option value="Jiro">Jiro</option>
+                        <option value="Kaya">Kaya</option>
+                        <option value="King Zuva">King Zuva</option>
+                        <!-- ADICIONE NOVAS LENDAS AQUI EMBAIXO: -->
+                        
+                        <option value="Koji">Koji</option>
+                        <option value="Kor">Kor</option>
+                        <option value="Lin Fei">Lin Fei</option>
+                        <option value="Loki">Loki</option>
+                        <option value="Lord Vraxx">Lord Vraxx</option>
+                        <option value="Lucien">Lucien</option>
+                        <option value="Magyar">Magyar</option>
+                        <option value="Mako">Mako</option>
+                        <option value="Mirage">Mirage</option>
+                        <option value="Mordex">Mordex</option>
+                        <option value="Munin">Munin</option>
+                        <option value="Nix">Nix</option>
+                        <option value="Onyx">Onyx</option>
+                        <option value="Orion">Orion</option>
+                        <option value="Petra">Petra</option>
+                        <option value="Queen Nai">Queen Nai</option>
+                        <option value="Ragnir">Ragnir</option>
+                        <option value="Rayman">Rayman</option>
+                        <option value="Red Raptor">Red Raptor</option>
+                        <option value="Reno">Reno</option>
+                        <option value="Scarlet">Scarlet</option>
+                        <option value="Sentinel">Sentinel</option>
+                        <option value="Seven">Seven</option>
+                        <option value="Sidra">Sidra</option>
+                        <option value="Sir Roland">Sir Roland</option>
+                        <option value="Teros">Teros</option>
+                        <option value="Tezca">Tezca</option>
+                        <option value="Thatch">Thatch</option>
+                        <option value="Thea">Thea</option>
+                        <option value="Thor">Thor</option>
+                        <option value="Ulgrim">Ulgrim</option>
+                        <option value="Val">Val</option>
+                        <option value="Vector">Vector</option>
+                        <option value="Volkov">Volkov</option>
+                        <option value="Wu Shang">Wu Shang</option>
+                        <option value="Xull">Xull</option>
+                        <option value="Yumiko">Yumiko</option>
+                        <option value="Zariel">Zariel</option>
+                    </select>
+                </div>
+
+                <!-- SELECT PARA ARMAS EM INGLÊS -->
+                <div class="input-grupo">
+                    <label for="cad-arma">ARMA PRINCIPAL (MAIN WEAPON)</label>
+                    <select id="cad-arma" class="input-campo" required>
+                        <option value="" disabled selected>Selecione sua arma principal...</option>
+                        <option value="Axe">Axe</option>
+                        <option value="Battle Boots">Battle Boots</option>
+                        <option value="Blasters">Blasters</option>
+                        <option value="Bow">Bow</option>
+                        <option value="Cannon">Cannon</option>
+                        <option value="Gauntlets">Gauntlets</option>
+                        <option value="Grapple Hammer">Grapple Hammer</option>
+                        <option value="Greatsword">Greatsword</option>
+                        <option value="Katars">Katars</option>
+                        <option value="Orb">Orb</option>
+                        <option value="Rocket Lance">Rocket Lance</option>
+                        <option value="Scythe">Scythe</option>
+                        <option value="Spear">Spear</option>
+                        <option value="Sword">Sword</option>
+                    </select>
                 </div>
 
                 <div class="input-grupo">
@@ -349,11 +459,13 @@
         formAlistamento.addEventListener("submit", async function(event) {
             event.preventDefault();
 
-            // Captura os dados dos novos inputs do formulário
+            // Captura os dados dos inputs do formulário
             const nome = document.getElementById("cad-nome").value.trim();
             const nickSolicitado = document.getElementById("cad-usuario").value.trim();
             const discord = document.getElementById("cad-discord").value.trim();
-            const steamLink = document.getElementById("cad-steam").value.trim(); //[cite: 2]
+            const steamLink = document.getElementById("cad-steam").value.trim(); 
+            const lendaSelecionada = document.getElementById("cad-lenda").value;
+            const armaSelecionada = document.getElementById("cad-arma").value;
             const senhaDefinida = document.getElementById("cad-senha").value;
 
             try {
@@ -369,7 +481,9 @@
                     nome: nome,
                     nick: nickSolicitado,
                     discord: discord,
-                    steam: steamLink, //[cite: 2]
+                    steam: steamLink, 
+                    lenda: lendaSelecionada,
+                    arma: armaSelecionada,
                     senha: senhaDefinida,
                     dataSolicitacao: new Date().toISOString()
                 });
@@ -387,4 +501,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
