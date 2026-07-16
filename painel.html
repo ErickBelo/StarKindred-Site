@@ -38,6 +38,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            scrollbar-gutter: stable;
         }
 
         body::before {
@@ -149,7 +150,7 @@
             font-size: 0.75rem;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .btn-logoff:hover {
@@ -209,6 +210,7 @@
             flex-direction: column;
             justify-content: flex-start;
             gap: 15px; 
+            transition: border-color 0.3s ease;
         }
 
         @media (min-width: 768px) {
@@ -291,7 +293,7 @@
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease-in-out;
             font-size: 0.75rem;
             white-space: nowrap;
         }
@@ -306,8 +308,8 @@
         .btn-aba:hover, .btn-aba.ativa {
             border-color: var(--amarelo);
             color: var(--texto-claro);
-            background: rgba(212, 175, 55, 0.1);
-            box-shadow: 0 0 10px rgba(255, 183, 3, 0.1);
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.15);
         }
 
         .conteudo-aba {
@@ -341,6 +343,7 @@
             color: var(--texto-claro);
             outline: none;
             font-size: 0.9rem;
+            transition: border-color 0.2s ease;
         }
 
         .select-painel option {
@@ -361,7 +364,7 @@
             padding: 10px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.25s ease-in-out;
             font-size: 0.85rem;
         }
 
@@ -379,12 +382,13 @@
             border-radius: 4px;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease-in-out;
         }
 
         .btn-excluir:hover {
             background: var(--vermelho-erro);
             color: white;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
         }
 
         .btn-sucesso {
@@ -396,12 +400,13 @@
             border-radius: 4px;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease-in-out;
         }
 
         .btn-sucesso:hover {
             background: var(--verde-sucesso);
             color: white;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
         }
 
         /* ==========================================================================
@@ -506,7 +511,7 @@
             
             .tabela-membros td { 
                 border: none;
-                padding: 6px 0;
+                padding: 8px 0;
                 position: relative;
                 padding-left: 45%; 
                 text-align: left;
@@ -515,7 +520,7 @@
             
             .tabela-membros td::before { 
                 position: absolute;
-                top: 6px;
+                top: 8px;
                 left: 6px;
                 width: 40%; 
                 padding-right: 10px; 
@@ -525,6 +530,15 @@
                 color: var(--amarelo);
                 font-weight: bold;
             }
+
+            /* Atribuição de Labels Dinâmicas no Mobile */
+            .tabela-membros td:nth-of-type(1)::before { content: "Piloto:"; }
+            .tabela-membros td:nth-of-type(2)::before { content: "Patente:"; }
+            .tabela-membros td:nth-of-type(3)::before { content: "Main (Armas):"; }
+            .tabela-membros td:nth-of-type(4)::before { content: "Stance:"; }
+            .tabela-membros td:nth-of-type(5)::before { content: "Elo Max:"; }
+            .tabela-membros td:nth-of-type(6)::before { content: "Ficha:"; }
+            .tabela-membros td:nth-of-type(7)::before { content: "Controle:"; }
 
             .tabela-membros td.coluna-acoes {
                 text-align: left;
@@ -855,12 +869,12 @@
             border: 1px solid var(--dourado);
             color: var(--dourado);
             cursor: pointer;
-            padding: 2px;
+            padding: 4px;
             margin-top: 5px;
             border-radius: 3px;
             text-align: center;
             text-transform: uppercase;
-            transition: 0.2s;
+            transition: all 0.2s ease;
         }
 
         .btn-report-match:hover {
@@ -931,7 +945,7 @@
                     <input type="text" id="auto-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
                     
                     <select id="auto-stance" class="select-painel" required>
-                        <option value="" disabled selected>Selecione sua Stance ativa</option>
+                        <option value="" disabled selected>Selecione sua Stance activa</option>
                         <option value="Padrão">Padrão</option>
                         <option value="Velocidade">Velocidade (+1)</option>
                         <option value="Destreza">Destreza (+1)</option>
@@ -1317,6 +1331,7 @@
                 return;
             }
 
+            // Chamadas iniciais assíncronas para carregar dados de telemetria paralelos
             carregarComunicados();
             carregarLogs();
 
@@ -1364,6 +1379,7 @@
                         carregarSolicitacoesAlistamento();
                     }
 
+                    // Aguarda carregamento de dados principais da guilda
                     await carregarTabelaTripulacao();
                     carregarTutoriais();
                     carregarEventos();
@@ -1877,8 +1893,8 @@
                     data: dataSinal,
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
-                await registrarAtividade(`📡 Comandante ${nomeSalvo} atualizou os comunicados da nave de comando.`);
-                alert("Transmissão de aviso oficial updated!");
+                await registrarAtividade(`📡 Comandante ${nomeSalvo} updated los comunicados de la nave de comando.`);
+                alert("Transmissão de aviso oficial atualizada!");
                 location.reload();
             } catch (err) {}
         });
@@ -2024,11 +2040,11 @@
                 await setDoc(doc(db, "torneio_inscritos", nomeSalvo), {
                     nome: nomeSalvo,
                     elo: mDados.elomax || "0",
-                    checkin: false, // Começa sempre sem check-in realizado
+                    checkin: false, 
                     timestamp: new Date()
                 });
 
-                await registrarAtividade(`🎮 Piloto ${nomeSalvo} confirmou sua inscrição na arena de torneio.`);
+                await registrarAtividade("🎮 Piloto " + nomeSalvo + " confirmou sua inscrição na arena de torneio.");
                 alert("Sua inscrição foi confirmada na grade de decolagem!");
                 location.reload();
             } catch (err) {
@@ -2040,7 +2056,7 @@
             if (confirm("Deseja retirar sua inscrição do torneio?")) {
                 try {
                     await deleteDoc(doc(db, "torneio_inscritos", nomeSalvo));
-                    await registrarAtividade(`⚠️ Piloto ${nomeSalvo} cancelou sua inscrição no torneio.`);
+                    await registrarAtividade("⚠️ Piloto " + nomeSalvo + " cancelou sua inscrição no torneio.");
                     alert("Você se retirou da arena.");
                     location.reload();
                 } catch (err) {
@@ -2054,7 +2070,7 @@
                 await updateDoc(doc(db, "torneio_inscritos", nomeSalvo), {
                     checkin: true
                 });
-                await registrarAtividade(`📡 Piloto ${nomeSalvo} efetuou check-in e está pronto para o combate.`);
+                await registrarAtividade("📡 Piloto " + nomeSalvo + " efetuou check-in e está pronto para o combate.");
                 alert("Check-in efetuado com sucesso! Aguarde o início dos combates.");
                 location.reload();
             } catch (err) {
@@ -2072,8 +2088,8 @@
                 else if (novoStatus === "checkin") mensagemLog = "iniciou a fase de CHECK-IN para o torneio ativo";
                 else mensagemLog = "fechou o status do torneio";
 
-                await registrarAtividade(`⚙️ Comandante ${nomeSalvo} ${mensagemLog}.`);
-                alert(`Status do Torneio alterado para: ${novoStatus.toUpperCase()}`);
+                await registrarAtividade("⚙️ Comandante " + nomeSalvo + " " + mensagemLog + ".");
+                alert("Status do Torneio alterado para: " + novoStatus.toUpperCase());
                 location.reload();
             } catch (err) {
                 alert("Falha ao configurar as inscrições.");
@@ -2095,7 +2111,7 @@
                     data: dataTorneio,
                     hora: horaTorneio
                 });
-                await registrarAtividade(`📅 Comandante ${nomeSalvo} agendou o torneio ativo para ${dataTorneio} às ${horaTorneio}.`);
+                await registrarAtividade("📅 Comandante " + nomeSalvo + " agendou o torneio ativo para " + dataTorneio + " às " + horaTorneio + ".");
                 alert("Cronograma do campeonato salvo!");
                 location.reload();
             } catch (err) {
@@ -2107,14 +2123,12 @@
             if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, check-ins, partidas e o bracket atual. Deseja redefinir tudo?")) {
                 try {
                     const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
-                    for (const docSnap of inscSnapshot.docs) {
-                        await deleteDoc(doc(db, "torneio_inscritos", docSnap.id));
-                    }
+                    const deleteInscPromises = inscSnapshot.docs.map(docSnap => deleteDoc(doc(db, "torneio_inscritos", docSnap.id)));
+                    await Promise.all(deleteInscPromises);
 
                     const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
-                    for (const docSnap of partSnapshot.docs) {
-                        await deleteDoc(doc(db, "torneio_partidas", docSnap.id));
-                    }
+                    const deletePartPromises = partSnapshot.docs.map(docSnap => deleteDoc(doc(db, "torneio_partidas", docSnap.id)));
+                    await Promise.all(deletePartPromises);
 
                     await setDoc(doc(db, "torneio_config", "global"), { 
                         status: "fechado",
@@ -2122,7 +2136,7 @@
                         hora: "19:00 BRT"
                     });
 
-                    await registrarAtividade(`🧹 Torneio completamente resetado e limpo por Comandante ${nomeSalvo}.`);
+                    await registrarAtividade("🧹 Torneio completamente resetado e limpo por Comandante " + nomeSalvo + ".");
                     alert("Redefinição total efetuada com sucesso!");
                     location.reload();
                 } catch (e) {
@@ -2137,15 +2151,15 @@
                 const todosInscritos = [];
                 inscSnapshot.forEach(d => todosInscritos.push(d.data()));
 
-                // FILTRAR: Somente quem de fato deu Check-in participa da chave!
+                // FILTRAR: Somente quem de fato deu Check-in participa da chave
                 const pilotos = todosInscritos.filter(p => p.checkin === true);
 
                 if (pilotos.length < 2) {
-                    alert(`Não há pilotos confirmados (Checked-in) suficientes! Total inscrito com check-in: ${pilotos.length}`);
+                    alert("Não há pilotos confirmados (Checked-in) suficientes! Total inscrito com check-in: " + pilotos.length);
                     return;
                 }
 
-                if (confirm(`Serão geradas chaves para os ${pilotos.length} pilotos que realizaram o check-in. Iniciar geração?`)) {
+                if (confirm("Serão geradas chaves para os " + pilotos.length + " pilotos que realizaram o check-in. Iniciar geração?")) {
                     pilotos.sort(() => Math.random() - 0.5);
 
                     const totalInscritos = pilotos.length;
@@ -2155,9 +2169,8 @@
                     if (totalInscritos > 8) tamanhoBracket = 16;
 
                     const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
-                    for (const d of partSnapshot.docs) {
-                        await deleteDoc(doc(db, "torneio_partidas", d.id));
-                    }
+                    const deletePromises = partSnapshot.docs.map(d => deleteDoc(doc(db, "torneio_partidas", d.id)));
+                    await Promise.all(deletePromises);
 
                     const partidasGeradas = [];
 
@@ -2210,9 +2223,8 @@
                         }
                     }
 
-                    for (const p of partidasGeradas) {
-                        await setDoc(doc(db, "torneio_partidas", p.id), p);
-                    }
+                    const savePromises = partidasGeradas.map(p => setDoc(doc(db, "torneio_partidas", p.id), p));
+                    await Promise.all(savePromises);
 
                     await setDoc(doc(db, "torneio_config", "global"), { status: "andamento" }, { merge: true });
 
@@ -2222,7 +2234,7 @@
                         }
                     }
 
-                    await registrarAtividade(`🏆 Novo chaveamento gerado por ${nomeSalvo} com ${totalInscritos} pilotos confirmados.`);
+                    await registrarAtividade("🏆 Novo chaveamento gerado por " + nomeSalvo + " com " + totalInscritos + " pilotos confirmados.");
                     alert("Chaves geradas decoladas com sucesso!");
                     location.reload();
                 }
@@ -2270,7 +2282,7 @@
                 querySnap.forEach(d => partidas.push(d.data()));
 
                 const rodadasMap = {};
-                partidAsSorting(partidas);
+                partidasSorting(partidas);
 
                 partidas.forEach(p => {
                     if (!rodadasMap[p.rodada]) {
@@ -2286,7 +2298,7 @@
                     const roundDiv = document.createElement("div");
                     roundDiv.className = "bracket-round";
                     
-                    let rotuloRodada = `Rodada ${r}`;
+                    let rotuloRodada = "Rodada " + r;
                     if (r === totalDeRodadas) rotuloRodada = "Final";
                     else if (r === totalDeRodadas - 1) rotuloRodada = "Semifinal";
                     else if (r === totalDeRodadas - 2) rotuloRodada = "Quartas de Final";
@@ -2300,7 +2312,7 @@
                         const canReport = isUserInMatch && m.status === "jogando";
 
                         const matchCard = document.createElement("div");
-                        matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
+                        matchCard.className = "matchup-card " + (m.status === 'jogando' ? 'active-match' : '');
                         matchCard.innerHTML = `
                             <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
                                 <span>${m.jogador1 || 'Aguardando...'}</span>
@@ -2349,7 +2361,7 @@
             }
         }
 
-        function partidAsSorting(partidas) {
+        function partidasSorting(partidas) {
             partidas.sort((a,b) => a.rodada - b.rodada);
         }
 
@@ -2372,7 +2384,7 @@
 
                         await updateDoc(matchRef, updateData);
                         await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, nomeSalvo);
-                        await registrarAtividade(`⚔️ Partida ${matchId.toUpperCase()}: ${nomeSalvo} reportou vitória sobre seu oponente.`);
+                        await registrarAtividade("⚔️ Partida " + matchId.toUpperCase() + ": " + nomeSalvo + " reportou vitória sobre seu oponente.");
                         
                         alert("Resultado enviado e processado com sucesso!");
                         location.reload();
@@ -2408,7 +2420,7 @@
                     });
 
                     await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, vencedorFinal);
-                    await registrarAtividade(`⚖️ Arbitragem: Juiz ${nomeSalvo} arbitrou a partida ${matchId.toUpperCase()} (${vencedorFinal} vencedor).`);
+                    await registrarAtividade("⚖️ Arbitragem: Juiz " + nomeSalvo + " arbitrou a partida " + matchId.toUpperCase() + " (" + vencedorFinal + " vencedor).");
 
                     alert("Súmula atualizada e jogador avançado!");
                     location.reload();
