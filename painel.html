@@ -526,14 +526,6 @@
                 font-weight: bold;
             }
 
-            .tabela-membros td:nth-of-type(1)::before { content: "PILOTO"; }
-            .tabela-membros td:nth-of-type(2)::before { content: "PATENTE"; }
-            .tabela-membros td:nth-of-type(3)::before { content: "MAIN (ARMAS)"; }
-            .tabela-membros td:nth-of-type(4)::before { content: "STANCE ATIVA"; }
-            .tabela-membros td:nth-of-type(5)::before { content: "ELO MÁXIMO"; }
-            .tabela-membros td:nth-of-type(6)::before { content: "FICHA TÁTICA"; }
-            .tabela-membros td:nth-of-type(7)::before { content: "CONTROLE"; }
-
             .tabela-membros td.coluna-acoes {
                 text-align: left;
                 padding-left: 45%;
@@ -766,6 +758,121 @@
                 padding: 30px;
             }
         }
+
+        /* ==========================================================================
+           ESTILOS EXCLUSIVOS DO SISTEMA NATIVO DE TORNEIOS (BRACKETS)
+           ========================================================================== */
+        .bracket-container {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            width: 100%;
+            scrollbar-width: thin;
+        }
+
+        .bracket-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .bracket-container::-webkit-scrollbar-thumb {
+            background: var(--dourado);
+            border-radius: 3px;
+        }
+
+        .bracket-round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-width: 240px;
+            gap: 20px;
+        }
+
+        .bracket-round-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--amarelo);
+            text-align: center;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--borda-suave);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .matchup-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--borda-suave);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .matchup-card.active-match {
+            border-color: var(--amarelo);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
+        }
+
+        .matchup-team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .matchup-team.winner {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--verde-sucesso);
+            font-weight: bold;
+        }
+
+        .matchup-team.bye {
+            color: var(--texto-mutado);
+            font-style: italic;
+        }
+
+        .score-display {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+        }
+
+        .btn-report-match {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--dourado);
+            color: var(--dourado);
+            cursor: pointer;
+            padding: 2px;
+            margin-top: 5px;
+            border-radius: 3px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+
+        .btn-report-match:hover {
+            background: var(--dourado);
+            color: var(--bg-principal);
+        }
+
+        .grid-registro-campeonato {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-registro-campeonato {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -853,7 +960,8 @@
             <button class="btn-aba" onclick="alternarAba(event, 'aba-builds')">📊 Builds (Meta)</button>
             <button class="btn-aba" onclick="alternarAba(event, 'aba-tutoriais')">📚 Tutoriais</button>
             <button class="btn-aba" onclick="alternarAba(event, 'aba-combos')">⚔️ Combos 2v2</button>
-            <button class="btn-aba" onclick="alternarAba(event, 'aba-eventos')">🏆 Eventos</button>
+            <button class="btn-aba" onclick="alternarAba(event, 'aba-eventos')">📅 Eventos</button>
+            <button class="btn-aba" onclick="alternarAba(event, 'aba-torneios')">🏆 Torneios (Brackets)</button>
         </div>
 
         <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
@@ -956,6 +1064,49 @@
             </div>
         </div>
 
+        <!-- ABA 6: ARENA DE TORNEIOS (NATIVO - CHALLONGE) -->
+        <div id="aba-torneios" class="conteudo-aba">
+            <h2 class="titulo-secao">Arena StarKindred de Combates</h2>
+            
+            <div class="grid-registro-campeonato" style="margin-bottom: 30px;">
+                <!-- Painel Esquerdo: Registro / Inscrições -->
+                <div class="painel-card">
+                    <div class="card-header">
+                        <h2>Inscrição no Torneio Ativo</h2>
+                        <span>📝</span>
+                    </div>
+                    <div id="status-inscricoes" style="text-align: center; width:100%;">
+                        <p style="color: var(--texto-mutado); margin-bottom: 15px;">Verificando portões estelares...</p>
+                    </div>
+                </div>
+
+                <!-- Painel Direito: Estatísticas / Infos Rápidas -->
+                <div class="painel-card">
+                    <div class="card-header">
+                        <h2>Pilotos Confirmados</h2>
+                        <span>📊</span>
+                    </div>
+                    <div id="total-confirmados-display" style="font-size: 0.9rem;">
+                        <p style="color: var(--texto-mutado);">Total Inscritos: <strong id="contagem-pilotos-torneio" style="color: var(--amarelo);">0</strong></p>
+                        <div id="pilotos-inscritos-lista" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                            <!-- Carregados dinamicamente via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualização Chaveamento Dinâmico -->
+            <div class="painel-card">
+                <div class="card-header">
+                    <h2>Mapeamento de Confrontos (Chaves)</h2>
+                    <span>🌳</span>
+                </div>
+                <div id="bracket-view" class="bracket-container">
+                    <p style="color: var(--texto-mutado); text-align: center; width: 100%; padding: 40px 0;">Nenhum chaveamento ativo de combate gerado.</p>
+                </div>
+            </div>
+        </div>
+
         <!-- CONSOLE DE ADMINISTRAÇÃO -->
         <section id="sessao-admin" class="admin-section">
             <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
@@ -1048,6 +1199,40 @@
                             <input type="text" id="adm-evt-status" class="input-painel" placeholder="Status / Data (ex: Planejado)" style="margin-bottom: 8px;">
                             <textarea id="adm-evt-desc" class="input-painel" placeholder="Descrição rápida do formato..." style="margin-bottom: 8px;"></textarea>
                             <button onclick="publicarEvento()" class="btn-painel-submit" style="width: 100%;">Postar Evento</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROLE DE CAMPEONATO (PAINEL DE ADMIN TO TORNEIO) -->
+            <div class="admin-grid" style="margin-top: 30px;">
+                <div class="admin-card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <h2>Controle e Moderação do Torneio Ativo</h2>
+                        <span>🎯</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                        <button class="btn-painel-submit" onclick="toggleInscricoesTorneio()" style="background: var(--dourado);">Habilitar/Desabilitar Inscrições</button>
+                        <button class="btn-painel-submit" onclick="gerarChaveamento()" style="background: var(--verde-sucesso); color: #fff;">Sortear e Gerar Chaves (Iniciar Torneio)</button>
+                        <button class="btn-painel-submit" onclick="limparTorneioCompleto()" style="background: var(--vermelho-erro); color: #fff;">Resetar Torneio Atual</button>
+                    </div>
+                    <div id="painel-moderacao-partidas" style="margin-top: 25px;">
+                        <h4 style="color: var(--amarelo); margin-bottom: 10px; font-family: 'Orbitron';">Súmula de Partidas para Moderação (Juiz)</h4>
+                        <div class="limitador-tabela-membros" style="max-height: 250px;">
+                            <table class="tabela-membros">
+                                <thead>
+                                    <tr>
+                                        <th>ID da Partida</th>
+                                        <th>Jogador 1</th>
+                                        <th>Jogador 2</th>
+                                        <th>Score</th>
+                                        <th>Ações Rápidas</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-moderacao-jogos">
+                                    <tr><td colspan="5" style="text-align: center; color: var(--texto-mutado);">Nenhuma partida disponível para moderação.</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -1145,6 +1330,9 @@
                     await carregarTabelaTripulacao();
                     carregarTutoriais();
                     carregarEventos();
+                    
+                    // Inicialização do Módulo Nativo de Torneios
+                    await sincronizarModuloTorneio();
                 }
             } catch (err) {
                 console.error("Erro ao puxar dados do banco:", err);
@@ -1678,8 +1866,8 @@
                     data: dataSinal,
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
-                await registrarAtividade(`📡 Comandante ${nomeSalvo} atualizou os comunicados da nave de comando.`);
-                alert("Transmissão de aviso oficial updated!");
+                await registrarAtividade(`📡 Comandante ${nomeSalvo} updated os comunicados da nave de comando.`);
+                alert("Transmissão de aviso oficial atualizada!");
                 location.reload();
             } catch (err) {}
         });
@@ -1705,6 +1893,464 @@
                 location.reload();
             } catch (err) {}
         });
+
+        // ==========================================================================
+        // SISTEMA NATIVO DE GERENCIAMENTO DE TORNEIOS (CHALLONGE DA STARKINDRED)
+        // ==========================================================================
+        
+        async function sincronizarModuloTorneio() {
+            try {
+                const configRef = doc(db, "torneio_config", "global");
+                const configSnap = await getDoc(configRef);
+                
+                let configuracoes = { status: "fechado" };
+                if (configSnap.exists()) {
+                    configuracoes = configSnap.data();
+                } else {
+                    await setDoc(configRef, configuracoes);
+                }
+
+                // Carrega pilotos já cadastrados na lista de inscritos
+                const inscritosSnapshot = await getDocs(collection(db, "torneio_inscritos"));
+                const listaInscritos = [];
+                inscritosSnapshot.forEach(d => listaInscritos.push(d.data()));
+
+                const contagemInscritos = listaInscritos.length;
+                document.getElementById("contagem-pilotos-torneio").textContent = contagemInscritos;
+
+                const contGamerList = document.getElementById("pilotos-inscritos-lista");
+                contGamerList.innerHTML = "";
+                listaInscritos.forEach(p => {
+                    const span = document.createElement("span");
+                    span.className = "badge-tabela";
+                    span.style.borderColor = "var(--amarelo)";
+                    span.textContent = p.nome;
+                    contGamerList.appendChild(span);
+                });
+
+                // Renderizar Botão/Painel de Inscrição conforme o status
+                const painelStatus = document.getElementById("status-inscricoes");
+                const jaInscrito = listaInscritos.some(p => p.nome === nomeSalvo);
+
+                if (configuracoes.status === "aberto") {
+                    if (jaInscrito) {
+                        painelStatus.innerHTML = `
+                            <p style="color: var(--verde-sucesso); font-weight:bold; margin-bottom: 10px;">🟢 VOCÊ ESTÁ INCRITO NO TORNEIO!</p>
+                            <button class="btn-excluir" onclick="desinscreverJogador()" style="width:100%">Cancelar Inscrição</button>
+                        `;
+                    } else {
+                        painelStatus.innerHTML = `
+                            <p style="color: var(--amarelo); margin-bottom: 10px;">As inscrições estão abertas para o próximo Torneio Estelar!</p>
+                            <button class="btn-sucesso" onclick="inscreverJogador()" style="width:100%; font-weight:bold; padding:10px;">Inscrever-me Agora</button>
+                        `;
+                    }
+                } else if (configuracoes.status === "andamento") {
+                    painelStatus.innerHTML = `
+                        <p style="color: var(--amarelo); font-weight:bold; margin-bottom: 10px;">⚔️ TORNEIO EM ANDAMENTO!</p>
+                        <p style="color: var(--texto-mutado); font-size: 0.85rem;">Confira o chaveamento de partidas ao lado.</p>
+                    `;
+                } else {
+                    painelStatus.innerHTML = `
+                        <p style="color: var(--texto-mutado);">Os portões de inscrição para competições estão fechados no momento.</p>
+                    `;
+                }
+
+                await carregarEExibirBrackets();
+
+            } catch (err) {
+                console.error("Erro ao processar dados de torneio:", err);
+            }
+        }
+
+        // AÇÃO: INSCREVER JOGADOR NO BANCO
+        window.inscreverJogador = async function() {
+            try {
+                // Obtém os dados mais atualizados do membro
+                const mSnap = await getDoc(doc(db, "membros", nomeSalvo));
+                if (!mSnap.exists()) return;
+                const mDados = mSnap.data();
+
+                await setDoc(doc(db, "torneio_inscritos", nomeSalvo), {
+                    nome: nomeSalvo,
+                    elo: mDados.elomax || "0",
+                    timestamp: new Date()
+                });
+
+                await registrarAtividade(`🎮 Piloto ${nomeSalvo} confirmou sua inscrição na arena de torneio.`);
+                alert("Sua inscrição foi confirmada na grade de decolagem!");
+                location.reload();
+            } catch (err) {
+                alert("Não foi possível processar a sua inscrição estelar.");
+            }
+        };
+
+        // AÇÃO: DESINSCREVER JOGADOR NO BANCO
+        window.desinscreverJogador = async function() {
+            if (confirm("Deseja retirar sua nave do torneio?")) {
+                try {
+                    await deleteDoc(doc(db, "torneio_inscritos", nomeSalvo));
+                    await registrarAtividade(`⚠️ Piloto ${nomeSalvo} cancelou sua inscrição no torneio.`);
+                    alert("Você se retirou da arena.");
+                    location.reload();
+                } catch (err) {
+                    alert("Erro ao processar desincorporação.");
+                }
+            }
+        };
+
+        // ADMIN: HABILITAR/DESABILITAR INSCRIÇÕES DO TORNEIO
+        window.toggleInscricoesTorneio = async function() {
+            try {
+                const configRef = doc(db, "torneio_config", "global");
+                const configSnap = await getDoc(configRef);
+                let novoStatus = "aberto";
+
+                if (configSnap.exists()) {
+                    const dados = configSnap.data();
+                    if (dados.status === "aberto") novoStatus = "fechado";
+                }
+
+                await setDoc(configRef, { status: novoStatus });
+                await registrarAtividade(`⚙️ Comandante ${nomeSalvo} alterou o portão de inscrições do torneio para: ${novoStatus.toUpperCase()}.`);
+                alert(`Inscrições agora estão: ${novoStatus.toUpperCase()}!`);
+                location.reload();
+            } catch (err) {
+                alert("Falha ao configurar as inscrições.");
+            }
+        };
+
+        // ADMIN: LIMPAR E RESETAR O TORNEIO
+        window.limparTorneioCompleto = async function() {
+            if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, partidas e o bracket atual. Deseja redefinir tudo?")) {
+                try {
+                    // Deleta todos os inscritos
+                    const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
+                    for (const docSnap of inscSnapshot.docs) {
+                        await deleteDoc(doc(db, "torneio_inscritos", docSnap.id));
+                    }
+
+                    // Deleta todas as partidas geradas
+                    const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
+                    for (const docSnap of partSnapshot.docs) {
+                        await deleteDoc(doc(db, "torneio_partidas", docSnap.id));
+                    }
+
+                    // Reseta status global para fechado
+                    await setDoc(doc(db, "torneio_config", "global"), { status: "fechado" });
+
+                    await registrarAtividade(`🧹 Torneio completamente resetado e limpo por Comandante ${nomeSalvo}.`);
+                    alert("Redefinição total efetuada com sucesso!");
+                    location.reload();
+                } catch (e) {
+                    alert("Erro ao redefinir campeonato.");
+                }
+            }
+        };
+
+        // ADMIN: ALGORITMO NATIVO DE GERAÇÃO DE CHAVES (CHALLONGE CORE)
+        window.gerarChaveamento = async function() {
+            try {
+                const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
+                const pilotos = [];
+                inscSnapshot.forEach(d => pilotos.push(d.data()));
+
+                if (pilotos.length < 2) {
+                    alert("Você precisa de pelo menos 2 pilotos confirmados para gerar as chaves!");
+                    return;
+                }
+
+                // Embaralha jogadores de forma pseudo-aleatória
+                pilotos.sort(() => Math.random() - 0.5);
+
+                // Determina tamanho do Bracket (potência de 2 mais próxima: 2, 4, 8, 16)
+                const totalInscritos = pilotos.length;
+                let tamanhoBracket = 2;
+                if (totalInscritos > 2) tamanhoBracket = 4;
+                if (totalInscritos > 4) tamanhoBracket = 8;
+                if (totalInscritos > 8) tamanhoBracket = 16;
+
+                // Deleta partidas anteriores se existirem
+                const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
+                for (const d of partSnapshot.docs) {
+                    await deleteDoc(doc(db, "torneio_partidas", d.id));
+                }
+
+                const partidasGeradas = [];
+
+                // Geração de Rodada 1
+                const partidasNaRodada1 = tamanhoBracket / 2;
+                for (let i = 0; i < partidasNaRodada1; i++) {
+                    const idx1 = i * 2;
+                    const idx2 = i * 2 + 1;
+
+                    const p1 = pilotos[idx1] ? pilotos[idx1].nome : null;
+                    const p2 = pilotos[idx2] ? pilotos[idx2].nome : null;
+
+                    const partida = {
+                        id: `r1_match_${i + 1}`,
+                        rodada: 1,
+                        jogador1: p1,
+                        jogador2: p2,
+                        score1: 0,
+                        score2: 0,
+                        vencedor: null,
+                        status: (p1 && p2) ? "jogando" : "byebye",
+                        proximaPartidaId: `r2_match_${Math.floor(i / 2) + 1}`,
+                        posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
+                    };
+
+                    // Se for W.O (jogador sem adversário na primeira fase devido à chave ímpar)
+                    if (p1 && !p2) {
+                        partida.vencedor = p1;
+                        partida.status = "concluido";
+                    }
+
+                    partidasGeradas.push(partida);
+                }
+
+                // Geração de Rodada 2 (Quartas ou Semis dependendo do tamanho)
+                const rodadasFinaisTotal = Math.log2(tamanhoBracket);
+                for (let r = 2; r <= rodadasFinaisTotal; r++) {
+                    const partidasNaRodada = tamanhoBracket / Math.pow(2, r);
+                    for (let i = 0; i < partidasNaRodada; i++) {
+                        const partida = {
+                            id: `r${r}_match_${i + 1}`,
+                            rodada: r,
+                            jogador1: null,
+                            jogador2: null,
+                            score1: 0,
+                            score2: 0,
+                            vencedor: null,
+                            status: "aguardando",
+                            proximaPartidaId: r === rodadasFinaisTotal ? "final" : `r${r+1}_match_${Math.floor(i / 2) + 1}`,
+                            posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
+                        };
+                        partidasGeradas.push(partida);
+                    }
+                }
+
+                // Salva todas as partidas estruturadas no Firestore
+                for (const p of partidasGeradas) {
+                    await setDoc(doc(db, "torneio_partidas", p.id), p);
+                }
+
+                // Move status para em andamento
+                await setDoc(doc(db, "torneio_config", "global"), { status: "andamento" });
+
+                // Alimenta os avanços automáticos de BYE
+                for (const p of partidasGeradas) {
+                    if (p.status === "concluido" && p.vencedor) {
+                        await atualizarAvancoDeChave(p.proximaPartidaId, p.posicaoNaProxima, p.vencedor);
+                    }
+                }
+
+                await registrarAtividade(`🏆 Novo chaveamento de torneio estelar para ${totalInscritos} pilotos gerado por ${nomeSalvo}.`);
+                alert("Brackets e cronograma de combates inicializados!");
+                location.reload();
+
+            } catch (err) {
+                console.error("Erro na geração de brackets:", err);
+                alert("Erro sistêmico ao montar as chaves de combate.");
+            }
+        };
+
+        // FUNÇÃO DE PROPAGAÇÃO INTERNA DE GANHADORES (VENCEDOR AVANÇA NA ÁRVORE)
+        async function atualizarAvancoDeChave(matchAlvoId, posicao, nomeGanhador) {
+            if (matchAlvoId === "final") return; // Fim do campeonato
+            try {
+                const matchRef = doc(db, "torneio_partidas", matchAlvoId);
+                const snap = await getDoc(matchRef);
+                if (snap.exists()) {
+                    const dados = snap.data();
+                    const updateData = {};
+                    updateData[posicao] = nomeGanhador;
+
+                    // Se a vaga oposta já estiver preenchida, o jogo pode passar a ficar pronto
+                    const oponente = (posicao === "jogador1") ? dados.jogador2 : dados.jogador1;
+                    if (oponente) {
+                        updateData.status = "jogando";
+                    }
+
+                    await updateDoc(matchRef, updateData);
+                }
+            } catch (e) {
+                console.error("Erro ao propagar jogador na chave:", e);
+            }
+        }
+
+        // VISUALIZADOR DA ÁRVORE (BRACKETS)
+        async function carregarEExibirBrackets() {
+            const container = document.getElementById("bracket-view");
+            const tabelaModeracao = document.getElementById("tabela-moderacao-jogos");
+
+            try {
+                const querySnap = await getDocs(collection(db, "torneio_partidas"));
+                if (querySnap.empty) {
+                    container.innerHTML = `<p style="color: var(--texto-mutado); text-align: center; width: 100%; padding: 40px 0;">O torneio ainda não foi iniciado pela liderança.</p>`;
+                    return;
+                }
+
+                const partidas = [];
+                querySnap.forEach(d => partidas.push(d.data()));
+
+                // Agrupa as partidas por rodada
+                const rodadasMap = {};
+                partidAsSorting(partidas);
+
+                partidas.forEach(p => {
+                    if (!rodadasMap[p.rodada]) {
+                        rodadasMap[p.rodada] = [];
+                    }
+                    rodadasMap[p.rodada].push(p);
+                });
+
+                container.innerHTML = "";
+                
+                // Desenha as colunas de rodadas na tela
+                const totalDeRodadas = Object.keys(rodadasMap).length;
+                for (let r = 1; r <= totalDeRodadas; r++) {
+                    const roundDiv = document.createElement("div");
+                    roundDiv.className = "bracket-round";
+                    
+                    let rotuloRodada = `Rodada ${r}`;
+                    if (r === totalDeRodadas) rotuloRodada = "Final";
+                    else if (r === totalDeRodadas - 1) rotuloRodada = "Semifinal";
+                    else if (r === totalDeRodadas - 2) rotuloRodada = "Quartas de Final";
+
+                    roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
+
+                    // Ordena partidas pelo id para ficarem visualmente simétricas
+                    rodadasMap[r].sort((a,b) => a.id.localeCompare(b.id));
+
+                    rodadasMap[r].forEach(m => {
+                        const isUserInMatch = (nomeSalvo === m.jogador1 || nomeSalvo === m.jogador2);
+                        const canReport = isUserInMatch && m.status === "jogando";
+
+                        const matchCard = document.createElement("div");
+                        matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
+                        matchCard.innerHTML = `
+                            <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
+                                <span>${m.jogador1 || 'Aguardando...'}</span>
+                                <span class="score-display">${m.jogador1 ? m.score1 : ''}</span>
+                            </div>
+                            <div class="matchup-team ${m.vencedor === m.jogador2 && m.vencedor ? 'winner' : ''} ${!m.jogador2 ? 'bye' : ''}">
+                                <span>${m.jogador2 || 'Aguardando...'}</span>
+                                <span class="score-display">${m.jogador2 ? m.score2 : ''}</span>
+                            </div>
+                            ${canReport ? `<button class="btn-report-match" onclick="autoReportarVitoria('${m.id}')">Reportar Vitória</button>` : ''}
+                        `;
+                        roundDiv.appendChild(matchCard);
+                    });
+
+                    container.appendChild(roundDiv);
+                }
+
+                // ADMIN/MODERAÇÃO: Alimentar lista de controle e súmula
+                if (eAdministrador) {
+                    tabelaModeracao.innerHTML = "";
+                    const partidasAtivas = partidas.filter(p => p.status === "jogando");
+
+                    if (partidasAtivas.length === 0) {
+                        tabelaModeracao.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--texto-mutado);">Todas as partidas ativas estão concluídas ou aguardando adversário.</td></tr>`;
+                    } else {
+                        partidasAtivas.forEach(m => {
+                            const tr = document.createElement("tr");
+                            tr.innerHTML = `
+                                <td><strong>${m.id.toUpperCase()}</strong></td>
+                                <td>${m.jogador1}</td>
+                                <td>${m.jogador2}</td>
+                                <td>
+                                    <input type="number" id="score1_${m.id}" value="${m.score1}" class="input-painel" style="width:50px; display:inline-block; padding: 5px;"> x 
+                                    <input type="number" id="score2_${m.id}" value="${m.score2}" class="input-painel" style="width:50px; display:inline-block; padding: 5px;">
+                                </td>
+                                <td>
+                                    <button class="btn-sucesso" onclick="salvarResultadoModerado('${m.id}')">Salvar</button>
+                                </td>
+                            `;
+                            tabelaModeracao.appendChild(tr);
+                        });
+                    }
+                }
+
+            } catch (err) {
+                console.error("Erro ao desenhar brackets:", err);
+            }
+        }
+
+        function partidAsSorting(partidas) {
+            partidas.sort((a,b) => a.rodada - b.rodada);
+        }
+
+        // AÇÃO DO JOGADOR: AUTO-REPORTAR VITÓRIA NA PARTIDA
+        window.autoReportarVitoria = async function(matchId) {
+            if (confirm("Você confirma que venceu este confronto? (Reportes falsos geram punições).")) {
+                try {
+                    const matchRef = doc(db, "torneio_partidas", matchId);
+                    const snap = await getDoc(matchRef);
+
+                    if (snap.exists()) {
+                        const m = snap.data();
+                        const isJ1 = (nomeSalvo === m.jogador1);
+                        
+                        const updateData = {
+                            score1: isJ1 ? 2 : 0,
+                            score2: isJ1 ? 0 : 2,
+                            vencedor: nomeSalvo,
+                            status: "concluido"
+                        };
+
+                        await updateDoc(matchRef, updateData);
+
+                        // Avança vencedor na próxima chave
+                        await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, nomeSalvo);
+                        await registrarAtividade(`⚔️ Partida ${matchId.toUpperCase()}: ${nomeSalvo} reportou vitória sobre seu oponente.`);
+                        
+                        alert("Resultado enviado e processado com sucesso!");
+                        location.reload();
+                    }
+                } catch (e) {
+                    alert("Erro ao enviar reporte de resultado.");
+                }
+            }
+        };
+
+        // ADMIN: SALVAR RESULTADO MODERADO E AVANÇAR JOGADORES (JUIZ)
+        window.salvarResultadoModerado = async function(matchId) {
+            const sc1 = parseInt(document.getElementById(`score1_${matchId}`).value) || 0;
+            const sc2 = parseInt(document.getElementById(`score2_${matchId}`).value) || 0;
+
+            if (sc1 === sc2) {
+                alert("Partidas de Brawlhalla não podem terminar empatadas!");
+                return;
+            }
+
+            try {
+                const matchRef = doc(db, "torneio_partidas", matchId);
+                const snap = await getDoc(matchRef);
+
+                if (snap.exists()) {
+                    const m = snap.data();
+                    const vencedorFinal = (sc1 > sc2) ? m.jogador1 : m.jogador2;
+
+                    await updateDoc(matchRef, {
+                        score1: sc1,
+                        score2: sc2,
+                        vencedor: vencedorFinal,
+                        status: "concluido"
+                    });
+
+                    // Propaga o campeão para a próxima etapa da árvore
+                    await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, vencedorFinal);
+                    await registrarAtividade(`⚖️ Arbitragem: Juiz ${nomeSalvo} arbitrou a partida ${matchId.toUpperCase()} (${vencedorFinal} vencedor).`);
+
+                    alert("Súmula atualizada e jogador avançado!");
+                    location.reload();
+                }
+            } catch (err) {
+                alert("Falha operacional ao arbitrar resultado.");
+            }
+        };
+
     </script>
 
     <script>
