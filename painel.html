@@ -941,8 +941,41 @@
                     <span>✍️</span>
                 </div>
                 <form id="form-auto-edicao" class="form-painel">
-                    <input type="text" id="auto-legend" class="input-painel" placeholder="Lenda Principal (ex: Nix)" required>
-                    <input type="text" id="auto-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
+                    <select id="auto-legend" class="select-painel" required>
+                        <option value="" disabled selected>Selecione sua Lenda Principal</option>
+                        <option value="Ada">Ada</option> <option value="Arcadia">Arcadia</option> <option value="Artemis">Artemis</option>
+                        <option value="Asuri">Asuri</option> <option value="Azoth">Azoth</option> <option value="Barraza">Barraza</option>
+                        <option value="Bödvar">Bödvar</option> <option value="Brynn">Brynn</option> <option value="Caspian">Caspian</option>
+                        <option value="Cassidy">Cassidy</option> <option value="Cross">Cross</option> <option value="Diana">Diana</option>
+                        <option value="Dusk">Dusk</option> <option value="Ember">Ember</option> <option value="Ezio">Ezio</option>
+                        <option value="Fait">Fait</option> <option value="Gnash">Gnash</option> <option value="Imugi">Imugi</option>
+                        <option value="Isaiah">Isaiah</option> <option value="Jaeyun">Jaeyun</option> <option value="Jhala">Jhala</option>
+                        <option value="Jiro">Jiro</option> <option value="Kaya">Kaya</option> <option value="Koji">Koji</option>
+                        <option value="Kor">Kor</option> <option value="Lin Fei">Lin Fei</option> <option value="Loki">Loki</option>
+                        <option value="Lucien">Lucien</option> <option value="Magyar">Magyar</option> <option value="Mako">Mako</option>
+                        <option value="Mirage">Mirage</option> <option value="Mordex">Mordex</option> <option value="Munin">Munin</option>
+                        <option value="Nash">Nash</option> <option value="Nix">Nix</option> <option value="Oni">Oni</option>
+                        <option value="Onyx">Onyx</option> <option value="Orion">Orion</option> <option value="Petra">Petra</option>
+                        <option value="Ragnir">Ragnir</option> <option value="Rayman">Rayman</option> <option value="Red Raptor">Red Raptor</option>
+                        <option value="Reno">Reno</option> <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
+                        <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option>
+                        <option value="Teros">Teros</option> <option value="Tezca">Tezca</option> <option value="Thatch">Thatch</option>
+                        <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option>
+                        <option value="Val">Val</option> <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
+                        <option value="Volkov">Volkov</option> <option value="Wu Shang">Wu Shang</option> <option value="Xull">Xull</option>
+                        <option value="Yumiko">Yumiko</option> <option value="Zariel">Zariel</option>
+                    </select>
+
+                    <select id="auto-armas" class="select-painel" required>
+                        <option value="" disabled selected>Selecione a Arma Principal</option>
+                        <option value="Axe">Axe</option> <option value="Battle Boots">Battle Boots</option>
+                        <option value="Blasters">Blasters</option> <option value="Bow">Bow</option>
+                        <option value="Cannon">Cannon</option> <option value="Gauntlets">Gauntlets</option>
+                        <option value="Greatsword">Greatsword</option> <option value="Hammer">Hammer</option>
+                        <option value="Katar">Katar</option> <option value="Orb">Orb</option>
+                        <option value="Rocket Lance">Rocket Lance</option> <option value="Scythe">Scythe</option>
+                        <option value="Spear">Spear</option> <option value="Sword">Sword</option>
+                    </select>
                     
                     <select id="auto-stance" class="select-painel" required>
                         <option value="" disabled selected>Selecione sua Stance activa</option>
@@ -1098,7 +1131,7 @@
                             Decolagem dos Caças: <strong id="torneio-hora-display" style="color: white;">Definindo...</strong>
                         </p>
                     </div>
-                    <div id="status-fase-torneio" class="badge-patente" style="background: rgba(255, 183, 3, 0.1);">Fase: Preparação</div>
+                    <div id="status-fase-torneio" class="badge-patente" style="background: rgba(255, 183, 3, 0.1);">Fase: Preparation</div>
                 </div>
             </div>
 
@@ -1193,8 +1226,42 @@
                     </div>
                     <form id="form-ajuste-membro" class="form-painel">
                         <input type="text" id="adm-membro-nick" class="input-painel" placeholder="Nick exato do piloto (ex: Breki)" required>
-                        <input type="text" id="adm-membro-legend" class="input-painel" placeholder="Main Legend (ex: Nix)" required>
-                        <input type="text" id="adm-membro-armas" class="input-painel" placeholder="Armas (ex: Scythe / Blasters)" required>
+                        
+                        <select id="adm-membro-legend" class="select-painel" required>
+                            <option value="" disabled selected>Selecione a Lenda Principal</option>
+                            <option value="Ada">Ada</option> <option value="Arcadia">Arcadia</option> <option value="Artemis">Artemis</option>
+                            <option value="Asuri">Asuri</option> <option value="Azoth">Azoth</option> <option value="Barraza">Barraza</option>
+                            <option value="Bödvar">Bödvar</option> <option value="Brynn">Brynn</option> <option value="Caspian">Caspian</option>
+                            <option value="Cassidy">Cassidy</option> <option value="Cross">Cross</option> <option value="Diana">Diana</option>
+                            <option value="Dusk">Dusk</option> <option value="Ember">Ember</option> <option value="Ezio">Ezio</option>
+                            <option value="Fait">Fait</option> <option value="Gnash">Gnash</option> <option value="Imugi">Imugi</option>
+                            <option value="Isaiah">Isaiah</option> <option value="Jaeyun">Jaeyun</option> <option value="Jhala">Jhala</option>
+                            <option value="Jiro">Jiro</option> <option value="Kaya">Kaya</option> <option value="Koji">Koji</option>
+                            <option value="Kor">Kor</option> <option value="Lin Fei">Lin Fei</option> <option value="Loki">Loki</option>
+                            <option value="Lucien">Lucien</option> <option value="Magyar">Magyar</option> <option value="Mako">Mako</option>
+                            <option value="Mirage">Mirage</option> <option value="Mordex">Mordex</option> <option value="Munin">Munin</option>
+                            <option value="Nash">Nash</option> <option value="Nix">Nix</option> <option value="Oni">Oni</option>
+                            <option value="Onyx">Onyx</option> <option value="Orion">Orion</option> <option value="Petra">Petra</option>
+                            <option value="Ragnir">Ragnir</option> <option value="Rayman">Rayman</option> <option value="Red Raptor">Red Raptor</option>
+                            <option value="Reno">Reno</option> <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
+                            <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option>
+                            <option value="Teros">Teros</option> <option value="Tezca">Tezca</option> <option value="Thatch">Thatch</option>
+                            <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option>
+                            <option value="Val">Val</option> <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
+                            <option value="Volkov">Volkov</option> <option value="Wu Shang">Wu Shang</option> <option value="Xull">Xull</option>
+                            <option value="Yumiko">Yumiko</option> <option value="Zariel">Zariel</option>
+                        </select>
+
+                        <select id="adm-membro-armas" class="select-painel" required>
+                            <option value="" disabled selected>Selecione a Arma Principal</option>
+                            <option value="Axe">Axe</option> <option value="Battle Boots">Battle Boots</option>
+                            <option value="Blasters">Blasters</option> <option value="Bow">Bow</option>
+                            <option value="Cannon">Cannon</option> <option value="Gauntlets">Gauntlets</option>
+                            <option value="Greatsword">Greatsword</option> <option value="Hammer">Hammer</option>
+                            <option value="Katar">Katar</option> <option value="Orb">Orb</option>
+                            <option value="Rocket Lance">Rocket Lance</option> <option value="Scythe">Scythe</option>
+                            <option value="Spear">Spear</option> <option value="Sword">Sword</option>
+                        </select>
                         
                         <select id="adm-membro-stance" class="select-painel" required>
                             <option value="Padrão" selected>Padrão</option>
@@ -1331,7 +1398,6 @@
                 return;
             }
 
-            // Chamadas iniciais assíncronas para carregar dados de telemetria paralelos
             carregarComunicados();
             carregarLogs();
 
@@ -1379,7 +1445,6 @@
                         carregarSolicitacoesAlistamento();
                     }
 
-                    // Aguarda carregamento de dados principais da guilda
                     await carregarTabelaTripulacao();
                     carregarTutoriais();
                     carregarEventos();
@@ -1437,8 +1502,8 @@
 
         document.getElementById("form-auto-edicao").addEventListener("submit", async function(e) {
             e.preventDefault();
-            const novoLegend = document.getElementById("auto-legend").value.trim();
-            const novasArmas = document.getElementById("auto-armas").value.trim();
+            const novoLegend = document.getElementById("auto-legend").value;
+            const novasArmas = document.getElementById("auto-armas").value;
             const novoElo = document.getElementById("auto-elo").value;
             const novoCorehalla = document.getElementById("auto-corehalla").value.trim();
             const novaStance = document.getElementById("auto-stance").value;
@@ -1597,7 +1662,7 @@
                         }
                         if (confirm(`Remover o piloto ${nomeParaRemover} da guilda?`)) {
                             await deleteDoc(doc(db, "membros", idParaRemover));
-                            await registrarAtividade(`⚠️ O comandante ${nomeSalvo} desligou o piloto ${nomeParaRemover} da tripulação.`);
+                            await registrarAtividade("⚠️ O comandante " + nomeSalvo + " desligou o piloto " + nomeParaRemover + " da tripulação.");
                             location.reload();
                         }
                     };
@@ -1700,7 +1765,7 @@
                     btn.onclick = async function() {
                         const id = this.getAttribute("data-id");
                         const nomeRecruta = this.getAttribute("data-nome");
-                        if (confirm(`Deseja rejeitar e apagar o alistamento de ${nomeRecruta}?`)) {
+                        if (confirm("Deseja rejeitar e apagar o alistamento de " + nomeRecruta + "?")) {
                             await processarAlistamento(id, false);
                         }
                     };
@@ -1737,11 +1802,11 @@
                     });
 
                     await deleteDoc(docRefOriginal);
-                    await registrarAtividade(`🟢 Novo piloto recrutado! ${dadosRecruta.nome} foi aprovado na triagem por ${nomeSalvo}.`);
-                    alert(`O piloto ${dadosRecruta.nome} foi integrado oficialmente à StarKindred!`);
+                    await registrarAtividade("🟢 Novo piloto recrutado! " + dadosRecruta.nome + " foi aprovado na triagem por " + nomeSalvo + ".");
+                    alert("O piloto " + dadosRecruta.nome + " foi integrado oficialmente à StarKindred!");
                 } else {
                     await deleteDoc(docRefOriginal);
-                    await registrarAtividade(`🔴 Solicitação de alistamento do candidato ${dadosRecruta.nome} recusada por ${nomeSalvo}.`);
+                    await registrarAtividade("🔴 Solicitação de alistamento do candidato " + dadosRecruta.nome + " recusada por " + nomeSalvo + ".");
                     alert("Solicitação removida.");
                 }
 
@@ -1827,7 +1892,7 @@
 
             try {
                 await addDoc(collection(db, "tutoriais"), { titulo, url });
-                await registrarAtividade(`📚 Novo tutorial tático publicado por ${nomeSalvo}: "${titulo}".`);
+                await registrarAtividade("📚 Novo tutorial tático publicado por " + nomeSalvo + ': "' + titulo + '".');
                 alert("Novo tutorial publicado!");
                 location.reload();
             } catch(e) {
@@ -1847,7 +1912,7 @@
 
             try {
                 await addDoc(collection(db, "eventos"), { titulo, status, descricao });
-                await registrarAtividade(`🏆 Operação agendada por ${nomeSalvo}: "${titulo}" (${status}).`);
+                await registrarAtividade("🏆 Operação agendada por " + nomeSalvo + ': "' + titulo + '" (' + status + ').');
                 alert("Novo evento publicado!");
                 location.reload();
             } catch(e) {
@@ -1856,10 +1921,10 @@
         };
 
         window.removerDado = async function(colecao, id, rotulo) {
-            if (confirm(`Deseja apagar permanentemente o recurso "${rotulo}"?`)) {
+            if (confirm('Deseja apagar permanentemente o recurso "' + rotulo + '"?')) {
                 try {
                     await deleteDoc(doc(db, colecao, id));
-                    await registrarAtividade(`🗑️ Recurso da central de "${colecao}" removido por ${nomeSalvo}: "${rotulo}".`);
+                    await registrarAtividade("🗑️ Recurso da central de \"" + colecao + "\" removido por " + nomeSalvo + ': "' + rotulo + '".');
                     alert("Recurso removido com sucesso!");
                     location.reload();
                 } catch(e) {
@@ -1893,7 +1958,7 @@
                     data: dataSinal,
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
-                await registrarAtividade(`📡 Comandante ${nomeSalvo} updated los comunicados de la nave de comando.`);
+                await registrarAtividade("📡 Comandante " + nomeSalvo + " atualizou os comunicados da nave de comando.");
                 alert("Transmissão de aviso oficial atualizada!");
                 location.reload();
             } catch (err) {}
@@ -1902,20 +1967,20 @@
         document.getElementById("form-ajuste-membro").addEventListener("submit", async function(e) {
             e.preventDefault();
             const nickAlvo = document.getElementById("adm-membro-nick").value.trim();
-            const novoLegend = document.getElementById("adm-membro-legend").value.trim();
+            const novoLegend = document.getElementById("adm-membro-legend").value;
             const novoElo = document.getElementById("adm-membro-elo").value;
             const novaStance = document.getElementById("adm-membro-stance").value;
             try {
                 const docRef = doc(db, "membros", nickAlvo);
                 await updateDoc(docRef, {
                     mainLegend: novoLegend,
-                    "ArmaMain's": document.getElementById("adm-membro-armas").value.trim(),
+                    "ArmaMain's": document.getElementById("adm-membro-armas").value,
                     elomax: novoElo,
                     corehalla: document.getElementById("adm-membro-corehalla").value.trim(),
                     stanceAtiva: novaStance
                 });
-                await registrarAtividade(`⚙️ Os dados do piloto ${nickAlvo} foram editados remotamente por ${nomeSalvo}.`);
-                alert(`Ficha do Piloto ${nickAlvo} ajustada!`);
+                await registrarAtividade("⚙️ Os dados do piloto " + nickAlvo + " foram editados remotamente por " + nomeSalvo + ".");
+                alert("Ficha do Piloto " + nickAlvo + " ajustada!");
                 location.reload();
             } catch (err) {}
         });
@@ -1936,7 +2001,6 @@
                     await setDoc(configRef, configuracoes);
                 }
 
-                // Atualizar labels de Data/Hora na tela
                 document.getElementById("torneio-data-display").textContent = configuracoes.data || "Sábado";
                 document.getElementById("torneio-hora-display").textContent = configuracoes.hora || "19:00 BRT";
                 
@@ -2151,7 +2215,6 @@
                 const todosInscritos = [];
                 inscSnapshot.forEach(d => todosInscritos.push(d.data()));
 
-                // FILTRAR: Somente quem de fato deu Check-in participa da chave
                 const pilotos = todosInscritos.filter(p => p.checkin === true);
 
                 if (pilotos.length < 2) {
@@ -2422,7 +2485,7 @@
                     await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, vencedorFinal);
                     await registrarAtividade("⚖️ Arbitragem: Juiz " + nomeSalvo + " arbitrou a partida " + matchId.toUpperCase() + " (" + vencedorFinal + " vencedor).");
 
-                    alert("Súmula atualizada e jogador avançado!");
+                    alert("Súmula updated e jogador avançado!");
                     location.reload();
                 }
             } catch (err) {
