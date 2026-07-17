@@ -141,21 +141,6 @@
             outline: none;
         }
 
-        /* Estilização para o elemento select e suas options */
-        select.input-campo {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffb703' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            padding-right: 40px;
-        }
-
-        select.input-campo option {
-            background-color: var(--bg-principal);
-            color: var(--texto-claro);
-        }
-
         .input-campo:focus {
             border-color: var(--amarelo);
             box-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
@@ -183,7 +168,6 @@
             transform: translateY(-1px);
         }
 
-        /* Classes Utilitárias de Transição */
         .escondido {
             display: none !important;
         }
@@ -242,18 +226,13 @@
         </div>
 
         <!-- ==========================================================================
-             FORMULÁRIO DE ALISTAMENTO (CADASTRO)
+             FORMULÁRIO DE ALISTAMENTO (CADASTRO REDUZIDO)
              ========================================================================== -->
         <div id="secao-alistamento" class="escondido">
             <div class="login-subtitle">Alistamento de Recrutas</div>
             <form id="form-alistamento">
                 <div class="input-grupo">
-                    <label for="cad-nome">NOME COMPLETO</label>
-                    <input type="text" id="cad-nome" class="input-campo" placeholder="Ex: Lucas Silva" required autocomplete="off">
-                </div>
-
-                <div class="input-grupo">
-                    <label for="cad-usuario">IDENTIFICAÇÃO DO PILOTO (NICK/LOGIN)</label>
+                    <label for="cad-usuario">IDENTIFICAÇÃO DO PILOTO (NICK / LOGIN)</label>
                     <input type="text" id="cad-usuario" class="input-campo" placeholder="Ex: Breki" required autocomplete="off">
                 </div>
 
@@ -263,103 +242,8 @@
                 </div>
 
                 <div class="input-grupo">
-                    <label for="cad-steam">LINK DA STEAM (OU PLATAFORMA QUE JOGA)</label>
-                    <input type="url" id="cad-steam" class="input-campo" placeholder="Ex: https://steamcommunity.com/id/seu-perfil" required autocomplete="off">
-                </div>
-
-                <!-- SELECT PARA BONECOS / LENDAS -->
-                <div class="input-grupo">
-                    <label for="cad-lenda">LENDA PRINCIPAL (MAIN LEGEND)</label>
-                    <select id="cad-lenda" class="input-campo" required>
-                        <option value="" disabled selected>Selecione sua lenda...</option>
-                        <option value="Ada">Ada</option>
-                        <option value="Arcadia">Arcadia</option>
-                        <option value="Artemis">Artemis</option>
-                        <option value="Asuri">Asuri</option>
-                        <option value="Azoth">Azoth</option>
-                        <option value="Barraza">Barraza</option>
-                        <option value="Bodvar">Bödvar</option>
-                        <option value="Brynn">Brynn</option>
-                        <option value="Caspian">Caspian</option>
-                        <option value="Cassidy">Cassidy</option>
-                        <option value="Cross">Cross</option>
-                        <option value="Diana">Diana</option>
-                        <option value="Dusk">Dusk</option>
-                        <option value="Ember">Ember</option>
-                        <option value="Ezio">Ezio</option>
-                        <option value="Fait">Fait</option>
-                        <option value="Gnash">Gnash</option>
-                        <option value="Hattori">Hattori</option>
-                        <option value="Imugi">Imugi</option>
-                        <option value="Isaiah">Isaiah</option>
-                        <option value="Jaeyun">Jaeyun</option>
-                        <option value="Jhala">Jhala</option>
-                        <option value="Jiro">Jiro</option>
-                        <option value="Kaya">Kaya</option>
-                        <option value="King Zuva">King Zuva</option>
-                        <!-- ADICIONE NOVAS LENDAS AQUI EMBAIXO: -->
-                        
-                        <option value="Koji">Koji</option>
-                        <option value="Kor">Kor</option>
-                        <option value="Lin Fei">Lin Fei</option>
-                        <option value="Loki">Loki</option>
-                        <option value="Lord Vraxx">Lord Vraxx</option>
-                        <option value="Lucien">Lucien</option>
-                        <option value="Magyar">Magyar</option>
-                        <option value="Mako">Mako</option>
-                        <option value="Mirage">Mirage</option>
-                        <option value="Mordex">Mordex</option>
-                        <option value="Munin">Munin</option>
-                        <option value="Nix">Nix</option>
-                        <option value="Onyx">Onyx</option>
-                        <option value="Orion">Orion</option>
-                        <option value="Petra">Petra</option>
-                        <option value="Queen Nai">Queen Nai</option>
-                        <option value="Ragnir">Ragnir</option>
-                        <option value="Rayman">Rayman</option>
-                        <option value="Red Raptor">Red Raptor</option>
-                        <option value="Reno">Reno</option>
-                        <option value="Scarlet">Scarlet</option>
-                        <option value="Sentinel">Sentinel</option>
-                        <option value="Seven">Seven</option>
-                        <option value="Sidra">Sidra</option>
-                        <option value="Sir Roland">Sir Roland</option>
-                        <option value="Teros">Teros</option>
-                        <option value="Tezca">Tezca</option>
-                        <option value="Thatch">Thatch</option>
-                        <option value="Thea">Thea</option>
-                        <option value="Thor">Thor</option>
-                        <option value="Ulgrim">Ulgrim</option>
-                        <option value="Val">Val</option>
-                        <option value="Vector">Vector</option>
-                        <option value="Volkov">Volkov</option>
-                        <option value="Wu Shang">Wu Shang</option>
-                        <option value="Xull">Xull</option>
-                        <option value="Yumiko">Yumiko</option>
-                        <option value="Zariel">Zariel</option>
-                    </select>
-                </div>
-
-                <!-- SELECT PARA ARMAS EM INGLÊS -->
-                <div class="input-grupo">
-                    <label for="cad-arma">ARMA PRINCIPAL (MAIN WEAPON)</label>
-                    <select id="cad-arma" class="input-campo" required>
-                        <option value="" disabled selected>Selecione sua arma principal...</option>
-                        <option value="Axe">Axe</option>
-                        <option value="Battle Boots">Battle Boots</option>
-                        <option value="Blasters">Blasters</option>
-                        <option value="Bow">Bow</option>
-                        <option value="Cannon">Cannon</option>
-                        <option value="Gauntlets">Gauntlets</option>
-                        <option value="Grapple Hammer">Grapple Hammer</option>
-                        <option value="Greatsword">Greatsword</option>
-                        <option value="Katars">Katars</option>
-                        <option value="Orb">Orb</option>
-                        <option value="Rocket Lance">Rocket Lance</option>
-                        <option value="Scythe">Scythe</option>
-                        <option value="Spear">Spear</option>
-                        <option value="Sword">Sword</option>
-                    </select>
+                    <label for="cad-corehalla">LINK DO COREHALLA</label>
+                    <input type="url" id="cad-corehalla" class="input-campo" placeholder="Ex: https://corehalla.com/stats/player/..." required autocomplete="off">
                 </div>
 
                 <div class="input-grupo">
@@ -379,14 +263,11 @@
         </div>
     </div>
 
-    <!-- ==========================================================================
-         INTEGRAÇÃO FIRESTORE E LÓGICA DE TRANSIÇÃO
-         ========================================================================== -->
+    <!-- INTEGRACAO FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Suas credenciais oficiais da guilda:
         const firebaseConfig = {
             apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
             authDomain: "starkindred-51af3.firebaseapp.com",
@@ -400,13 +281,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Elementos de Controle de Interface
         const secaoLogin = document.getElementById("secao-login");
         const secaoAlistamento = document.getElementById("secao-alistamento");
         const btnIrAlistamento = document.getElementById("btn-ir-alistamento");
         const btnIrLogin = document.getElementById("btn-ir-login");
 
-        // Alternância Visual de Telas
         btnIrAlistamento.addEventListener("click", () => {
             secaoLogin.classList.add("escondido");
             secaoAlistamento.classList.remove("escondido");
@@ -421,11 +300,10 @@
             btnIrAlistamento.classList.remove("escondido");
         });
 
-        // LÓGICA 1: LOGIN (Coleção "membros")
+        // LOGIN
         const formLogin = document.getElementById("form-login");
         formLogin.addEventListener("submit", async function(event) {
             event.preventDefault(); 
-
             const nickDigitado = document.getElementById("usuario").value.trim();
             const senhaDigitada = document.getElementById("senha").value;
 
@@ -435,11 +313,9 @@
 
                 if (docSnap.exists()) {
                     const dadosPiloto = docSnap.data();
-
                     if (dadosPiloto.senha === senhaDigitada) {
                         localStorage.setItem("sk_usuario", dadosPiloto.nome);
                         localStorage.setItem("sk_patente", dadosPiloto.patente || "Membro");
-
                         alert(`Sistemas de bordo autorizados! Bem-vindo, Comandante ${dadosPiloto.nome}.`);
                         window.location.href = "painel.html"; 
                     } else {
@@ -449,53 +325,42 @@
                     alert("Piloto não localizado na base de dados oficial da guilda.");
                 }
             } catch (error) {
-                console.error("Erro no Firestore:", error);
                 alert("Falha na comunicação cósmica com o banco de dados.");
             }
         });
 
-        // LÓGICA 2: ALISTAMENTO (Coleção temporária "solicitacoes")
+        // ALISTAMENTO REDUZIDO
         const formAlistamento = document.getElementById("form-alistamento");
         formAlistamento.addEventListener("submit", async function(event) {
             event.preventDefault();
 
-            // Captura os dados dos inputs do formulário
-            const nome = document.getElementById("cad-nome").value.trim();
             const nickSolicitado = document.getElementById("cad-usuario").value.trim();
             const discord = document.getElementById("cad-discord").value.trim();
-            const steamLink = document.getElementById("cad-steam").value.trim(); 
-            const lendaSelecionada = document.getElementById("cad-lenda").value;
-            const armaSelecionada = document.getElementById("cad-arma").value;
+            const corehallaLink = document.getElementById("cad-corehalla").value.trim();
             const senhaDefinida = document.getElementById("cad-senha").value;
 
             try {
-                // 1. Evita que o recruta envie uma solicitação com um Nick que já é membro oficial
                 const checarMembroDoc = await getDoc(doc(db, "membros", nickSolicitado));
                 if (checarMembroDoc.exists()) {
                     alert("Este Nick já está ativo na frota oficial! Escolha outro.");
                     return;
                 }
 
-                // 2. Salva o alistamento na coleção temporária "solicitacoes" usando o Nick como ID do documento
+                // Salva apenas os dados novos solicitados
                 await setDoc(doc(db, "solicitacoes", nickSolicitado), {
-                    nome: nome,
+                    nome: nickSolicitado, // Definido como o próprio Nick para consistência no sistema
                     nick: nickSolicitado,
                     discord: discord,
-                    steam: steamLink, 
-                    lenda: lendaSelecionada,
-                    arma: armaSelecionada,
+                    corehalla: corehallaLink,
                     senha: senhaDefinida,
                     dataSolicitacao: new Date().toISOString()
                 });
 
                 alert("Sinal de alistamento enviado! Sua ficha agora está na fila de aprovação dos oficiais. Avise no Discord!");
-                
-                // Limpa o formulário de cadastro e volta para a tela de login
                 formAlistamento.reset();
                 btnIrLogin.click();
 
             } catch (error) {
-                console.error("Erro ao enviar alistamento:", error);
                 alert("Houve um erro nos sistemas de transmissão da sua ficha. Tente novamente.");
             }
         });
