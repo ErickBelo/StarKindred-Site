@@ -1049,7 +1049,7 @@
             <div class="subtitulo-divisao">🚀 Pilotos da Tripulação</div>
             <div class="limitador-tabela-membros">
                 <table class="tabela-membros">
-                    <thead class="esconder-cabecalho-mobile">
+                    <thead>
                         <tr>
                             <th>Piloto</th>
                             <th>Patente</th>
@@ -1520,7 +1520,7 @@
 
                 await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou sua nave de combate: ${novoLegend} (${novaStance}).`);
 
-                alert("Seu perfil tático foi atualizado com sucesso!");
+                alert("Seu perfil tático foi updated com sucesso!");
                 location.reload();
             } catch (err) {
                 alert("Falha ao atualizar o seu perfil.");
