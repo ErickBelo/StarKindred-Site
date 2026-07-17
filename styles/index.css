@@ -23,6 +23,8 @@ body {
     min-width: 320px;
     margin: 0;
     overflow-x: hidden;
+    position: relative;
+    isolation: isolate;
     background:
         radial-gradient(circle at 50% 6%, rgba(108, 99, 255, .19), transparent 30rem),
         radial-gradient(circle at 96% 17%, rgba(255, 115, 92, .1), transparent 26rem),
@@ -35,7 +37,7 @@ body {
 body::before {
     content: "";
     position: fixed;
-    z-index: -2;
+    z-index: 0;
     inset: 0;
     pointer-events: none;
     background-image:
@@ -50,16 +52,29 @@ body::before {
         radial-gradient(circle at 11% 83%, rgba(108, 99, 255, .55) 0 1px, transparent 1.8px),
         radial-gradient(circle at 28% 93%, rgba(248, 243, 234, .55) 0 1px, transparent 1.7px),
         radial-gradient(circle at 73% 91%, rgba(255, 115, 92, .55) 0 1px, transparent 1.8px),
-        radial-gradient(circle at 96% 78%, rgba(248, 243, 234, .54) 0 1px, transparent 1.7px);
-    background-size: 100% 880px;
+        radial-gradient(circle at 96% 78%, rgba(248, 243, 234, .54) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 4% 51%, rgba(248, 243, 234, .46) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 15% 58%, rgba(85, 221, 240, .42) 0 .9px, transparent 1.7px),
+        radial-gradient(circle at 24% 19%, rgba(248, 243, 234, .58) 0 .9px, transparent 1.7px),
+        radial-gradient(circle at 36% 76%, rgba(233, 74, 174, .4) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 48% 39%, rgba(248, 243, 234, .43) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 62% 4%, rgba(216, 173, 69, .5) 0 .9px, transparent 1.7px),
+        radial-gradient(circle at 76% 57%, rgba(248, 243, 234, .5) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 87% 29%, rgba(108, 99, 255, .48) 0 .9px, transparent 1.7px),
+        radial-gradient(circle at 98% 63%, rgba(248, 243, 234, .45) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 39% 97%, rgba(85, 221, 240, .39) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 54% 81%, rgba(248, 243, 234, .5) 0 .8px, transparent 1.6px),
+        radial-gradient(circle at 67% 45%, rgba(233, 74, 174, .38) 0 .8px, transparent 1.6px);
+    background-size: 100% 960px;
     background-repeat: repeat-y;
-    opacity: .58;
+    opacity: .68;
+    animation: starfieldDrift 42s linear infinite alternate;
 }
 
 body::after {
     content: "";
     position: fixed;
-    z-index: -1;
+    z-index: 0;
     inset: 0;
     pointer-events: none;
     background-image: linear-gradient(90deg, rgba(255,255,255,.027) 1px, transparent 1px);
@@ -71,6 +86,7 @@ a { color: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
 img { display: block; max-width: 100%; }
+main, .site-footer { position: relative; z-index: 1; }
 
 /* Header */
 header {
@@ -149,9 +165,9 @@ header nav a:hover::after, header nav a:focus-visible::after { opacity: 1; }
         linear-gradient(145deg, rgba(22, 9, 37, .96), rgba(7, 20, 38, .9) 60%, rgba(17, 6, 28, .95));
 }
 .hero::before { content: ""; position: absolute; z-index: -1; inset: 1px; border: 1px solid rgba(248,243,234,.08); border-radius: inherit; pointer-events: none; }
-.hero-grid-lines { position: absolute; z-index: -1; inset: 0; overflow: hidden; border-radius: inherit; opacity: .6; background-image: linear-gradient(90deg, rgba(248,243,234,.055) 1px, transparent 1px); background-size: 112px 100%; mask-image: linear-gradient(to bottom, black, rgba(0,0,0,.2) 80%, transparent); }
-.hero-background-word { position: absolute; z-index: -1; top: 305px; left: 11%; color: transparent; font-family: 'Archivo Black', sans-serif; font-size: clamp(7rem, 17vw, 17rem); line-height: .7; letter-spacing: -.1em; -webkit-text-stroke: 1px rgba(233, 74, 174, .2); opacity: .78; transform: rotate(-16deg); white-space: nowrap; user-select: none; }
-.hero-glow { position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; filter: blur(12px); animation: ambientPulse 13s ease-in-out infinite alternate; }
+.hero-grid-lines { position: absolute; z-index: 0; inset: 0; overflow: hidden; border-radius: inherit; opacity: .72; background-image: radial-gradient(circle at 8% 13%, rgba(248,243,234,.82) 0 1px, transparent 1.8px), radial-gradient(circle at 26% 68%, rgba(233,74,174,.56) 0 1px, transparent 1.8px), radial-gradient(circle at 42% 21%, rgba(248,243,234,.66) 0 1px, transparent 1.8px), radial-gradient(circle at 63% 58%, rgba(85,221,240,.5) 0 1px, transparent 1.8px), radial-gradient(circle at 77% 18%, rgba(255,191,47,.6) 0 1px, transparent 1.8px), radial-gradient(circle at 91% 73%, rgba(248,243,234,.6) 0 1px, transparent 1.8px), linear-gradient(90deg, rgba(248,243,234,.055) 1px, transparent 1px); background-size: 100% 420px, 100% 420px, 100% 420px, 100% 420px, 100% 420px, 100% 420px, 112px 100%; background-repeat: repeat-y, repeat-y, repeat-y, repeat-y, repeat-y, repeat-y, repeat; mask-image: linear-gradient(to bottom, black, rgba(0,0,0,.32) 80%, transparent); pointer-events: none; }
+.hero-background-word { position: absolute; z-index: 0; top: 305px; left: 11%; color: transparent; font-family: 'Archivo Black', sans-serif; font-size: clamp(7rem, 17vw, 17rem); line-height: .7; letter-spacing: -.1em; -webkit-text-stroke: 1px rgba(233, 74, 174, .2); opacity: .78; transform: rotate(-16deg); white-space: nowrap; user-select: none; }
+.hero-glow { position: absolute; z-index: 0; border-radius: 50%; pointer-events: none; filter: blur(12px); animation: ambientPulse 13s ease-in-out infinite alternate; }
 .hero-glow-violet { top: 160px; left: 22%; width: 420px; height: 420px; background: rgba(108,99,255,.16); }
 .hero-glow-coral { top: 60px; right: 0; width: 320px; height: 320px; background: rgba(255,115,92,.12); animation-delay: -4s; }
 .hero-layout { position: relative; min-height: 505px; }
@@ -271,7 +287,7 @@ header nav a:hover::after, header nav a:focus-visible::after { opacity: 1; }
 .membro-nome::after { content: "✦"; margin: 0 clamp(20px, 3vw, 38px); color: var(--pink); font-size: .65em; }
 .btn-exibir-melhores { display: inline-flex; align-items: center; justify-content: center; min-height: 43px; margin-top: 29px; padding: 0 19px; border: 1px solid rgba(216,173,69,.5); border-radius: 999px; background: rgba(216,173,69,.08); color: var(--gold); cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: .59rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; transition: transform .2s ease, background .2s ease, color .2s ease; }
 .btn-exibir-melhores:hover, .btn-exibir-melhores:focus-visible { background: var(--gold); color: #160925; transform: translateY(-2px); }
-.grid-melhores { display: none; width: var(--content); grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 39px auto 0; text-align: left; }
+.grid-melhores { display: none; width: var(--content); grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 39px auto 0; text-align: left; }
 .card-elite { position: relative; min-height: 286px; padding: 26px 20px 19px; overflow: hidden; border: 1px solid rgba(248,243,234,.14); border-radius: 20px; background: linear-gradient(150deg, rgba(31,17,49,.93), rgba(8,20,38,.89)); box-shadow: 0 13px 30px rgba(0,0,0,.19); transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease; }
 .card-elite:nth-child(2n) { background: linear-gradient(150deg, rgba(20,27,56,.94), rgba(17,10,31,.89)); }
 .card-elite:nth-child(3n) { background: linear-gradient(150deg, rgba(48,22,44,.91), rgba(17,10,31,.89)); }
@@ -347,6 +363,7 @@ header nav a:hover::after, header nav a:focus-visible::after { opacity: 1; }
 .footer-links a:hover, .footer-links a:focus-visible { color: var(--yellow); }
 
 @keyframes memberMarquee { to { transform: translateX(-50%); } }
+@keyframes starfieldDrift { from { background-position: 0 0; } to { background-position: 0 -28px; } }
 @keyframes planetFloat { from { transform: rotate(-7deg) translateY(-4px); } to { transform: rotate(-5deg) translateY(8px); } }
 @keyframes signalFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes ambientPulse { from { opacity: .56; transform: scale(.94); } to { opacity: 1; transform: scale(1.06); } }
