@@ -199,10 +199,25 @@
             padding-top: 15px;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/login.css">
 </head>
-<body>
+<body class="auth-page">
+
+    <main class="auth-shell">
+        <section class="auth-scene" aria-hidden="true">
+            <div class="auth-scene-grid"></div>
+            <div class="auth-scene-word">FROTA</div>
+            <div class="auth-scene-copy">
+                <span>STARKINDRED // PILOT ACCESS</span>
+                <strong>Uma nova rota<br>começa aqui.</strong>
+            </div>
+            <div class="auth-planet"><img src="assets/images/BG_Synthwave.jpg" alt=""></div>
+            <div class="auth-signal">✦</div>
+        </section>
 
     <div class="login-container">
+        <span class="auth-kicker">PORTAL DA FROTA</span>
         <div class="login-logo">StarKindred</div>
         
         <!-- ==========================================================================
@@ -262,6 +277,8 @@
             <a href="index.html" class="link-acao link-retorno">← Abortar Missão (Voltar para a Home)</a>
         </div>
     </div>
+
+    </main>
 
     <!-- INTEGRACAO FIRESTORE -->
     <script type="module">

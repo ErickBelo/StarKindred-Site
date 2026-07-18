@@ -414,12 +414,35 @@ header nav a:hover::after, header nav a:focus-visible::after { opacity: 1; }
     .arena-art { width: 76%; opacity: .88; }
 }
 
+/* Celulares grandes: remove sobreposições do Hero antes do layout compacto. */
+@media (min-width: 561px) and (max-width: 700px) {
+    :root { --content: min(100% - 42px, 620px); }
+    header { width: calc(100dvw - 32px); }
+    .hero { width: 100dvw; min-height: auto; margin: 0; padding: 116px 28px 34px; border-radius: 0; }
+    .hero-background-word, .hero-signal { display: none; }
+    .hero-layout { display: flex; flex-direction: column; min-height: 0; }
+    .hero-copy { order: 1; width: 100%; margin: 0; }
+    .hero h1 { max-width: 600px; font-size: clamp(4rem, 11.5vw, 5.35rem); }
+    .hero-description { max-width: 42ch; }
+    .hero-planet { position: relative; top: auto; right: auto; order: 2; width: min(58vw, 350px); margin: 27px 0 0 auto; opacity: 1; }
+    .hero-editorial-card { position: relative; bottom: auto; left: auto; order: 3; width: 222px; margin: 15px auto 25px 0; transform: rotate(-1deg); }
+    .hero-planet-label { display: none; }
+    .hero-dock { position: relative; right: auto; bottom: auto; width: 100%; min-height: 142px; margin: 25px 0 0; transform: none; }
+    .hero-dock-link { min-height: 128px; padding: 16px 13px; }
+    .hero-dock-featured { min-height: 166px; margin-top: -22px; }
+    .hero-dock-link small { font-size: .61rem; }
+    .about-section { padding-top: 135px; }
+}
+
 @media (max-width: 560px) {
     :root { --content: calc(100% - 32px); }
     html, body, main { width: 100%; max-width: 100%; overflow-x: clip; }
     body::after { background-size: 90px 100%; }
-    header { width: calc(100dvw - 28px); }
-    .hero { width: 100dvw; min-height: auto; margin: 0; padding: 96px 18px 28px; border-radius: 0; }
+    header { grid-template-columns: 1fr auto; width: calc(100dvw - 28px); min-height: 76px; padding: 10px 14px; border-radius: 22px; }
+    header nav { display: flex; grid-column: 1 / -1; justify-content: space-between; gap: 0; padding-top: 3px; }
+    header nav a { padding: 6px 3px; font-size: .66rem; }
+    header nav a::after { bottom: 0; }
+    .hero { width: 100dvw; min-height: auto; margin: 0; padding: 120px 18px 28px; border-radius: 0; }
     .hero::before, .hero-grid-lines { border-radius: 0; }
     .hero-background-word, .hero-signal { display: none; }
     .hero-layout { display: flex; flex-direction: column; width: 100%; min-height: 0; }
@@ -428,7 +451,7 @@ header nav a:hover::after, header nav a:focus-visible::after { opacity: 1; }
     .hero h1 { margin: 15px 0 18px; font-size: clamp(3.15rem, 15.5vw, 4.6rem); line-height: .86; }
     .hero-description { max-width: 33ch; font-size: .91rem; line-height: 1.62; }
     .hero-actions { display: grid; grid-template-columns: 1fr; width: min(100%, 350px); }
-    .hero-action { width: 100%; }
+    .hero-action { width: 100%; min-height: 50px; }
     .hero-planet { position: relative; top: auto; right: auto; order: 2; width: min(72vw, 290px); margin: 27px 0 0 auto; opacity: 1; transform: rotate(-4deg); }
     .hero-planet-label { display: none; }
     .hero-editorial-card { position: relative; bottom: auto; left: auto; order: 3; width: min(202px, 69%); margin: 14px auto 23px 0; padding: 15px; transform: rotate(-1deg); }
@@ -466,13 +489,15 @@ header nav a:hover::after, header nav a:focus-visible::after { opacity: 1; }
     .comunidade-box { padding: 48px 22px; border-radius: 27px; }
     .site-footer { flex-direction: column; gap: 26px; padding: 29px 0 37px; }
     .footer-links { grid-template-columns: 1fr; }
+    body::before, .hero-planet { animation: none; }
 }
 
 @media (max-width: 390px) {
-    header { min-height: 54px; padding-inline: 13px; }
+    header { min-height: 72px; padding-inline: 13px; }
     .logo { font-size: .84rem; }
     .btn-destaque-login { padding: 7px 12px; font-size: .54rem; }
-    .hero { padding: 90px 16px 24px; }
+    header nav a { font-size: .61rem; }
+    .hero { padding: 114px 16px 24px; }
     .hero h1 { font-size: clamp(3rem, 15vw, 3.7rem); }
     .hero-eyebrow { font-size: .46rem; }
     .hero-description { font-size: .87rem; }
