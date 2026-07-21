@@ -1040,10 +1040,7 @@
                         <thead>
                             <tr>
                                 <th>Candidato (Nick)</th>
-                                <th>Lenda Principal</th>
-                                <th>Armas</th>
-                                <th>Stance Desejada</th>
-                                <th>Elo Máximo</th>
+                                <th>Discord</th>
                                 <th>Corehalla</th>
                                 <th class="coluna-acoes">Ações de Triagem</th>
                             </tr>
@@ -1586,12 +1583,12 @@
 
         async function carregarSolicitacoesAlistamento() {
             const tbody = document.getElementById("tabela-corpo-alistamentos");
-            tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--texto-mutado);'>Varrendo sinais de transmissão...</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color: var(--texto-mutado);'>Varrendo sinais de transmissão...</td></tr>";
 
             try {
                 const querySnapshot = await getDocs(collection(db, "solicitacoes"));
                 if (querySnapshot.empty) {
-                    tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--texto-mutado); padding: 20px;'>Nenhuma solicitação de alistamento na fila de triagem.</td></tr>";
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color: var(--texto-mutado); padding: 20px;'>Nenhuma solicitação de alistamento na fila de triagem.</td></tr>";
                     return;
                 }
 
@@ -1599,21 +1596,20 @@
                 querySnapshot.forEach((docSnap) => {
                     const dados = docSnap.data();
                     const idSolicitacao = docSnap.id;
+                    const nickRecruta = dados.nome || dados.nick || 'Sem Nick';
+                    const discordRecruta = dados.discord || 'Não informado';
                     const coreLink = dados.corehalla ? dados.corehalla.replace(/"/g, '').trim() : "";
 
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
-                        <td><strong>${dados.nome}</strong></td>
-                        <td>${dados.mainLegend || 'Não definido'}</td>
-                        <td>${dados["ArmaMain's"] || 'Não definido'}</td>
-                        <td style="color: var(--amarelo); font-family: 'Orbitron'; font-size: 0.85rem;"><strong>${dados.stanceAtiva || 'Padrão'}</strong></td>
-                        <td>${dados.elomax || '0'}</td>
+                        <td><strong>${nickRecruta}</strong></td>
+                        <td>${discordRecruta}</td>
                         <td>
-                            ${coreLink ? `<a href="${coreLink}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Ficha ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
+                            ${coreLink ? `<a href="${coreLink}" target="_blank" style="color: var(--amarelo); text-decoration:none;">Corehalla ↗</a>` : '<span style="color: var(--texto-mutado);">Sem link</span>'}
                         </td>
                         <td class="coluna-acoes">
                             <button class="btn-sucesso btn-aprovar-recruta" data-id="${idSolicitacao}">Aprovar</button>
-                            <button class="btn-excluir btn-recusar-recruta" data-id="${idSolicitacao}" data-nome="${dados.nome}">Recusar</button>
+                            <button class="btn-excluir btn-recusar-recruta" data-id="${idSolicitacao}" data-nome="${nickRecruta}">Recusar</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -1635,7 +1631,7 @@
 
             } catch (err) {
                 console.error("Erro ao puxar solicitações:", err);
-                tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color: var(--vermelho-erro);'>Sinal de recrutamento instável.</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4' style='text-align:center; color: var(--vermelho-erro);'>Sinal de recrutamento instável.</td></tr>";
             }
         }
 
@@ -1650,10 +1646,12 @@
                 }
 
                 const dadosRecruta = docSnap.data();
+                const nomeRecruta = dadosRecruta.nome || dadosRecruta.nick;
 
                 if (aprovado) {
-                    await setDoc(doc(db, "membros", dadosRecruta.nome), {
-                        nome: dadosRecruta.nome,
+                    await setDoc(doc(db, "membros", nomeRecruta), {
+                        nome: nomeRecruta,
+                        discord: dadosRecruta.discord || "",
                         patente: "Piloto", 
                         mainLegend: dadosRecruta.mainLegend || "",
                         "ArmaMain's": dadosRecruta["ArmaMain's"] || "",
@@ -1663,10 +1661,10 @@
                     });
 
                     await deleteDoc(docRefOriginal);
-                    await registrarAtividade("🟢 Novo piloto recrutado! " + dadosRecruta.nome + " foi aprovado na triagem por " + nomeSalvo + ".");
+                    await registrarAtividade("🟢 Novo piloto recrutado! " + nomeRecruta + " foi aprovado na triagem por " + nomeSalvo + ".");
                 } else {
                     await deleteDoc(docRefOriginal);
-                    await registrarAtividade("🔴 Solicitação de alistamento do candidato " + dadosRecruta.nome + " recusada por " + nomeSalvo + ".");
+                    await registrarAtividade("🔴 Solicitação de alistamento do candidato " + nomeRecruta + " recusada por " + nomeSalvo + ".");
                 }
 
                 carregarSolicitacoesAlistamento();
