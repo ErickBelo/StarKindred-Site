@@ -1320,7 +1320,7 @@
                     const armaMain = dados["ArmaMain's"] || "Não definido";
                     const legendMain = dados.mainLegend || 'Não definido';
                     const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(legendMain) : "";
-                    const imgHtmlMain = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+                    const imgHtmlMain = urlIcone ? `<img src="${urlIcone}" alt="${legendMain}" class="legend-icon" onerror="this.style.display='none'">` : '';
                     
                     document.getElementById("main-jogador").innerHTML = `${imgHtmlMain} ${legendMain} (${armaMain})`;
                     document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
@@ -1489,7 +1489,7 @@
                     }
 
                     const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(lenda) : "";
-                    const imgHtml = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+                    const imgHtml = urlIcone ? `<img src="${urlIcone}" alt="${lenda}" class="legend-icon" onerror="this.style.display='none'">` : '';
 
                     lendaDiv.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;">
@@ -1512,7 +1512,7 @@
             } else {
                 rankingOrdenado.forEach(([lenda, qtd], index) => {
                     const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(lenda) : "";
-                    const imgHtml = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+                    const imgHtml = urlIcone ? `<img src="${urlIcone}" alt="${lenda}" class="legend-icon" onerror="this.style.display='none'">` : '';
                     
                     const rankItem = document.createElement("div");
                     rankItem.style = "display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(8, 18, 37, 0.4); border-radius: 4px; border-left: 3px solid var(--amarelo);";
@@ -1545,7 +1545,7 @@
                 const stanceAtiva = m.stanceAtiva || "Padrão";
 
                 const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(m.mainLegend) : "";
-                const imgHtml = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+                const imgHtml = urlIcone ? `<img src="${urlIcone}" alt="${m.mainLegend || 'Lenda'}" class="legend-icon" onerror="this.style.display='none'">` : '';
 
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
