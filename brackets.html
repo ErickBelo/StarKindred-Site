@@ -244,10 +244,8 @@
             100% { transform: scale(0.9); opacity: 1; }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/brackets.css">
 </head>
-<body class="brackets-page">
+<body>
 
     <header>
         <a href="#" class="logo-painel">STAR<span>KINDRED</span></a>
@@ -280,7 +278,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Sua mesma configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
             authDomain: "starkindred-51af3.firebaseapp.com",
@@ -294,7 +291,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // O SEGREDO DO "TEMPO REAL": onSnapshot fica ouvindo alterações no banco e atualiza na hora!
         onSnapshot(collection(db, "torneio_partidas"), (snapshot) => {
             const container = document.getElementById("bracket-view");
             
@@ -308,54 +304,58 @@
             }
 
             const partidas = [];
-            snapshot.forEach(doc => partidas.push(doc.data()));
+            snapshot.forEach(doc => partidas.push({ id: doc.id, ...doc.data() }));
 
-            // Agrupa por rodada e ordena
+            // Agrupa as partidas por número da rodada
             const rodadasMap = {};
-            partidas.sort((a, b) => a.rodada - b.rodada);
-
             partidas.forEach(p => {
-                if (!rodadasMap[p.rodada]) {
-                    rodadasMap[p.rodada] = [];
+                const rodadaNum = Number(p.rodada) || 1;
+                if (!rodadasMap[rodadaNum]) {
+                    rodadasMap[rodadaNum] = [];
                 }
-                rodadasMap[p.rodada].push(p);
+                rodadasMap[rodadaNum].push(p);
             });
 
             container.innerHTML = "";
-            const totalDeRodadas = Object.keys(rodadasMap).length;
+            const rodadasOrdenadas = Object.keys(rodadasMap).map(Number).sort((a, b) => a - b);
+            const totalDeRodadas = rodadasOrdenadas.length;
 
-            for (let r = 1; r <= totalDeRodadas; r++) {
+            rodadasOrdenadas.forEach((r, index) => {
                 const roundDiv = document.createElement("div");
                 roundDiv.className = "bracket-round";
                 
                 let rotuloRodada = `Rodada ${r}`;
-                if (r === totalDeRodadas) rotuloRodada = "Final";
-                else if (r === totalDeRodadas - 1) rotuloRodada = "Semifinal";
-                else if (r === totalDeRodadas - 2) rotuloRodada = "Quartas de Final";
+                if (index === totalDeRodadas - 1) rotuloRodada = "Final";
+                else if (index === totalDeRodadas - 2) rotuloRodada = "Semifinal";
+                else if (index === totalDeRodadas - 3) rotuloRodada = "Quartas de Final";
 
                 roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
 
-                // Ordena as partidas dentro da rodada para manter o desenho alinhado
-                rodadasMap[r].sort((a, b) => a.id.localeCompare(b.id));
+                // Ordena as partidas dentro da rodada pelo ID
+                rodadasMap[r].sort((a, b) => String(a.id).localeCompare(String(b.id)));
 
                 rodadasMap[r].forEach(m => {
                     const matchCard = document.createElement("div");
                     matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
+                    
+                    const score1 = m.jogador1 && m.score1 !== undefined ? m.score1 : '';
+                    const score2 = m.jogador2 && m.score2 !== undefined ? m.score2 : '';
+
                     matchCard.innerHTML = `
-                        <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
+                        <div class="matchup-team ${m.vencedor && m.vencedor === m.jogador1 ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
                             <span>${m.jogador1 || 'Aguardando...'}</span>
-                            <span class="score-display">${m.jogador1 ? m.score1 : ''}</span>
+                            <span class="score-display">${score1}</span>
                         </div>
-                        <div class="matchup-team ${m.vencedor === m.jogador2 && m.vencedor ? 'winner' : ''} ${!m.jogador2 ? 'bye' : ''}">
+                        <div class="matchup-team ${m.vencedor && m.vencedor === m.jogador2 ? 'winner' : ''} ${!m.jogador2 ? 'bye' : ''}">
                             <span>${m.jogador2 || 'Aguardando...'}</span>
-                            <span class="score-display">${m.jogador2 ? m.score2 : ''}</span>
+                            <span class="score-display">${score2}</span>
                         </div>
                     `;
                     roundDiv.appendChild(matchCard);
                 });
 
                 container.appendChild(roundDiv);
-            }
+            });
         }, (error) => {
             console.error("Erro na escuta do sinal da arena:", error);
         });
