@@ -894,10 +894,8 @@
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/painel.css">
 </head>
-<body class="painel-page">
+<body>
 
     <!-- Header -->
     <header>
@@ -1374,6 +1372,11 @@
             event.currentTarget.classList.add('ativa');
             document.getElementById(abaId).classList.add('ativa');
         }
+
+        function efetuarLogoff() {
+            localStorage.removeItem("sk_usuario");
+            window.location.href = "login.html";
+        }
     </script>
 
     <!-- INTEGRACAO FIRESTORE E MECÂNICA DO PAINEL -->
@@ -1527,7 +1530,7 @@
 
                 await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou sua nave de combate: ${novoLegend} (${novaStance}).`);
 
-                alert("Seu perfil tático foi updated com sucesso!");
+                alert("Seu perfil tático foi atualizado com sucesso!");
                 location.reload();
             } catch (err) {
                 alert("Falha ao atualizar o seu perfil.");
@@ -2147,7 +2150,7 @@
             } catch (err) {
                 alert("Erro ao realizar check-in.");
             }
-        }
+        };
 
         window.alterarStatusTorneio = async function(novoStatus) {
             try {
@@ -2188,7 +2191,7 @@
             } catch (err) {
                 alert("Erro ao atualizar agenda.");
             }
-        }
+        };
 
         window.limparTorneioCompleto = async function() {
             if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, check-ins, partidas e o bracket atual. Deseja redefinir tudo?")) {
@@ -2211,178 +2214,51 @@
                     alert("Redefinição total efetuada com sucesso!");
                     location.reload();
                 } catch (e) {
-                    alert("Erro ao redefinir campeonato.");
+                    alert("Erro ao resetar o torneio.");
                 }
             }
         };
-
-        window.gerarChaveamento = async function() {
-            try {
-                const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
-                const todosInscritos = [];
-                inscSnapshot.forEach(d => todosInscritos.push(d.data()));
-
-                const pilotos = todosInscritos.filter(p => p.checkin === true);
-
-                if (pilotos.length < 2) {
-                    alert("Não há pilotos confirmados (Checked-in) suficientes! Total inscrito com check-in: " + pilotos.length);
-                    return;
-                }
-
-                if (confirm("Serão geradas chaves para os " + pilotos.length + " pilotos que realizaram o check-in. Iniciar geração?")) {
-                    pilotos.sort(() => Math.random() - 0.5);
-
-                    const totalInscritos = pilotos.length;
-                    let tamanhoBracket = 2;
-                    if (totalInscritos > 2) tamanhoBracket = 4;
-                    if (totalInscritos > 4) tamanhoBracket = 8;
-                    if (totalInscritos > 8) tamanhoBracket = 16;
-
-                    const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
-                    const deletePromises = partSnapshot.docs.map(d => deleteDoc(doc(db, "torneio_partidas", d.id)));
-                    await Promise.all(deletePromises);
-
-                    const partidasGeradas = [];
-
-                    const partidasNaRodada1 = tamanhoBracket / 2;
-                    for (let i = 0; i < partidasNaRodada1; i++) {
-                        const idx1 = i * 2;
-                        const idx2 = i * 2 + 1;
-
-                        const p1 = pilotos[idx1] ? pilotos[idx1].nome : null;
-                        const p2 = pilotos[idx2] ? pilotos[idx2].nome : null;
-
-                        const partida = {
-                            id: `r1_match_${i + 1}`,
-                            rodada: 1,
-                            jogador1: p1,
-                            jogador2: p2,
-                            score1: 0,
-                            score2: 0,
-                            vencedor: null,
-                            status: (p1 && p2) ? "jogando" : "byebye",
-                            proximaPartidaId: `r2_match_${Math.floor(i / 2) + 1}`,
-                            posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
-                        };
-
-                        if (p1 && !p2) {
-                            partida.vencedor = p1;
-                            partida.status = "concluido";
-                        }
-
-                        partidasGeradas.push(partida);
-                    }
-
-                    const rodadasFinaisTotal = Math.log2(tamanhoBracket);
-                    for (let r = 2; r <= rodadasFinaisTotal; r++) {
-                        const partidasNaRodada = tamanhoBracket / Math.pow(2, r);
-                        for (let i = 0; i < partidasNaRodada; i++) {
-                            const partida = {
-                                id: `r${r}_match_${i + 1}`,
-                                rodada: r,
-                                jogador1: null,
-                                jogador2: null,
-                                score1: 0,
-                                score2: 0,
-                                vencedor: null,
-                                status: "aguardando",
-                                proximaPartidaId: r === rodadasFinaisTotal ? "final" : `r${r+1}_match_${Math.floor(i / 2) + 1}`,
-                                posicaoNaProxima: (i % 2 === 0) ? "jogador1" : "jogador2"
-                            };
-                            partidasGeradas.push(partida);
-                        }
-                    }
-
-                    const savePromises = partidasGeradas.map(p => setDoc(doc(db, "torneio_partidas", p.id), p));
-                    await Promise.all(savePromises);
-
-                    await setDoc(doc(db, "torneio_config", "global"), { status: "andamento" }, { merge: true });
-
-                    for (const p of partidasGeradas) {
-                        if (p.status === "concluido" && p.vencedor) {
-                            await atualizarAvancoDeChave(p.proximaPartidaId, p.posicaoNaProxima, p.vencedor);
-                        }
-                    }
-
-                    await registrarAtividade("🏆 Novo chaveamento gerado por " + nomeSalvo + " com " + totalInscritos + " pilotos confirmados.");
-                    alert("Chaves geradas decoladas com sucesso!");
-                    location.reload();
-                }
-
-            } catch (err) {
-                console.error("Erro na geração de brackets:", err);
-                alert("Erro sistêmico ao montar as chaves de combate.");
-            }
-        };
-
-        async function atualizarAvancoDeChave(matchAlvoId, posicao, nomeGanhador) {
-            if (matchAlvoId === "final") return; 
-            try {
-                const matchRef = doc(db, "torneio_partidas", matchAlvoId);
-                const snap = await getDoc(matchRef);
-                if (snap.exists()) {
-                    const dados = snap.data();
-                    const updateData = {};
-                    updateData[posicao] = nomeGanhador;
-
-                    const oponente = (posicao === "jogador1") ? dados.jogador2 : dados.jogador1;
-                    if (oponente) {
-                        updateData.status = "jogando";
-                    }
-
-                    await updateDoc(matchRef, updateData);
-                }
-            } catch (e) {
-                console.error("Erro ao propagar jogador na chave:", e);
-            }
-        }
 
         async function carregarEExibirBrackets() {
             const container = document.getElementById("bracket-view");
-            const tabelaModeracao = document.getElementById("tabela-moderacao-jogos");
-
             try {
-                const querySnap = await getDocs(collection(db, "torneio_partidas"));
-                if (querySnap.empty) {
-                    container.innerHTML = `<p style="color: var(--texto-mutado); text-align: center; width: 100%; padding: 40px 0;">O torneio ainda não foi iniciado pela liderança.</p>`;
+                const snap = await getDocs(collection(db, "torneio_partidas"));
+                if (snap.empty) {
+                    container.innerHTML = `<p style="color: var(--texto-mutado); text-align: center; width: 100%; padding: 40px 0;">Nenhum chaveamento ativo de combate gerado.</p>`;
                     return;
                 }
 
                 const partidas = [];
-                querySnap.forEach(d => partidas.push(d.data()));
+                snap.forEach(d => partidas.push({ id: d.id, ...d.data() }));
 
                 const rodadasMap = {};
-                partidasSorting(partidas);
+                partidas.sort((a, b) => a.rodada - b.rodada);
 
                 partidas.forEach(p => {
-                    if (!rodadasMap[p.rodada]) {
-                        rodadasMap[p.rodada] = [];
-                    }
+                    if (!rodadasMap[p.rodada]) rodadasMap[p.rodada] = [];
                     rodadasMap[p.rodada].push(p);
                 });
 
                 container.innerHTML = "";
-                
                 const totalDeRodadas = Object.keys(rodadasMap).length;
+
                 for (let r = 1; r <= totalDeRodadas; r++) {
                     const roundDiv = document.createElement("div");
                     roundDiv.className = "bracket-round";
-                    
-                    let rotuloRodada = "Rodada " + r;
+
+                    let rotuloRodada = `Rodada ${r}`;
                     if (r === totalDeRodadas) rotuloRodada = "Final";
                     else if (r === totalDeRodadas - 1) rotuloRodada = "Semifinal";
                     else if (r === totalDeRodadas - 2) rotuloRodada = "Quartas de Final";
 
                     roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
 
-                    rodadasMap[r].sort((a,b) => a.id.localeCompare(b.id));
+                    rodadasMap[r].sort((a, b) => a.id.localeCompare(b.id));
 
                     rodadasMap[r].forEach(m => {
-                        const isUserInMatch = (nomeSalvo === m.jogador1 || nomeSalvo === m.jogador2);
-                        const canReport = isUserInMatch && m.status === "jogando";
-
                         const matchCard = document.createElement("div");
-                        matchCard.className = "matchup-card " + (m.status === 'jogando' ? 'active-match' : '');
+                        matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
+
                         matchCard.innerHTML = `
                             <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
                                 <span>${m.jogador1 || 'Aguardando...'}</span>
@@ -2392,123 +2268,16 @@
                                 <span>${m.jogador2 || 'Aguardando...'}</span>
                                 <span class="score-display">${m.jogador2 ? m.score2 : ''}</span>
                             </div>
-                            ${canReport ? `<button class="btn-report-match" onclick="autoReportarVitoria('${m.id}')">Reportar Vitória</button>` : ''}
                         `;
                         roundDiv.appendChild(matchCard);
                     });
 
                     container.appendChild(roundDiv);
                 }
-
-                if (eAdministrador) {
-                    tabelaModeracao.innerHTML = "";
-                    const partidasAtivas = partidas.filter(p => p.status === "jogando");
-
-                    if (partidasAtivas.length === 0) {
-                        tabelaModeracao.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--texto-mutado);">Todas as partidas ativas estão concluídas ou aguardando adversário.</td></tr>`;
-                    } else {
-                        partidasAtivas.forEach(m => {
-                            const tr = document.createElement("tr");
-                            tr.innerHTML = `
-                                <td><strong>${m.id.toUpperCase()}</strong></td>
-                                <td>${m.jogador1}</td>
-                                <td>${m.jogador2}</td>
-                                <td>
-                                    <input type="number" id="score1_${m.id}" value="${m.score1}" class="input-painel" style="width:50px; display:inline-block; padding: 5px;"> x 
-                                    <input type="number" id="score2_${m.id}" value="${m.score2}" class="input-painel" style="width:50px; display:inline-block; padding: 5px;">
-                                </td>
-                                <td>
-                                    <button class="btn-sucesso" onclick="salvarResultadoModerado('${m.id}')">Salvar</button>
-                                </td>
-                            `;
-                            tabelaModeracao.appendChild(tr);
-                        });
-                    }
-                }
-
             } catch (err) {
-                console.error("Erro ao desenhar brackets:", err);
+                console.error("Erro ao carregar chaveamento:", err);
             }
         }
-
-        function partidasSorting(partidas) {
-            partidas.sort((a,b) => a.rodada - b.rodada);
-        }
-
-        window.autoReportarVitoria = async function(matchId) {
-            if (confirm("Você confirma que venceu este confronto? (Reportes falsos geram punições).")) {
-                try {
-                    const matchRef = doc(db, "torneio_partidas", matchId);
-                    const snap = await getDoc(matchRef);
-
-                    if (snap.exists()) {
-                        const m = snap.data();
-                        const isJ1 = (nomeSalvo === m.jogador1);
-                        
-                        const updateData = {
-                            score1: isJ1 ? 2 : 0,
-                            score2: isJ1 ? 0 : 2,
-                            vencedor: nomeSalvo,
-                            status: "concluido"
-                        };
-
-                        await updateDoc(matchRef, updateData);
-                        await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, nomeSalvo);
-                        await registrarAtividade("⚔️ Partida " + matchId.toUpperCase() + ": " + nomeSalvo + " reportou vitória sobre seu oponente.");
-                        
-                        alert("Resultado enviado e processado com sucesso!");
-                        location.reload();
-                    }
-                } catch (e) {
-                    alert("Erro ao enviar reporte de resultado.");
-                }
-            }
-        };
-
-        window.salvarResultadoModerado = async function(matchId) {
-            const sc1 = parseInt(document.getElementById(`score1_${matchId}`).value) || 0;
-            const sc2 = parseInt(document.getElementById(`score2_${matchId}`).value) || 0;
-
-            if (sc1 === sc2) {
-                alert("Partidas de Brawlhalla não podem terminar empatadas!");
-                return;
-            }
-
-            try {
-                const matchRef = doc(db, "torneio_partidas", matchId);
-                const snap = await getDoc(matchRef);
-
-                if (snap.exists()) {
-                    const m = snap.data();
-                    const vencedorFinal = (sc1 > sc2) ? m.jogador1 : m.jogador2;
-
-                    await updateDoc(matchRef, {
-                        score1: sc1,
-                        score2: sc2,
-                        vencedor: vencedorFinal,
-                        status: "concluido"
-                    });
-
-                    await atualizarAvancoDeChave(m.proximaPartidaId, m.posicaoNaProxima, vencedorFinal);
-                    await registrarAtividade("⚖️ Arbitragem: Juiz " + nomeSalvo + " arbitrou a partida " + matchId.toUpperCase() + " (" + vencedorFinal + " vencedor).");
-
-                    alert("Súmula updated e jogador avançado!");
-                    location.reload();
-                }
-            } catch (err) {
-                alert("Falha operacional ao arbitrar resultado.");
-            }
-        };
-
     </script>
-
-    <script>
-        function efetuarLogoff() {
-            if (confirm("Deseja fechar os sistemas e sair da cabine de comando?")) {
-                localStorage.removeItem("sk_usuario");
-                window.location.href = "login.html";
-            }
-        }
-    </script>   
 </body>
 </html>
