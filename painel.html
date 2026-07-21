@@ -478,8 +478,8 @@
         }
 
         .legend-icon {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             vertical-align: middle;
             margin-right: 8px;
             border-radius: 50%;
@@ -487,6 +487,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             object-fit: cover;
             flex-shrink: 0;
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
         }
 
         .coluna-lenda {
@@ -849,22 +850,22 @@
                         <option value="Caspian">Caspian</option><option value="Cassidy">Cassidy</option><option value="Cross">Cross</option>
                         <option value="Diana">Diana</option><option value="Dusk">Dusk</option><option value="Ember">Ember</option>
                         <option value="Ezio">Ezio</option><option value="Fait">Fait</option><option value="Gnash">Gnash</option>
-                        <option value="Imugi">Imugi</option><option value="Isaiah">Isaiah</option><option value="Jaeyun">Jaeyun</option>
-                        <option value="Jhala">Jhala</option><option value="Jiro">Jiro</option><option value="Kaya">Kaya</option>
-                        <option value="Koji">Koji</option><option value="Kor">Kor</option><option value="Lin Fei">Lin Fei</option>
-                        <option value="Loki">Loki</option><option value="Lucien">Lucien</option><option value="Magyar">Magyar</option>
-                        <option value="Mako">Mako</option><option value="Mirage">Mirage</option><option value="Mordex">Mordex</option>
-                        <option value="Munin">Munin</option><option value="Nash">Nash</option><option value="Nix">Nix</option>
-                        <option value="Oni">Oni</option><option value="Onyx">Onyx</option><option value="Orion">Orion</option>
-                        <option value="Petra">Petra</option><option value="Ragnir">Ragnir</option><option value="Rayman">Rayman</option>
-                        <option value="Red Raptor">Red Raptor</option><option value="Reno">Reno</option><option value="Rhea">Rhea</option>
-                        <option value="Scarlet">Scarlet</option><option value="Sentinel">Sentinel</option><option value="Seven">Seven</option>
-                        <option value="Sidra">Sidra</option><option value="Sir Roland">Sir Roland</option><option value="Taza">Taza</option>
-                        <option value="Teros">Teros</option><option value="Tezca">Tezca</option><option value="Thatch">Thatch</option>
-                        <option value="Thea">Thea</option><option value="Thor">Thor</option><option value="Ulgrim">Ulgrim</option>
-                        <option value="Val">Val</option><option value="Vector">Vector</option><option value="Vraxx">Vraxx</option>
-                        <option value="Volkov">Volkov</option><option value="Wu Shang">Wu Shang</option><option value="Xull">Xull</option>
-                        <option value="Yumiko">Yumiko</option><option value="Zariel">Zariel</option>
+                        <option value="Hattori">Hattori</option><option value="Imugi">Imugi</option><option value="Isaiah">Isaiah</option>
+                        <option value="Jaeyun">Jaeyun</option><option value="Jhala">Jhala</option><option value="Jiro">Jiro</option>
+                        <option value="Kaya">Kaya</option><option value="Koji">Koji</option><option value="Kor">Kor</option>
+                        <option value="Lin Fei">Lin Fei</option><option value="Loki">Loki</option><option value="Lucien">Lucien</option>
+                        <option value="Magyar">Magyar</option><option value="Mako">Mako</option><option value="Mirage">Mirage</option>
+                        <option value="Mordex">Mordex</option><option value="Munin">Munin</option><option value="Nash">Nash</option>
+                        <option value="Nix">Nix</option><option value="Oni">Oni</option><option value="Onyx">Onyx</option>
+                        <option value="Orion">Orion</option><option value="Petra">Petra</option><option value="Ragnir">Ragnir</option>
+                        <option value="Rayman">Rayman</option><option value="Red Raptor">Red Raptor</option><option value="Reno">Reno</option>
+                        <option value="Rhea">Rhea</option><option value="Scarlet">Scarlet</option><option value="Sentinel">Sentinel</option>
+                        <option value="Seven">Seven</option><option value="Sidra">Sidra</option><option value="Sir Roland">Sir Roland</option>
+                        <option value="Taza">Taza</option><option value="Teros">Teros</option><option value="Tezca">Tezca</option>
+                        <option value="Thatch">Thatch</option><option value="Thea">Thea</option><option value="Thor">Thor</option>
+                        <option value="Ulgrim">Ulgrim</option><option value="Val">Val</option><option value="Vector">Vector</option>
+                        <option value="Vraxx">Vraxx</option><option value="Volkov">Volkov</option><option value="Wu Shang">Wu Shang</option>
+                        <option value="Xull">Xull</option><option value="Yumiko">Yumiko</option><option value="Zariel">Zariel</option>
                     </select>
 
                     <select id="auto-armas" class="select-painel" required>
@@ -973,7 +974,12 @@
                 <div class="painel-card">
                     <div class="card-header">
                         <h2>Fichas de Armamento e Preferência</h2>
-                        <span>⚙️</span>
+                        <span style="display: flex; align-items: center;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amarelo)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                        </span>
                     </div>
                     <div id="container-estatisticas-lendas" style="display: flex; flex-direction: column; gap: 20px;"></div>
                 </div>
@@ -1111,22 +1117,22 @@
                             <option value="Caspian">Caspian</option><option value="Cassidy">Cassidy</option><option value="Cross">Cross</option>
                             <option value="Diana">Diana</option><option value="Dusk">Dusk</option><option value="Ember">Ember</option>
                             <option value="Ezio">Ezio</option><option value="Fait">Fait</option><option value="Gnash">Gnash</option>
-                            <option value="Imugi">Imugi</option><option value="Isaiah">Isaiah</option><option value="Jaeyun">Jaeyun</option>
-                            <option value="Jhala">Jhala</option><option value="Jiro">Jiro</option><option value="Kaya">Kaya</option>
-                            <option value="Koji">Koji</option><option value="Kor">Kor</option><option value="Lin Fei">Lin Fei</option>
-                            <option value="Loki">Loki</option><option value="Lucien">Lucien</option><option value="Magyar">Magyar</option>
-                            <option value="Mako">Mako</option><option value="Mirage">Mirage</option><option value="Mordex">Mordex</option>
-                            <option value="Munin">Munin</option><option value="Nash">Nash</option><option value="Nix">Nix</option>
-                            <option value="Oni">Oni</option><option value="Onyx">Onyx</option><option value="Orion">Orion</option>
-                            <option value="Petra">Petra</option><option value="Ragnir">Ragnir</option><option value="Rayman">Rayman</option>
-                            <option value="Red Raptor">Red Raptor</option><option value="Reno">Reno</option><option value="Rhea">Rhea</option>
-                            <option value="Scarlet">Scarlet</option><option value="Sentinel">Sentinel</option><option value="Seven">Seven</option>
-                            <option value="Sidra">Sidra</option><option value="Sir Roland">Sir Roland</option><option value="Taza">Taza</option>
-                            <option value="Teros">Teros</option><option value="Tezca">Tezca</option><option value="Thatch">Thatch</option>
-                            <option value="Thea">Thea</option><option value="Thor">Thor</option><option value="Ulgrim">Ulgrim</option>
-                            <option value="Val">Val</option><option value="Vector">Vector</option><option value="Vraxx">Vraxx</option>
-                            <option value="Volkov">Volkov</option><option value="Wu Shang">Wu Shang</option><option value="Xull">Xull</option>
-                            <option value="Yumiko">Yumiko</option><option value="Zariel">Zariel</option>
+                            <option value="Hattori">Hattori</option><option value="Imugi">Imugi</option><option value="Isaiah">Isaiah</option>
+                            <option value="Jaeyun">Jaeyun</option><option value="Jhala">Jhala</option><option value="Jiro">Jiro</option>
+                            <option value="Kaya">Kaya</option><option value="Koji">Koji</option><option value="Kor">Kor</option>
+                            <option value="Lin Fei">Lin Fei</option><option value="Loki">Loki</option><option value="Lucien">Lucien</option>
+                            <option value="Magyar">Magyar</option><option value="Mako">Mako</option><option value="Mirage">Mirage</option>
+                            <option value="Mordex">Mordex</option><option value="Munin">Munin</option><option value="Nash">Nash</option>
+                            <option value="Nix">Nix</option><option value="Oni">Oni</option><option value="Onyx">Onyx</option>
+                            <option value="Orion">Orion</option><option value="Petra">Petra</option><option value="Ragnir">Ragnir</option>
+                            <option value="Rayman">Rayman</option><option value="Red Raptor">Red Raptor</option><option value="Reno">Reno</option>
+                            <option value="Rhea">Rhea</option><option value="Scarlet">Scarlet</option><option value="Sentinel">Sentinel</option>
+                            <option value="Seven">Seven</option><option value="Sidra">Sidra</option><option value="Sir Roland">Sir Roland</option>
+                            <option value="Taza">Taza</option><option value="Teros">Teros</option><option value="Tezca">Tezca</option>
+                            <option value="Thatch">Thatch</option><option value="Thea">Thea</option><option value="Thor">Thor</option>
+                            <option value="Ulgrim">Ulgrim</option><option value="Val">Val</option><option value="Vector">Vector</option>
+                            <option value="Vraxx">Vraxx</option><option value="Volkov">Volkov</option><option value="Wu Shang">Wu Shang</option>
+                            <option value="Xull">Xull</option><option value="Yumiko">Yumiko</option><option value="Zariel">Zariel</option>
                         </select>
 
                         <select id="adm-membro-armas" class="select-painel" required>
@@ -1514,7 +1520,7 @@
                         <div style="display: flex; align-items: center;">
                             <span style="font-family: 'Orbitron'; font-weight: bold; color: var(--amarelo); margin-right: 10px;">#${index + 1}</span>
                             ${imgHtml}
-                            <span>${lenda}</span>
+                            <span style="font-family: 'Orbitron'; font-size: 0.9rem;">${lenda}</span>
                         </div>
                         <span style="font-weight: bold; color: white;">${qtd}</span>
                     `;
