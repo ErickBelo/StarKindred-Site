@@ -274,6 +274,7 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            scroll-margin-top: 80px;
         }
 
         .menu-abas::-webkit-scrollbar { display: none; }
@@ -862,6 +863,7 @@
                     <input type="number" id="auto-elo" class="input-painel" placeholder="Meu Elo Máximo (ex: 2300)" required>
                     <input type="url" id="auto-corehalla" class="input-painel" placeholder="Meu Link do Corehalla" required>
                     <button type="submit" class="btn-painel-submit">Salvar Alterações</button>
+                    <div id="mensagem-perfil" style="display: none; font-size: 0.85rem; margin-top: 8px; text-align: center;"></div>
                 </form>
             </div>
         </div>
@@ -877,7 +879,7 @@
         </div>
 
         <!-- Menu de Navegação -->
-        <div class="menu-abas">
+        <div class="menu-abas" id="menu-navegacao-abas">
             <button class="btn-aba ativa" onclick="alternarAba(event, 'aba-membros')">👥 Membros</button>
             <button class="btn-aba" onclick="alternarAba(event, 'aba-builds')">📊 Builds (Meta)</button>
             <button class="btn-aba" onclick="alternarAba(event, 'aba-tutoriais')">📚 Tutoriais</button>
@@ -1217,7 +1219,11 @@
             document.querySelectorAll('.conteudo-aba').forEach(aba => aba.classList.remove('ativa'));
             
             event.currentTarget.classList.add('ativa');
-            document.getElementById(abaId).classList.add('ativa');
+            const abaAlvo = document.getElementById(abaId);
+            abaAlvo.classList.add('ativa');
+
+            // Scroll suave ate o menu de abas em vez de dar alert/popup
+            document.getElementById('menu-navegacao-abas').scrollIntoView({ behavior: 'smooth' });
         }
 
         function efetuarLogoff() {
@@ -1249,7 +1255,6 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             if (!nomeSalvo) {
-                alert("Identificação não autorizada! Retornando ao login...");
                 window.location.href = "login.html";
                 return;
             }
@@ -1364,6 +1369,8 @@
             const novoCorehalla = document.getElementById("auto-corehalla").value.trim();
             const novaStance = document.getElementById("auto-stance").value;
 
+            const msgPerfil = document.getElementById("mensagem-perfil");
+
             try {
                 const docRef = doc(db, "membros", nomeSalvo);
                 await updateDoc(docRef, {
@@ -1376,10 +1383,15 @@
 
                 await registrarAtividade(`🚀 Piloto ${nomeSalvo} atualizou sua nave de combate: ${novoLegend} (${novaStance}).`);
 
-                alert("Seu perfil tático foi atualizado com sucesso!");
-                location.reload();
+                msgPerfil.style.display = "block";
+                msgPerfil.style.color = "var(--verde-sucesso)";
+                msgPerfil.textContent = "✔ Perfil atualizado com sucesso!";
+                
+                setTimeout(() => { location.reload(); }, 1200);
             } catch (err) {
-                alert("Falha ao atualizar o seu perfil.");
+                msgPerfil.style.display = "block";
+                msgPerfil.style.color = "var(--vermelho-erro)";
+                msgPerfil.textContent = "✖ Falha ao atualizar o seu perfil.";
             }
         });
 
@@ -1513,14 +1525,11 @@
                         const idParaRemover = this.getAttribute("data-id");
                         const nomeParaRemover = this.getAttribute("data-nome");
                         if (idParaRemover === nomeSalvo) {
-                            alert("Você não pode ejetar a si mesmo da própria frota!");
                             return;
                         }
-                        if (confirm(`Remover o piloto ${nomeParaRemover} da guilda?`)) {
-                            await deleteDoc(doc(db, "membros", idParaRemover));
-                            await registrarAtividade("⚠️ O comandante " + nomeSalvo + " desligou o piloto " + nomeParaRemover + " da tripulação.");
-                            location.reload();
-                        }
+                        await deleteDoc(doc(db, "membros", idParaRemover));
+                        await registrarAtividade("⚠️ O comandante " + nomeSalvo + " desligou o piloto " + nomeParaRemover + " da tripulação.");
+                        location.reload();
                     };
                 });
             }
@@ -1620,10 +1629,7 @@
                 document.querySelectorAll(".btn-recusar-recruta").forEach(btn => {
                     btn.onclick = async function() {
                         const id = this.getAttribute("data-id");
-                        const nomeRecruta = this.getAttribute("data-nome");
-                        if (confirm("Deseja rejeitar e apagar o alistamento de " + nomeRecruta + "?")) {
-                            await processarAlistamento(id, false);
-                        }
+                        await processarAlistamento(id, false);
                     };
                 });
 
@@ -1639,7 +1645,6 @@
                 const docSnap = await getDoc(docRefOriginal);
 
                 if (!docSnap.exists()) {
-                    alert("A solicitação expirou ou já foi processada.");
                     carregarSolicitacoesAlistamento();
                     return;
                 }
@@ -1659,11 +1664,9 @@
 
                     await deleteDoc(docRefOriginal);
                     await registrarAtividade("🟢 Novo piloto recrutado! " + dadosRecruta.nome + " foi aprovado na triagem por " + nomeSalvo + ".");
-                    alert("O piloto " + dadosRecruta.nome + " foi integrado oficialmente à StarKindred!");
                 } else {
                     await deleteDoc(docRefOriginal);
                     await registrarAtividade("🔴 Solicitação de alistamento do candidato " + dadosRecruta.nome + " recusada por " + nomeSalvo + ".");
-                    alert("Solicitação removida.");
                 }
 
                 carregarSolicitacoesAlistamento();
@@ -1672,7 +1675,6 @@
 
             } catch (err) {
                 console.error("Erro ao processar recrutamento:", err);
-                alert("Falha operacional ao processar solicitação.");
             }
         }
 
@@ -1742,18 +1744,14 @@
             const url = document.getElementById("adm-tut-link").value.trim();
 
             if(!titulo || !url) {
-                alert("Preencha todos os campos do tutorial!");
                 return;
             }
 
             try {
                 await addDoc(collection(db, "tutoriais"), { titulo, url });
                 await registrarAtividade("📚 Novo tutorial tático publicado por " + nomeSalvo + ': "' + titulo + '".');
-                alert("Novo tutorial publicado!");
                 location.reload();
-            } catch(e) {
-                alert("Erro ao publicar tutorial.");
-            }
+            } catch(e) {}
         };
 
         window.publicarEvento = async function() {
@@ -1762,31 +1760,22 @@
             const descricao = document.getElementById("adm-evt-desc").value.trim();
 
             if(!titulo || !status || !descricao) {
-                alert("Preencha todos os campos do evento!");
                 return;
             }
 
             try {
                 await addDoc(collection(db, "eventos"), { titulo, status, descricao });
                 await registrarAtividade("🏆 Operação agendada por " + nomeSalvo + ': "' + titulo + '" (' + status + ').');
-                alert("Novo evento publicado!");
                 location.reload();
-            } catch(e) {
-                alert("Erro ao publicar evento.");
-            }
+            } catch(e) {}
         };
 
         window.removerDado = async function(colecao, id, rotulo) {
-            if (confirm('Deseja apagar permanentemente o recurso "' + rotulo + '"?')) {
-                try {
-                    await deleteDoc(doc(db, colecao, id));
-                    await registrarAtividade("🗑️ Recurso da central de \"" + colecao + "\" removido por " + nomeSalvo + ': "' + rotulo + '".');
-                    alert("Recurso removido com sucesso!");
-                    location.reload();
-                } catch(e) {
-                    alert("Erro ao remover recurso.");
-                }
-            }
+            try {
+                await deleteDoc(doc(db, colecao, id));
+                await registrarAtividade("🗑️ Recurso da central de \"" + colecao + "\" removido por " + nomeSalvo + ': "' + rotulo + '".');
+                location.reload();
+            } catch(e) {}
         };
 
         async function carregarComunicados() {
@@ -1815,7 +1804,6 @@
                     texto: document.getElementById("adm-aviso-texto").value.trim()
                 });
                 await registrarAtividade("📡 Comandante " + nomeSalvo + " atualizou os comunicados da nave de comando.");
-                alert("Transmissão de aviso oficial atualizada!");
                 location.reload();
             } catch (err) {}
         });
@@ -1836,7 +1824,6 @@
                     stanceAtiva: novaStance
                 });
                 await registrarAtividade("⚙️ Os dados do piloto " + nickAlvo + " foram editados remotamente por " + nomeSalvo + ".");
-                alert("Ficha do Piloto " + nickAlvo + " ajustada!");
                 location.reload();
             } catch (err) {}
         });
@@ -1967,24 +1954,16 @@
                 });
 
                 await registrarAtividade("🎮 Piloto " + nomeSalvo + " confirmou sua inscrição na arena de torneio.");
-                alert("Sua inscrição foi confirmada na grade de decolagem!");
                 location.reload();
-            } catch (err) {
-                alert("Não foi possível processar a sua inscrição estelar.");
-            }
+            } catch (err) {}
         };
 
         window.desinscreverJogador = async function() {
-            if (confirm("Deseja retirar sua inscrição do torneio?")) {
-                try {
-                    await deleteDoc(doc(db, "torneio_inscritos", nomeSalvo));
-                    await registrarAtividade("⚠️ Piloto " + nomeSalvo + " cancelou sua inscrição no torneio.");
-                    alert("Você se retirou da arena.");
-                    location.reload();
-                } catch (err) {
-                    alert("Erro ao processar desincorporação.");
-                }
-            }
+            try {
+                await deleteDoc(doc(db, "torneio_inscritos", nomeSalvo));
+                await registrarAtividade("⚠️ Piloto " + nomeSalvo + " cancelou sua inscrição no torneio.");
+                location.reload();
+            } catch (err) {}
         };
 
         window.confirmarCheckIn = async function() {
@@ -1993,11 +1972,8 @@
                     checkin: true
                 });
                 await registrarAtividade("📡 Piloto " + nomeSalvo + " efetuou check-in e está pronto para o combate.");
-                alert("Check-in efetuado com sucesso! Aguarde o início dos combates.");
                 location.reload();
-            } catch (err) {
-                alert("Erro ao realizar check-in.");
-            }
+            } catch (err) {}
         };
 
         window.alterarStatusTorneio = async function(novoStatus) {
@@ -2011,11 +1987,8 @@
                 else mensagemLog = "fechou o status do torneio";
 
                 await registrarAtividade("⚙️ Comandante " + nomeSalvo + " " + mensagemLog + ".");
-                alert("Status do Torneio alterado para: " + novoStatus.toUpperCase());
                 location.reload();
-            } catch (err) {
-                alert("Falha ao configurar as inscrições.");
-            }
+            } catch (err) {}
         };
 
         window.atualizarAgendaTorneio = async function() {
@@ -2024,7 +1997,6 @@
             const formatoTorneio = document.getElementById("adm-torneio-formato").value;
 
             if(!dataTorneio || !horaTorneio) {
-                alert("Insira a data e a hora do torneio!");
                 return;
             }
 
@@ -2036,41 +2008,32 @@
                     formato: formatoTorneio
                 });
                 await registrarAtividade("📅 Comandante " + nomeSalvo + " agendou o torneio (" + (formatoTorneio === "dupla" ? "Eliminação Dupla" : "Eliminação Simples") + ") para " + dataTorneio + " às " + horaTorneio + ".");
-                alert("Cronograma e Formato salvos!");
                 location.reload();
-            } catch (err) {
-                alert("Erro ao atualizar agenda.");
-            }
+            } catch (err) {}
         };
 
         window.limparTorneioCompleto = async function() {
-            if (confirm("⚠️ CUIDADO! Isso irá apagar todas as inscrições, check-ins, partidas e o bracket atual. Deseja redefinir tudo?")) {
-                try {
-                    const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
-                    const deleteInscPromises = inscSnapshot.docs.map(docSnap => deleteDoc(doc(db, "torneio_inscritos", docSnap.id)));
-                    await Promise.all(deleteInscPromises);
+            try {
+                const inscSnapshot = await getDocs(collection(db, "torneio_inscritos"));
+                const deleteInscPromises = inscSnapshot.docs.map(docSnap => deleteDoc(doc(db, "torneio_inscritos", docSnap.id)));
+                await Promise.all(deleteInscPromises);
 
-                    const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
-                    const deletePartPromises = partSnapshot.docs.map(docSnap => deleteDoc(doc(db, "torneio_partidas", docSnap.id)));
-                    await Promise.all(deletePartPromises);
+                const partSnapshot = await getDocs(collection(db, "torneio_partidas"));
+                const deletePartPromises = partSnapshot.docs.map(docSnap => deleteDoc(doc(db, "torneio_partidas", docSnap.id)));
+                await Promise.all(deletePartPromises);
 
-                    await setDoc(doc(db, "torneio_config", "global"), { 
-                        status: "fechado",
-                        data: "Sábado",
-                        hora: "19:00 BRT",
-                        formato: "simples"
-                    });
+                await setDoc(doc(db, "torneio_config", "global"), { 
+                    status: "fechado",
+                    data: "Sábado",
+                    hora: "19:00 BRT",
+                    formato: "simples"
+                });
 
-                    await registrarAtividade("🧹 Torneio completamente resetado por Comandante " + nomeSalvo + ".");
-                    alert("Redefinição total efetuada com sucesso!");
-                    location.reload();
-                } catch (e) {
-                    alert("Erro ao resetar o torneio.");
-                }
-            }
+                await registrarAtividade("🧹 Torneio completamente resetado por Comandante " + nomeSalvo + ".");
+                location.reload();
+            } catch (e) {}
         };
 
-        // AJUSTE NA FUNÇÃO DE RENDERIZAÇÃO DE BRACKETS (SUPORTE A DUPLA ELIMINAÇÃO)
         async function carregarEExibirBrackets(formato = "simples") {
             const container = document.getElementById("bracket-view");
             try {
