@@ -160,7 +160,7 @@
         }
 
         /* ==========================================================================
-           CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS (Responsivo)
+           CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS
            ========================================================================== */
         .painel-container {
             max-width: 1200px;
@@ -234,7 +234,7 @@
             color: var(--amarelo);
         }
 
-        /* ESTILO DOS LOGS DE ATIVIDADE */
+        /* LOGS */
         .container-logs {
             font-size: 0.85rem;
             display: flex;
@@ -246,13 +246,8 @@
             width: 100%;
         }
 
-        .container-logs::-webkit-scrollbar {
-            width: 4px;
-        }
-        .container-logs::-webkit-scrollbar-thumb {
-            background: var(--dourado);
-            border-radius: 2px;
-        }
+        .container-logs::-webkit-scrollbar { width: 4px; }
+        .container-logs::-webkit-scrollbar-thumb { background: var(--dourado); border-radius: 2px; }
 
         .log-item {
             padding: 6px 10px;
@@ -269,7 +264,7 @@
             margin-bottom: 3px;
         }
 
-        /* Menu de Abas Deslizável no Mobile */
+        /* Menu de Abas */
         .menu-abas {
             display: flex;
             gap: 8px;
@@ -281,9 +276,7 @@
             scrollbar-width: none;
         }
 
-        .menu-abas::-webkit-scrollbar {
-            display: none;
-        }
+        .menu-abas::-webkit-scrollbar { display: none; }
 
         .btn-aba {
             font-family: 'Orbitron', sans-serif;
@@ -317,16 +310,14 @@
             animation: fadeIn 0.4s ease-in-out;
         }
 
-        .conteudo-aba.ativa {
-            display: block;
-        }
+        .conteudo-aba.ativa { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Formulários / Inputs */
+        /* Formulario */
         .form-painel {
             display: flex;
             flex-direction: column;
@@ -351,9 +342,7 @@
             color: var(--texto-claro);
         }
 
-        .input-painel:focus, .select-painel:focus {
-            border-color: var(--amarelo);
-        }
+        .input-painel:focus, .select-painel:focus { border-color: var(--amarelo); }
 
         .btn-painel-submit {
             font-family: 'Orbitron', sans-serif;
@@ -409,9 +398,7 @@
             box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
         }
 
-        /* ==========================================================================
-           CONTROLES DA LISTA DE MEMBROS (Barra de Busca e Divisores)
-           ========================================================================== */
+        /* CONTROLES MEMBROS */
         .barra-busca-container {
             margin-bottom: 25px;
             position: relative;
@@ -466,7 +453,6 @@
             background: linear-gradient(to right, rgba(255, 183, 3, 0.4), transparent);
         }
 
-        /* Contenção de rolagem para os membros não entupirem a tela */
         .limitador-tabela-membros {
             max-height: 480px; 
             overflow-y: auto;
@@ -475,17 +461,10 @@
             background: var(--bg-card);
         }
 
-        .limitador-tabela-membros::-webkit-scrollbar {
-            width: 6px;
-        }
-        .limitador-tabela-membros::-webkit-scrollbar-thumb {
-            background: var(--dourado);
-            border-radius: 3px;
-        }
+        .limitador-tabela-membros::-webkit-scrollbar { width: 6px; }
+        .limitador-tabela-membros::-webkit-scrollbar-thumb { background: var(--dourado); border-radius: 3px; }
 
-        /* ==========================================================================
-           TABELA DA TRIPULAÇÃO RESPONSIVA
-           ========================================================================== */
+        /* TABELA */
         .tabela-membros {
             width: 100%;
             border-collapse: collapse;
@@ -496,11 +475,7 @@
             .tabela-membros, .tabela-membros thead, .tabela-membros tbody, .tabela-membros th, .tabela-membros td, .tabela-membros tr { 
                 display: block; 
             }
-            
-            .tabela-membros thead {
-                display: none;
-            }
-            
+            .tabela-membros thead { display: none; }
             .tabela-membros tr {
                 border-bottom: 2px solid var(--borda-suave);
                 padding: 15px 10px;
@@ -508,7 +483,6 @@
                 margin-bottom: 10px;
                 border-radius: 8px;
             }
-            
             .tabela-membros td { 
                 border: none;
                 padding: 8px 0;
@@ -517,7 +491,6 @@
                 text-align: left;
                 font-size: 0.9rem;
             }
-            
             .tabela-membros td::before { 
                 position: absolute;
                 top: 8px;
@@ -530,8 +503,6 @@
                 color: var(--amarelo);
                 font-weight: bold;
             }
-
-            /* Atribuição de Labels Dinâmicas no Mobile */
             .tabela-membros td:nth-of-type(1)::before { content: "Piloto:"; }
             .tabela-membros td:nth-of-type(2)::before { content: "Patente:"; }
             .tabela-membros td:nth-of-type(3)::before { content: "Main (Armas):"; }
@@ -540,15 +511,8 @@
             .tabela-membros td:nth-of-type(6)::before { content: "Ficha:"; }
             .tabela-membros td:nth-of-type(7)::before { content: "Controle:"; }
 
-            .tabela-membros td.coluna-acoes {
-                text-align: left;
-                padding-left: 45%;
-            }
-            .tabela-membros td.coluna-acoes button {
-                width: 100%;
-                max-width: 150px;
-                margin-bottom: 5px;
-            }
+            .tabela-membros td.coluna-acoes { text-align: left; padding-left: 45%; }
+            .tabela-membros td.coluna-acoes button { width: 100%; max-width: 150px; margin-bottom: 5px; }
         }
 
         @media (min-width: 768px) {
@@ -557,7 +521,6 @@
                 text-align: left;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
-
             .tabela-membros th {
                 position: sticky;
                 top: 0;
@@ -568,9 +531,7 @@
                 color: var(--amarelo);
                 text-transform: uppercase;
             }
-            .coluna-acoes {
-                text-align: right;
-            }
+            .coluna-acoes { text-align: right; }
         }
 
         .badge-tabela {
@@ -594,18 +555,9 @@
             background: rgba(16, 185, 129, 0.1);
         }
 
-        /* ESTILOS DA NOVA ABA DE BUILDS */
-        .grade-meta {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .grade-meta {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
+        /* BUILDS */
+        .grade-meta { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { .grade-meta { grid-template-columns: 2fr 1fr; } }
 
         .card-meta-lenda {
             background: rgba(8, 18, 37, 0.6);
@@ -618,10 +570,7 @@
             transition: all 0.3s;
         }
 
-        .card-meta-lenda:hover {
-            border-color: var(--amarelo);
-            box-shadow: 0 0 10px rgba(255, 183, 3, 0.1);
-        }
+        .card-meta-lenda:hover { border-color: var(--amarelo); box-shadow: 0 0 10px rgba(255, 183, 3, 0.1); }
 
         .barra-porcentagem {
             height: 8px;
@@ -638,20 +587,9 @@
             border-radius: 4px;
         }
 
-        /* ==========================================================================
-           RECURSOS DINÂMICOS (Grid de Vídeos e Eventos)
-           ========================================================================== */
-        .grade-recursos {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 600px) {
-            .grade-recursos {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            }
-        }
+        /* RECURSOS */
+        .grade-recursos { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 600px) { .grade-recursos { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); } }
 
         .card-recurso {
             background: var(--bg-card);
@@ -664,12 +602,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .card-recurso h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--amarelo);
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
+        .card-recurso h3 { font-family: 'Orbitron', sans-serif; color: var(--amarelo); margin-bottom: 10px; font-size: 1rem; }
 
         .iframe-container {
             position: relative;
@@ -682,13 +615,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+        .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         .btn-combo-codex {
             display: flex;
@@ -708,11 +635,7 @@
             margin: 20px 0;
         }
 
-        @media (min-width: 768px) {
-            .btn-combo-codex {
-                padding: 40px;
-            }
-        }
+        @media (min-width: 768px) { .btn-combo-codex { padding: 40px; } }
 
         .btn-combo-codex:hover {
             transform: translateY(-5px);
@@ -720,28 +643,11 @@
             box-shadow: 0 0 20px rgba(255, 183, 3, 0.3);
         }
 
-        .btn-combo-codex h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--amarelo);
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
+        .btn-combo-codex h3 { font-family: 'Orbitron', sans-serif; color: var(--amarelo); font-size: 1.3rem; margin-bottom: 10px; }
+        @media (min-width: 768px) { .btn-combo-codex h3 { font-size: 1.8rem; } }
+        .btn-combo-codex p { color: var(--texto-mutado); max-width: 500px; font-size: 0.85rem; }
 
-        @media (min-width: 768px) {
-            .btn-combo-codex h3 {
-                font-size: 1.8rem;
-            }
-        }
-
-        .btn-combo-codex p {
-            color: var(--texto-mutado);
-            max-width: 500px;
-            font-size: 0.85rem;
-        }
-
-        /* ==========================================================================
-           ÁREA EXCLUSIVA DE ADMINISTRAÇÃO (Oculta por Padrão)
-           ========================================================================== */
+        /* ADMIN */
         .admin-section {
             display: none; 
             margin-top: 40px;
@@ -749,21 +655,11 @@
             padding-top: 30px;
         }
 
-        .admin-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
+        .admin-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
 
         @media (min-width: 768px) {
-            .admin-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 30px;
-            }
-            .admin-section {
-                margin-top: 50px;
-                padding-top: 40px;
-            }
+            .admin-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+            .admin-section { margin-top: 50px; padding-top: 40px; }
         }
 
         .admin-card {
@@ -773,32 +669,40 @@
             padding: 20px;
         }
 
-        @media (min-width: 768px) {
-            .admin-card {
-                padding: 30px;
-            }
+        @media (min-width: 768px) { .admin-card { padding: 30px; } }
+
+        /* BRACKETS */
+        .bracket-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px 0;
+            width: 100%;
         }
 
-        /* ==========================================================================
-           ESTILOS EXCLUSIVOS DO SISTEMA NATIVO DE TORNEIOS (BRACKETS)
-           ========================================================================== */
-        .bracket-container {
+        .bracket-wrapper {
             display: flex;
             flex-direction: row;
             gap: 40px;
             overflow-x: auto;
-            padding: 20px 10px;
+            padding: 10px;
             width: 100%;
             scrollbar-width: thin;
         }
 
-        .bracket-container::-webkit-scrollbar {
-            height: 6px;
-        }
+        .bracket-wrapper::-webkit-scrollbar { height: 6px; }
+        .bracket-wrapper::-webkit-scrollbar-thumb { background: var(--dourado); border-radius: 3px; }
 
-        .bracket-container::-webkit-scrollbar-thumb {
-            background: var(--dourado);
-            border-radius: 3px;
+        .bracket-sub-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--amarelo);
+            background: rgba(212, 175, 55, 0.08);
+            padding: 8px 12px;
+            border-left: 3px solid var(--amarelo);
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .bracket-round {
@@ -852,47 +756,12 @@
             font-weight: bold;
         }
 
-        .matchup-team.bye {
-            color: var(--texto-mutado);
-            font-style: italic;
-        }
+        .matchup-team.bye { color: var(--texto-mutado); font-style: italic; }
 
-        .score-display {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-        }
+        .score-display { font-family: 'Orbitron', sans-serif; font-weight: bold; }
 
-        .btn-report-match {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid var(--dourado);
-            color: var(--dourado);
-            cursor: pointer;
-            padding: 4px;
-            margin-top: 5px;
-            border-radius: 3px;
-            text-align: center;
-            text-transform: uppercase;
-            transition: all 0.2s ease;
-        }
-
-        .btn-report-match:hover {
-            background: var(--dourado);
-            color: var(--bg-principal);
-        }
-
-        .grid-registro-campeonato {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .grid-registro-campeonato {
-                grid-template-columns: 1fr 2fr;
-            }
-        }
+        .grid-registro-campeonato { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { .grid-registro-campeonato { grid-template-columns: 1fr 2fr; } }
     </style>
 </head>
 <body>
@@ -923,7 +792,7 @@
                 </div>
             </div>
 
-            <!-- REGISTRO DE ATIVIDADES DA FROTA (LOGS) -->
+            <!-- REGISTRO DE ATIVIDADES -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Registro de Atividades</h2>
@@ -958,7 +827,7 @@
                         <option value="Onyx">Onyx</option> <option value="Orion">Orion</option> <option value="Petra">Petra</option>
                         <option value="Ragnir">Ragnir</option> <option value="Rayman">Rayman</option> <option value="Red Raptor">Red Raptor</option>
                         <option value="Reno">Reno</option> <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
-                        <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option>
+                        <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option> <option value="Taza">Taza</option>
                         <option value="Teros">Teros</option> <option value="Tezca">Tezca</option> <option value="Thatch">Thatch</option>
                         <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option>
                         <option value="Val">Val</option> <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
@@ -997,7 +866,7 @@
             </div>
         </div>
 
-        <!-- Dados do Usuário Logado (Tabela Rápida Inferior) -->
+        <!-- Dados do Usuário Logado -->
         <div class="painel-card" style="margin-bottom: 30px; padding: 15px 20px; display: block;">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
                 <span><strong>Meu Caça:</strong> <span id="main-jogador">Carregando...</span></span>
@@ -1007,7 +876,7 @@
             </div>
         </div>
 
-        <!-- Menu de Navegação dos Membros -->
+        <!-- Menu de Navegação -->
         <div class="menu-abas">
             <button class="btn-aba ativa" onclick="alternarAba(event, 'aba-membros')">👥 Membros</button>
             <button class="btn-aba" onclick="alternarAba(event, 'aba-builds')">📊 Builds (Meta)</button>
@@ -1017,14 +886,13 @@
             <button class="btn-aba" onclick="alternarAba(event, 'aba-torneios')">🏆 Torneios (Brackets)</button>
         </div>
 
-        <!-- ABA 1: LISTA DE TRIPULAÇÃO -->
+        <!-- ABA 1: TRIPULAÇÃO -->
         <div id="aba-membros" class="conteudo-aba ativa">
             <div class="barra-busca-container">
                 <span class="icone-busca">🔍</span>
                 <input type="text" id="campo-busca-membros" class="input-busca" placeholder="Buscar piloto por nick, legend ou arma...">
             </div>
 
-            <!-- SEÇÃO: COMANDO DA FROTA -->
             <div class="subtitulo-divisao">⚓ Comando da Frota</div>
             <div style="border: 1px solid var(--borda-suave); border-radius: 8px; background: var(--bg-card); overflow: hidden; margin-bottom: 25px;">
                 <table class="tabela-membros">
@@ -1039,13 +907,10 @@
                             <th class="coluna-acoes classe-th-controle" style="display: none;">Controle</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-corpo-lideranca">
-                        <!-- Carregados dinamicamente via JS -->
-                    </tbody>
+                    <tbody id="tabela-corpo-lideranca"></tbody>
                 </table>
             </div>
 
-            <!-- SEÇÃO: TRIPULAÇÃO -->
             <div class="subtitulo-divisao">🚀 Pilotos da Tripulação</div>
             <div class="limitador-tabela-membros">
                 <table class="tabela-membros">
@@ -1060,14 +925,12 @@
                             <th class="coluna-acoes classe-th-controle" style="display: none;">Controle</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-corpo-membros">
-                        <!-- Carregados dinamicamente via JS -->
-                    </tbody>
+                    <tbody id="tabela-corpo-membros"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ABA 2: CENTRAL DE BUILDS -->
+        <!-- ABA 2: BUILDS -->
         <div id="aba-builds" class="conteudo-aba">
             <h2 class="titulo-secao" style="margin-bottom: 15px;">Estatísticas de Configurações da Frota</h2>
             <p style="color: var(--texto-mutado); margin-bottom: 25px;">Mapeamento dinâmico das Stances e Lendas preferidas pelos pilotos da StarKindred para dominar as ranqueadas.</p>
@@ -1078,9 +941,7 @@
                         <h2>Fichas de Armamento e Preferência</h2>
                         <span>⚙️</span>
                     </div>
-                    <div id="container-estatisticas-lendas" style="display: flex; flex-direction: column; gap: 20px;">
-                        <!-- Carregado via JS -->
-                    </div>
+                    <div id="container-estatisticas-lendas" style="display: flex; flex-direction: column; gap: 20px;"></div>
                 </div>
 
                 <div class="painel-card">
@@ -1088,18 +949,14 @@
                         <h2>Top Lendas Usadas</h2>
                         <span>🔥</span>
                     </div>
-                    <div id="container-ranking-lendas" style="display: flex; flex-direction: column; gap: 15px;">
-                        <!-- Carregado via JS -->
-                    </div>
+                    <div id="container-ranking-lendas" style="display: flex; flex-direction: column; gap: 15px;"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ABA 3: CENTRAL DE TUTORIAIS -->
+        <!-- ABA 3: TUTORIAIS -->
         <div id="aba-tutoriais" class="conteudo-aba">
-            <div class="grade-recursos" id="lista-tutoriais">
-                <!-- Carregado do Firestore -->
-            </div>
+            <div class="grade-recursos" id="lista-tutoriais"></div>
         </div>
 
         <!-- ABA 4: COMBOS 2V2 -->
@@ -1110,25 +967,23 @@
             </a>
         </div>
 
-        <!-- ABA 5: CALENDÁRIO DE EVENTOS -->
+        <!-- ABA 5: EVENTOS -->
         <div id="aba-eventos" class="conteudo-aba">
-            <div class="grade-recursos" id="lista-eventos">
-                <!-- Carregado do Firestore -->
-            </div>
+            <div class="grade-recursos" id="lista-eventos"></div>
         </div>
 
-        <!-- ABA 6: ARENA DE TORNEIOS -->
+        <!-- ABA 6: TORNEIOS -->
         <div id="aba-torneios" class="conteudo-aba">
             <h2 class="titulo-secao">Arena StarKindred de Combates</h2>
             
-            <!-- EXIBIÇÃO DE DATAS DO CAMPEONATO ATIVO -->
             <div class="painel-card" id="cronograma-torneio-card" style="margin-bottom: 20px; border-left: 4px solid var(--amarelo);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div>
                         <h3 style="font-family: 'Orbitron'; color: var(--amarelo); font-size: 1rem;">🛰️ AGENDA DA OPERAÇÃO</h3>
                         <p style="color: var(--texto-claro); font-size: 0.9rem; margin-top: 5px;">
                             Dia de Combate: <strong id="torneio-data-display" style="color: white;">Definindo...</strong> | 
-                            Decolagem dos Caças: <strong id="torneio-hora-display" style="color: white;">Definindo...</strong>
+                            Decolagem dos Caças: <strong id="torneio-hora-display" style="color: white;">Definindo...</strong> | 
+                            Formato: <strong id="torneio-formato-display" style="color: var(--amarelo);">Eliminação Simples</strong>
                         </p>
                     </div>
                     <div id="status-fase-torneio" class="badge-patente" style="background: rgba(255, 183, 3, 0.1);">Fase: Preparation</div>
@@ -1136,7 +991,6 @@
             </div>
 
             <div class="grid-registro-campeonato" style="margin-bottom: 30px;">
-                <!-- Painel Esquerdo: Registro / Inscrições -->
                 <div class="painel-card">
                     <div class="card-header">
                         <h2>Inscrição no Torneio Ativo</h2>
@@ -1147,7 +1001,6 @@
                     </div>
                 </div>
 
-                <!-- Painel Direito: Estatísticas / Infos Rápidas -->
                 <div class="painel-card">
                     <div class="card-header">
                         <h2>Pilotos Registrados</h2>
@@ -1155,14 +1008,11 @@
                     </div>
                     <div id="total-confirmados-display" style="font-size: 0.9rem;">
                         <p style="color: var(--texto-mutado);">Registrados: <strong id="contagem-pilotos-torneio" style="color: var(--amarelo);">0</strong></p>
-                        <div id="pilotos-inscritos-lista" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
-                            <!-- Carregados dinamicamente via JS -->
-                        </div>
+                        <div id="pilotos-inscritos-lista" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Visualização Chaveamento Dinâmico -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Mapeamento de Confrontos (Chaves)</h2>
@@ -1178,7 +1028,6 @@
         <section id="sessao-admin" class="admin-section">
             <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
             
-            <!-- EXCLUSIVO: TABELA DE ALISTAMENTOS PENDENTES -->
             <div class="painel-card" style="margin-bottom: 30px;">
                 <div class="card-header">
                     <h2>📥 Alistamentos Pendentes (Triagem de Recrutas)</h2>
@@ -1197,15 +1046,12 @@
                                 <th class="coluna-acoes">Ações de Triagem</th>
                             </tr>
                         </thead>
-                        <tbody id="tabela-corpo-alistamentos">
-                            <!-- Carregado do Firebase via JS -->
-                        </tbody>
+                        <tbody id="tabela-corpo-alistamentos"></tbody>
                     </table>
                 </div>
             </div>
 
             <div class="admin-grid">
-                <!-- Painel 1: Transmissor de Comunicados -->
                 <div class="admin-card">
                     <div class="card-header">
                         <h2>Transmitir Aviso Oficial</h2>
@@ -1218,7 +1064,6 @@
                     </form>
                 </div>
 
-                <!-- Painel 2: Ajustar Qualquer Piloto -->
                 <div class="admin-card">
                     <div class="card-header">
                         <h2>Ajustar Piloto Alheio</h2>
@@ -1238,20 +1083,17 @@
                             <option value="Fait">Fait</option> <option value="Gnash">Gnash</option> <option value="Imugi">Imugi</option>
                             <option value="Isaiah">Isaiah</option> <option value="Jaeyun">Jaeyun</option> <option value="Jhala">Jhala</option>
                             <option value="Jiro">Jiro</option> <option value="Kaya">Kaya</option> <option value="Koji">Koji</option>
-                            <option value="Kor">Kor</option> <option value="Lin Fei">Lin Fei</option> <option value="Loki">Loki</option>
-                            <option value="Lucien">Lucien</option> <option value="Lady Vera">Lady Vera</option>
+                            <option value="Kor">Kor</option> <option value="Lin Fei">Lin Fei</option> <option value="Loki">Loki</option> <option value="Lucien">Lucien</option>
                             <option value="Magyar">Magyar</option> <option value="Mako">Mako</option>
                             <option value="Mirage">Mirage</option> <option value="Mordex">Mordex</option> <option value="Munin">Munin</option>
                             <option value="Nash">Nash</option> <option value="Nix">Nix</option> <option value="Oni">Oni</option>
                             <option value="Onyx">Onyx</option> <option value="Orion">Orion</option> <option value="Petra">Petra</option>
-                            <option value="Priya">Priya</option>
                             <option value="Ragnir">Ragnir</option> <option value="Rayman">Rayman</option> <option value="Red Raptor">Red Raptor</option>
-                            <option value="Reno">Reno</option> <option value="Ransom">Ransom</option> <option value="Rupture">Rupture</option>
-                            <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
-                            <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option>
+                            <option value="Reno">Reno</option> <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
+                            <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option> <option value="Taza">Taza</option>
                             <option value="Teros">Teros</option> <option value="Tezca">Tezca</option> <option value="Thatch">Thatch</option>
-                            <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option>
-                            <option value="Val">Val</option> <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
+                            <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option> <option value="Val">Val</option>
+                            <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
                             <option value="Volkov">Volkov</option> <option value="Wu Shang">Wu Shang</option> <option value="Xull">Xull</option>
                             <option value="Yumiko">Yumiko</option> <option value="Zariel">Zariel</option>
                         </select>
@@ -1265,7 +1107,6 @@
                             <option value="Katar">Katar</option> <option value="Orb">Orb</option>
                             <option value="Rocket Lance">Rocket Lance</option> <option value="Scythe">Scythe</option>
                             <option value="Spear">Spear</option> <option value="Sword">Sword</option>
-                            <option value="Chakram">Chakram</option>
                         </select>
                         
                         <select id="adm-membro-stance" class="select-painel" required>
@@ -1286,7 +1127,6 @@
                     </form>
                 </div>
 
-                <!-- Painel 3: Gerenciar Recursos -->
                 <div class="admin-card">
                     <div class="card-header">
                         <h2>Publicar Novo Recurso</h2>
@@ -1310,7 +1150,7 @@
                 </div>
             </div>
 
-            <!-- CONTROLE DE CAMPEONATO (PAINEL DE ADMIN DO TORNEIO) -->
+            <!-- CONTROLE DO TORNEIO (ADMIN) -->
             <div class="admin-grid" style="margin-top: 30px;">
                 <div class="admin-card" style="grid-column: 1 / -1;">
                     <div class="card-header">
@@ -1318,7 +1158,6 @@
                         <span>🎯</span>
                     </div>
                     
-                    <!-- CONFIGURADOR DE DIA / HORA E FASE DE CHECK-IN -->
                     <div class="form-painel" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px;">
                         <div>
                             <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Data da Competição</label>
@@ -1327,6 +1166,14 @@
                         <div>
                             <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Hora de Decolagem</label>
                             <input type="text" id="adm-torneio-hora" class="input-painel" placeholder="Ex: 19:00 BRT">
+                        </div>
+                        <!-- SELETOR DE FORMATO DE TORNEIO IMPLEMENTADO -->
+                        <div>
+                            <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Formato de Chaveamento</label>
+                            <select id="adm-torneio-formato" class="select-painel">
+                                <option value="simples">Eliminação Simples</option>
+                                <option value="dupla">Eliminação Dupla</option>
+                            </select>
                         </div>
                         <div style="display: flex; align-items: flex-end;">
                             <button class="btn-painel-submit" onclick="atualizarAgendaTorneio()" style="width: 100%; height: 43px;">Salvar Cronograma</button>
@@ -1379,7 +1226,6 @@
         }
     </script>
 
-    <!-- INTEGRACAO FIRESTORE E MECÂNICA DO PAINEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc, addDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -1996,7 +1842,7 @@
         });
 
         // ==========================================================================
-        // SISTEMA NATIVO DE GERENCIAMENTO DE TORNEIOS (STARKINDRED BRACKETS)
+        // SISTEMA DE TORNEIOS (ELIMINAÇÃO SIMPLES & DUPLA)
         // ==========================================================================
         
         async function sincronizarModuloTorneio() {
@@ -2004,7 +1850,7 @@
                 const configRef = doc(db, "torneio_config", "global");
                 const configSnap = await getDoc(configRef);
                 
-                let configuracoes = { status: "fechado", data: "Sábado", hora: "19:00 BRT" };
+                let configuracoes = { status: "fechado", data: "Sábado", hora: "19:00 BRT", formato: "simples" };
                 if (configSnap.exists()) {
                     configuracoes = configSnap.data();
                 } else {
@@ -2013,10 +1859,12 @@
 
                 document.getElementById("torneio-data-display").textContent = configuracoes.data || "Sábado";
                 document.getElementById("torneio-hora-display").textContent = configuracoes.hora || "19:00 BRT";
+                document.getElementById("torneio-formato-display").textContent = configuracoes.formato === "dupla" ? "Eliminação Dupla" : "Eliminação Simples";
                 
                 if (eAdministrador) {
                     document.getElementById("adm-torneio-data").value = configuracoes.data || "";
                     document.getElementById("adm-torneio-hora").value = configuracoes.hora || "";
+                    document.getElementById("adm-torneio-formato").value = configuracoes.formato || "simples";
                 }
 
                 const inscritosSnapshot = await getDocs(collection(db, "torneio_inscritos"));
@@ -2098,7 +1946,7 @@
                     `;
                 }
 
-                await carregarEExibirBrackets();
+                await carregarEExibirBrackets(configuracoes.formato || "simples");
 
             } catch (err) {
                 console.error("Erro ao processar dados de torneio:", err);
@@ -2173,6 +2021,7 @@
         window.atualizarAgendaTorneio = async function() {
             const dataTorneio = document.getElementById("adm-torneio-data").value.trim();
             const horaTorneio = document.getElementById("adm-torneio-hora").value.trim();
+            const formatoTorneio = document.getElementById("adm-torneio-formato").value;
 
             if(!dataTorneio || !horaTorneio) {
                 alert("Insira a data e a hora do torneio!");
@@ -2183,10 +2032,11 @@
                 const configRef = doc(db, "torneio_config", "global");
                 await updateDoc(configRef, {
                     data: dataTorneio,
-                    hora: horaTorneio
+                    hora: horaTorneio,
+                    formato: formatoTorneio
                 });
-                await registrarAtividade("📅 Comandante " + nomeSalvo + " agendou o torneio ativo para " + dataTorneio + " às " + horaTorneio + ".");
-                alert("Cronograma do campeonato salvo!");
+                await registrarAtividade("📅 Comandante " + nomeSalvo + " agendou o torneio (" + (formatoTorneio === "dupla" ? "Eliminação Dupla" : "Eliminação Simples") + ") para " + dataTorneio + " às " + horaTorneio + ".");
+                alert("Cronograma e Formato salvos!");
                 location.reload();
             } catch (err) {
                 alert("Erro ao atualizar agenda.");
@@ -2207,10 +2057,11 @@
                     await setDoc(doc(db, "torneio_config", "global"), { 
                         status: "fechado",
                         data: "Sábado",
-                        hora: "19:00 BRT"
+                        hora: "19:00 BRT",
+                        formato: "simples"
                     });
 
-                    await registrarAtividade("🧹 Torneio completamente resetado e limpo por Comandante " + nomeSalvo + ".");
+                    await registrarAtividade("🧹 Torneio completamente resetado por Comandante " + nomeSalvo + ".");
                     alert("Redefinição total efetuada com sucesso!");
                     location.reload();
                 } catch (e) {
@@ -2219,7 +2070,8 @@
             }
         };
 
-        async function carregarEExibirBrackets() {
+        // AJUSTE NA FUNÇÃO DE RENDERIZAÇÃO DE BRACKETS (SUPORTE A DUPLA ELIMINAÇÃO)
+        async function carregarEExibirBrackets(formato = "simples") {
             const container = document.getElementById("bracket-view");
             try {
                 const snap = await getDocs(collection(db, "torneio_partidas"));
@@ -2231,52 +2083,93 @@
                 const partidas = [];
                 snap.forEach(d => partidas.push({ id: d.id, ...d.data() }));
 
-                const rodadasMap = {};
-                partidas.sort((a, b) => a.rodada - b.rodada);
-
-                partidas.forEach(p => {
-                    if (!rodadasMap[p.rodada]) rodadasMap[p.rodada] = [];
-                    rodadasMap[p.rodada].push(p);
-                });
-
                 container.innerHTML = "";
-                const totalDeRodadas = Object.keys(rodadasMap).length;
 
-                for (let r = 1; r <= totalDeRodadas; r++) {
-                    const roundDiv = document.createElement("div");
-                    roundDiv.className = "bracket-round";
+                if (formato === "dupla") {
+                    const winnersMatches = partidas.filter(p => !p.chave || p.chave === "winners");
+                    const losersMatches = partidas.filter(p => p.chave === "losers");
 
-                    let rotuloRodada = `Rodada ${r}`;
-                    if (r === totalDeRodadas) rotuloRodada = "Final";
-                    else if (r === totalDeRodadas - 1) rotuloRodada = "Semifinal";
-                    else if (r === totalDeRodadas - 2) rotuloRodada = "Quartas de Final";
+                    if (winnersMatches.length > 0) {
+                        const headerW = document.createElement("div");
+                        headerW.className = "bracket-sub-header";
+                        headerW.textContent = "🥇 Chave Superior (Winners Bracket)";
+                        container.appendChild(headerW);
+                        
+                        const wrapW = document.createElement("div");
+                        wrapW.className = "bracket-wrapper";
+                        renderizarGrupoPartidas(winnersMatches, wrapW);
+                        container.appendChild(wrapW);
+                    }
 
-                    roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
+                    if (losersMatches.length > 0) {
+                        const headerL = document.createElement("div");
+                        headerL.className = "bracket-sub-header";
+                        headerL.style.borderColor = "var(--vermelho-erro)";
+                        headerL.style.color = "#f87171";
+                        headerL.textContent = "💀 Chave Inferior (Losers Bracket)";
+                        container.appendChild(headerL);
 
-                    rodadasMap[r].sort((a, b) => a.id.localeCompare(b.id));
-
-                    rodadasMap[r].forEach(m => {
-                        const matchCard = document.createElement("div");
-                        matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
-
-                        matchCard.innerHTML = `
-                            <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
-                                <span>${m.jogador1 || 'Aguardando...'}</span>
-                                <span class="score-display">${m.jogador1 ? m.score1 : ''}</span>
-                            </div>
-                            <div class="matchup-team ${m.vencedor === m.jogador2 && m.vencedor ? 'winner' : ''} ${!m.jogador2 ? 'bye' : ''}">
-                                <span>${m.jogador2 || 'Aguardando...'}</span>
-                                <span class="score-display">${m.jogador2 ? m.score2 : ''}</span>
-                            </div>
-                        `;
-                        roundDiv.appendChild(matchCard);
-                    });
-
-                    container.appendChild(roundDiv);
+                        const wrapL = document.createElement("div");
+                        wrapL.className = "bracket-wrapper";
+                        renderizarGrupoPartidas(losersMatches, wrapL);
+                        container.appendChild(wrapL);
+                    }
+                } else {
+                    const wrapSingle = document.createElement("div");
+                    wrapSingle.className = "bracket-wrapper";
+                    renderizarGrupoPartidas(partidas, wrapSingle);
+                    container.appendChild(wrapSingle);
                 }
+
             } catch (err) {
                 console.error("Erro ao carregar chaveamento:", err);
             }
+        }
+
+        function renderizarGrupoPartidas(partidasGrupo, wrapperTarget) {
+            const rodadasMap = {};
+            partidasGrupo.sort((a, b) => a.rodada - b.rodada);
+
+            partidasGrupo.forEach(p => {
+                if (!rodadasMap[p.rodada]) rodadasMap[p.rodada] = [];
+                rodadasMap[p.rodada].push(p);
+            });
+
+            const rodadasKeys = Object.keys(rodadasMap).map(Number).sort((a, b) => a - b);
+            const totalDeRodadas = rodadasKeys.length;
+
+            rodadasKeys.forEach((r, index) => {
+                const roundDiv = document.createElement("div");
+                roundDiv.className = "bracket-round";
+
+                let rotuloRodada = `Rodada ${r}`;
+                if (index === totalDeRodadas - 1) rotuloRodada = "Final";
+                else if (index === totalDeRodadas - 2) rotuloRodada = "Semifinal";
+                else if (index === totalDeRodadas - 3) rotuloRodada = "Quartas de Final";
+
+                roundDiv.innerHTML = `<div class="bracket-round-title">${rotuloRodada}</div>`;
+
+                rodadasMap[r].sort((a, b) => a.id.localeCompare(b.id));
+
+                rodadasMap[r].forEach(m => {
+                    const matchCard = document.createElement("div");
+                    matchCard.className = `matchup-card ${m.status === 'jogando' ? 'active-match' : ''}`;
+
+                    matchCard.innerHTML = `
+                        <div class="matchup-team ${m.vencedor === m.jogador1 && m.vencedor ? 'winner' : ''} ${!m.jogador1 ? 'bye' : ''}">
+                            <span>${m.jogador1 || 'Aguardando...'}</span>
+                            <span class="score-display">${m.jogador1 ? (m.score1 ?? 0) : ''}</span>
+                        </div>
+                        <div class="matchup-team ${m.vencedor === m.jogador2 && m.vencedor ? 'winner' : ''} ${!m.jogador2 ? 'bye' : ''}">
+                            <span>${m.jogador2 || 'Aguardando...'}</span>
+                            <span class="score-display">${m.jogador2 ? (m.score2 ?? 0) : ''}</span>
+                        </div>
+                    `;
+                    roundDiv.appendChild(matchCard);
+                });
+
+                wrapperTarget.appendChild(roundDiv);
+            });
         }
     </script>
 </body>
