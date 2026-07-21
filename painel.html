@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarKindred | Cabine de Comando</title>
+    
+    <!-- Fontes Externas -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
         /* ==========================================================================
-           PALETA DE CORES TÁTICA
+           1. PALETA DE CORES & VARIÁVEIS TÁTICAS
            ========================================================================== */
         :root {
             --bg-principal: #030914;      
@@ -22,7 +25,7 @@
         }
 
         /* ==========================================================================
-           ESTILOS GERAIS & FUNDO ESPACIAL
+           2. ESTILOS GERAIS & FUNDO ESPACIAL
            ========================================================================== */
         * {
             margin: 0;
@@ -81,7 +84,7 @@
         }
 
         /* ==========================================================================
-           HEADER E STATUS DO PILOTO
+           3. HEADER E STATUS DO PILOTO
            ========================================================================== */
         header {
             display: flex;
@@ -160,7 +163,7 @@
         }
 
         /* ==========================================================================
-           CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS
+           4. CONTEÚDO DO DASHBOARD E SISTEMA DE ABAS
            ========================================================================== */
         .painel-container {
             max-width: 1200px;
@@ -234,7 +237,7 @@
             color: var(--amarelo);
         }
 
-        /* LOGS */
+        /* Logs de Atividade */
         .container-logs {
             font-size: 0.85rem;
             display: flex;
@@ -264,7 +267,7 @@
             margin-bottom: 3px;
         }
 
-        /* Menu de Abas */
+        /* Menu de Navegação em Abas */
         .menu-abas {
             display: flex;
             gap: 8px;
@@ -318,7 +321,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Formulario */
+        /* Formulários */
         .form-painel {
             display: flex;
             flex-direction: column;
@@ -399,7 +402,9 @@
             box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
         }
 
-        /* CONTROLES MEMBROS */
+        /* ==========================================================================
+           5. CONTROLES E TABELA DE MEMBROS
+           ========================================================================== */
         .barra-busca-container {
             margin-bottom: 25px;
             position: relative;
@@ -465,11 +470,20 @@
         .limitador-tabela-membros::-webkit-scrollbar { width: 6px; }
         .limitador-tabela-membros::-webkit-scrollbar-thumb { background: var(--dourado); border-radius: 3px; }
 
-        /* TABELA */
+        /* Estilização da Tabela */
         .tabela-membros {
             width: 100%;
             border-collapse: collapse;
             background: transparent;
+        }
+
+        .legend-icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin-right: 8px;
+            border-radius: 50%;
+            border: 1px solid var(--dourado);
         }
 
         @media (max-width: 767px) {
@@ -556,7 +570,9 @@
             background: rgba(16, 185, 129, 0.1);
         }
 
-        /* BUILDS */
+        /* ==========================================================================
+           6. METAS & BUILDS
+           ========================================================================== */
         .grade-meta { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media (min-width: 768px) { .grade-meta { grid-template-columns: 2fr 1fr; } }
 
@@ -588,7 +604,9 @@
             border-radius: 4px;
         }
 
-        /* RECURSOS */
+        /* ==========================================================================
+           7. RECURSOS & TUTORIAIS
+           ========================================================================== */
         .grade-recursos { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media (min-width: 600px) { .grade-recursos { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); } }
 
@@ -648,7 +666,9 @@
         @media (min-width: 768px) { .btn-combo-codex h3 { font-size: 1.8rem; } }
         .btn-combo-codex p { color: var(--texto-mutado); max-width: 500px; font-size: 0.85rem; }
 
-        /* ADMIN */
+        /* ==========================================================================
+           8. ADMINISTRAÇÃO & TORNEIOS
+           ========================================================================== */
         .admin-section {
             display: none; 
             margin-top: 40px;
@@ -672,7 +692,7 @@
 
         @media (min-width: 768px) { .admin-card { padding: 30px; } }
 
-        /* BRACKETS */
+        /* Chaveamento do Torneio (Brackets) */
         .bracket-container {
             display: flex;
             flex-direction: column;
@@ -767,7 +787,7 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header Principal -->
     <header>
         <div class="logo-painel">STAR<span>KINDRED</span></div>
         <div class="piloto-info">
@@ -777,12 +797,13 @@
         </div>
     </header>
 
-    <!-- Conteúdo Geral do Membro -->
+    <!-- Conteúdo Principal do Dashboard -->
     <main class="painel-container">
         <h1 class="titulo-secao">Cabine de Comando</h1>
 
+        <!-- Visão Geral Tática -->
         <div class="dashboard-grid">
-            <!-- Avisos Gerais -->
+            <!-- Comunicados da Liderança -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Mensagens da Liderança</h2>
@@ -793,7 +814,7 @@
                 </div>
             </div>
 
-            <!-- REGISTRO DE ATIVIDADES -->
+            <!-- Registro de Atividades Recentes -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Registro de Atividades</h2>
@@ -804,7 +825,7 @@
                 </div>
             </div>
 
-            <!-- FORMULÁRIO: MEU PERFIL -->
+            <!-- Form de Edição do Perfil -->
             <div class="painel-card">
                 <div class="card-header">
                     <h2>Atualizar Meu Perfil</h2>
@@ -813,42 +834,43 @@
                 <form id="form-auto-edicao" class="form-painel">
                     <select id="auto-legend" class="select-painel" required>
                         <option value="" disabled selected>Selecione sua Lenda Principal</option>
-                        <option value="Ada">Ada</option> <option value="Arcadia">Arcadia</option> <option value="Artemis">Artemis</option>
-                        <option value="Asuri">Asuri</option> <option value="Azoth">Azoth</option> <option value="Barraza">Barraza</option>
-                        <option value="Bödvar">Bödvar</option> <option value="Brynn">Brynn</option> <option value="Caspian">Caspian</option>
-                        <option value="Cassidy">Cassidy</option> <option value="Cross">Cross</option> <option value="Diana">Diana</option>
-                        <option value="Dusk">Dusk</option> <option value="Ember">Ember</option> <option value="Ezio">Ezio</option>
-                        <option value="Fait">Fait</option> <option value="Gnash">Gnash</option> <option value="Imugi">Imugi</option>
-                        <option value="Isaiah">Isaiah</option> <option value="Jaeyun">Jaeyun</option> <option value="Jhala">Jhala</option>
-                        <option value="Jiro">Jiro</option> <option value="Kaya">Kaya</option> <option value="Koji">Koji</option>
-                        <option value="Kor">Kor</option> <option value="Lin Fei">Lin Fei</option> <option value="Loki">Loki</option>
-                        <option value="Lucien">Lucien</option> <option value="Magyar">Magyar</option> <option value="Mako">Mako</option>
-                        <option value="Mirage">Mirage</option> <option value="Mordex">Mordex</option> <option value="Munin">Munin</option>
-                        <option value="Nash">Nash</option> <option value="Nix">Nix</option> <option value="Oni">Oni</option>
-                        <option value="Onyx">Onyx</option> <option value="Orion">Orion</option> <option value="Petra">Petra</option>
-                        <option value="Ragnir">Ragnir</option> <option value="Rayman">Rayman</option> <option value="Red Raptor">Red Raptor</option>
-                        <option value="Reno">Reno</option> <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
-                        <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option> <option value="Taza">Taza</option>
-                        <option value="Teros">Teros</option> <option value="Tezca">Tezca</option> <option value="Thatch">Thatch</option>
-                        <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option>
-                        <option value="Val">Val</option> <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
-                        <option value="Volkov">Volkov</option> <option value="Wu Shang">Wu Shang</option> <option value="Xull">Xull</option>
-                        <option value="Yumiko">Yumiko</option> <option value="Zariel">Zariel</option>
+                        <option value="Ada">Ada</option><option value="Arcadia">Arcadia</option><option value="Artemis">Artemis</option>
+                        <option value="Asuri">Asuri</option><option value="Aurus">Aurus</option><option value="Azoth">Azoth</option>
+                        <option value="Barraza">Barraza</option><option value="Bödvar">Bödvar</option><option value="Brynn">Brynn</option>
+                        <option value="Caspian">Caspian</option><option value="Cassidy">Cassidy</option><option value="Cross">Cross</option>
+                        <option value="Diana">Diana</option><option value="Dusk">Dusk</option><option value="Ember">Ember</option>
+                        <option value="Ezio">Ezio</option><option value="Fait">Fait</option><option value="Gnash">Gnash</option>
+                        <option value="Imugi">Imugi</option><option value="Isaiah">Isaiah</option><option value="Jaeyun">Jaeyun</option>
+                        <option value="Jhala">Jhala</option><option value="Jiro">Jiro</option><option value="Kaya">Kaya</option>
+                        <option value="Koji">Koji</option><option value="Kor">Kor</option><option value="Lin Fei">Lin Fei</option>
+                        <option value="Loki">Loki</option><option value="Lucien">Lucien</option><option value="Magyar">Magyar</option>
+                        <option value="Mako">Mako</option><option value="Mirage">Mirage</option><option value="Mordex">Mordex</option>
+                        <option value="Munin">Munin</option><option value="Nash">Nash</option><option value="Nix">Nix</option>
+                        <option value="Oni">Oni</option><option value="Onyx">Onyx</option><option value="Orion">Orion</option>
+                        <option value="Petra">Petra</option><option value="Ragnir">Ragnir</option><option value="Rayman">Rayman</option>
+                        <option value="Red Raptor">Red Raptor</option><option value="Reno">Reno</option><option value="Rhea">Rhea</option>
+                        <option value="Scarlet">Scarlet</option><option value="Sentinel">Sentinel</option><option value="Seven">Seven</option>
+                        <option value="Sidra">Sidra</option><option value="Sir Roland">Sir Roland</option><option value="Taza">Taza</option>
+                        <option value="Teros">Teros</option><option value="Tezca">Tezca</option><option value="Thatch">Thatch</option>
+                        <option value="Thea">Thea</option><option value="Thor">Thor</option><option value="Ulgrim">Ulgrim</option>
+                        <option value="Val">Val</option><option value="Vector">Vector</option><option value="Vraxx">Vraxx</option>
+                        <option value="Volkov">Volkov</option><option value="Wu Shang">Wu Shang</option><option value="Xull">Xull</option>
+                        <option value="Yumiko">Yumiko</option><option value="Zariel">Zariel</option>
                     </select>
 
                     <select id="auto-armas" class="select-painel" required>
                         <option value="" disabled selected>Selecione a Arma Principal</option>
-                        <option value="Axe">Axe</option> <option value="Battle Boots">Battle Boots</option>
-                        <option value="Blasters">Blasters</option> <option value="Bow">Bow</option>
-                        <option value="Cannon">Cannon</option> <option value="Gauntlets">Gauntlets</option>
-                        <option value="Greatsword">Greatsword</option> <option value="Hammer">Hammer</option>
-                        <option value="Katar">Katar</option> <option value="Orb">Orb</option>
-                        <option value="Rocket Lance">Rocket Lance</option> <option value="Scythe">Scythe</option>
-                        <option value="Spear">Spear</option> <option value="Sword">Sword</option>
+                        <option value="Axe">Axe</option><option value="Battle Boots">Battle Boots</option>
+                        <option value="Blasters">Blasters</option><option value="Bow">Bow</option>
+                        <option value="Cannon">Cannon</option><option value="Gauntlets">Gauntlets</option>
+                        <option value="Greatsword">Greatsword</option><option value="Hammer">Hammer</option>
+                        <option value="Katar">Katar</option><option value="Orb">Orb</option>
+                        <option value="Rocket Lance">Rocket Lance</option><option value="Scythe">Scythe</option>
+                        <option value="Spear">Spear</option><option value="Sword">Sword</option>
                     </select>
                     
                     <select id="auto-stance" class="select-painel" required>
-                        <option value="" disabled selected>Selecione sua Stance activa</option>
+                        <option value="" disabled selected>Selecione sua Stance ativa</option>
                         <option value="Padrão">Padrão</option>
                         <option value="Velocidade">Velocidade (+1)</option>
                         <option value="Destreza">Destreza (+1)</option>
@@ -862,13 +884,14 @@
 
                     <input type="number" id="auto-elo" class="input-painel" placeholder="Meu Elo Máximo (ex: 2300)" required>
                     <input type="url" id="auto-corehalla" class="input-painel" placeholder="Meu Link do Corehalla" required>
+                    
                     <button type="submit" class="btn-painel-submit">Salvar Alterações</button>
                     <div id="mensagem-perfil" style="display: none; font-size: 0.85rem; margin-top: 8px; text-align: center;"></div>
                 </form>
             </div>
         </div>
 
-        <!-- Dados do Usuário Logado -->
+        <!-- Dados Resumidos do Usuário Autenticado -->
         <div class="painel-card" style="margin-bottom: 30px; padding: 15px 20px; display: block;">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
                 <span><strong>Meu Caça:</strong> <span id="main-jogador">Carregando...</span></span>
@@ -878,7 +901,7 @@
             </div>
         </div>
 
-        <!-- Menu de Navegação -->
+        <!-- Navegação Principal por Abas -->
         <div class="menu-abas" id="menu-navegacao-abas">
             <button class="btn-aba ativa" onclick="alternarAba(event, 'aba-membros')">👥 Membros</button>
             <button class="btn-aba" onclick="alternarAba(event, 'aba-builds')">📊 Builds (Meta)</button>
@@ -932,7 +955,7 @@
             </div>
         </div>
 
-        <!-- ABA 2: BUILDS -->
+        <!-- ABA 2: BUILDS / META -->
         <div id="aba-builds" class="conteudo-aba">
             <h2 class="titulo-secao" style="margin-bottom: 15px;">Estatísticas de Configurações da Frota</h2>
             <p style="color: var(--texto-mutado); margin-bottom: 25px;">Mapeamento dinâmico das Stances e Lendas preferidas pelos pilotos da StarKindred para dominar as ranqueadas.</p>
@@ -1026,7 +1049,7 @@
             </div>
         </div>
 
-        <!-- CONSOLE DE ADMINISTRAÇÃO -->
+        <!-- MÓDULO DE ADMINISTRAÇÃO -->
         <section id="sessao-admin" class="admin-section">
             <h2 class="titulo-secao" style="border-left-color: var(--dourado);">Hangar de Administração (Liderança)</h2>
             
@@ -1073,39 +1096,39 @@
                         
                         <select id="adm-membro-legend" class="select-painel" required>
                             <option value="" disabled selected>Selecione a Lenda Principal</option>
-                            <option value="Aurus">Aurus</option>
-                            <option value="Ada">Ada</option> <option value="Arcadia">Arcadia</option> <option value="Artemis">Artemis</option>
-                            <option value="Asuri">Asuri</option> <option value="Azoth">Azoth</option> <option value="Barraza">Barraza</option>
-                            <option value="Bödvar">Bödvar</option> <option value="Brynn">Brynn</option> <option value="Caspian">Caspian</option>
-                            <option value="Cassidy">Cassidy</option> <option value="Cross">Cross</option> <option value="Diana">Diana</option>
-                            <option value="Dusk">Dusk</option> <option value="Ember">Ember</option> <option value="Ezio">Ezio</option>
-                            <option value="Fait">Fait</option> <option value="Gnash">Gnash</option> <option value="Imugi">Imugi</option>
-                            <option value="Isaiah">Isaiah</option> <option value="Jaeyun">Jaeyun</option> <option value="Jhala">Jhala</option>
-                            <option value="Jiro">Jiro</option> <option value="Kaya">Kaya</option> <option value="Koji">Koji</option>
-                            <option value="Kor">Kor</option> <option value="Lin Fei">Lin Fei</option> <option value="Loki">Loki</option> <option value="Lucien">Lucien</option>
-                            <option value="Magyar">Magyar</option> <option value="Mako">Mako</option>
-                            <option value="Mirage">Mirage</option> <option value="Mordex">Mordex</option> <option value="Munin">Munin</option>
-                            <option value="Nash">Nash</option> <option value="Nix">Nix</option> <option value="Oni">Oni</option>
-                            <option value="Onyx">Onyx</option> <option value="Orion">Orion</option> <option value="Petra">Petra</option>
-                            <option value="Ragnir">Ragnir</option> <option value="Rayman">Rayman</option> <option value="Red Raptor">Red Raptor</option>
-                            <option value="Reno">Reno</option> <option value="Rhea">Rhea</option> <option value="Scarlet">Scarlet</option> <option value="Sentinel">Sentinel</option>
-                            <option value="Seven">Seven</option> <option value="Sidra">Sidra</option> <option value="Sir Roland">Sir Roland</option> <option value="Taza">Taza</option>
-                            <option value="Teros">Teros</option> <option value="Tezca">Tezca</option> <option value="Thatch">Thatch</option>
-                            <option value="Thea">Thea</option> <option value="Thor">Thor</option> <option value="Ulgrim">Ulgrim</option> <option value="Val">Val</option>
-                            <option value="Vector">Vector</option> <option value="Vraxx">Vraxx</option>
-                            <option value="Volkov">Volkov</option> <option value="Wu Shang">Wu Shang</option> <option value="Xull">Xull</option>
-                            <option value="Yumiko">Yumiko</option> <option value="Zariel">Zariel</option>
+                            <option value="Ada">Ada</option><option value="Arcadia">Arcadia</option><option value="Artemis">Artemis</option>
+                            <option value="Asuri">Asuri</option><option value="Aurus">Aurus</option><option value="Azoth">Azoth</option>
+                            <option value="Barraza">Barraza</option><option value="Bödvar">Bödvar</option><option value="Brynn">Brynn</option>
+                            <option value="Caspian">Caspian</option><option value="Cassidy">Cassidy</option><option value="Cross">Cross</option>
+                            <option value="Diana">Diana</option><option value="Dusk">Dusk</option><option value="Ember">Ember</option>
+                            <option value="Ezio">Ezio</option><option value="Fait">Fait</option><option value="Gnash">Gnash</option>
+                            <option value="Imugi">Imugi</option><option value="Isaiah">Isaiah</option><option value="Jaeyun">Jaeyun</option>
+                            <option value="Jhala">Jhala</option><option value="Jiro">Jiro</option><option value="Kaya">Kaya</option>
+                            <option value="Koji">Koji</option><option value="Kor">Kor</option><option value="Lin Fei">Lin Fei</option>
+                            <option value="Loki">Loki</option><option value="Lucien">Lucien</option><option value="Magyar">Magyar</option>
+                            <option value="Mako">Mako</option><option value="Mirage">Mirage</option><option value="Mordex">Mordex</option>
+                            <option value="Munin">Munin</option><option value="Nash">Nash</option><option value="Nix">Nix</option>
+                            <option value="Oni">Oni</option><option value="Onyx">Onyx</option><option value="Orion">Orion</option>
+                            <option value="Petra">Petra</option><option value="Ragnir">Ragnir</option><option value="Rayman">Rayman</option>
+                            <option value="Red Raptor">Red Raptor</option><option value="Reno">Reno</option><option value="Rhea">Rhea</option>
+                            <option value="Scarlet">Scarlet</option><option value="Sentinel">Sentinel</option><option value="Seven">Seven</option>
+                            <option value="Sidra">Sidra</option><option value="Sir Roland">Sir Roland</option><option value="Taza">Taza</option>
+                            <option value="Teros">Teros</option><option value="Tezca">Tezca</option><option value="Thatch">Thatch</option>
+                            <option value="Thea">Thea</option><option value="Thor">Thor</option><option value="Ulgrim">Ulgrim</option>
+                            <option value="Val">Val</option><option value="Vector">Vector</option><option value="Vraxx">Vraxx</option>
+                            <option value="Volkov">Volkov</option><option value="Wu Shang">Wu Shang</option><option value="Xull">Xull</option>
+                            <option value="Yumiko">Yumiko</option><option value="Zariel">Zariel</option>
                         </select>
 
                         <select id="adm-membro-armas" class="select-painel" required>
                             <option value="" disabled selected>Selecione a Arma Principal</option>
-                            <option value="Axe">Axe</option> <option value="Battle Boots">Battle Boots</option>
-                            <option value="Blasters">Blasters</option> <option value="Bow">Bow</option>
-                            <option value="Cannon">Cannon</option> <option value="Gauntlets">Gauntlets</option>
-                            <option value="Greatsword">Greatsword</option> <option value="Hammer">Hammer</option>
-                            <option value="Katar">Katar</option> <option value="Orb">Orb</option>
-                            <option value="Rocket Lance">Rocket Lance</option> <option value="Scythe">Scythe</option>
-                            <option value="Spear">Spear</option> <option value="Sword">Sword</option>
+                            <option value="Axe">Axe</option><option value="Battle Boots">Battle Boots</option>
+                            <option value="Blasters">Blasters</option><option value="Bow">Bow</option>
+                            <option value="Cannon">Cannon</option><option value="Gauntlets">Gauntlets</option>
+                            <option value="Greatsword">Greatsword</option><option value="Hammer">Hammer</option>
+                            <option value="Katar">Katar</option><option value="Orb">Orb</option>
+                            <option value="Rocket Lance">Rocket Lance</option><option value="Scythe">Scythe</option>
+                            <option value="Spear">Spear</option><option value="Sword">Sword</option>
                         </select>
                         
                         <select id="adm-membro-stance" class="select-painel" required>
@@ -1149,7 +1172,7 @@
                 </div>
             </div>
 
-            <!-- CONTROLE DO TORNEIO (ADMIN) -->
+            <!-- MÓDULO DE MODERAÇÃO DE TORNEIO -->
             <div class="admin-grid" style="margin-top: 30px;">
                 <div class="admin-card" style="grid-column: 1 / -1;">
                     <div class="card-header">
@@ -1166,7 +1189,6 @@
                             <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Hora de Decolagem</label>
                             <input type="text" id="adm-torneio-hora" class="input-painel" placeholder="Ex: 19:00 BRT">
                         </div>
-                        <!-- SELETOR DE FORMATO DE TORNEIO IMPLEMENTADO -->
                         <div>
                             <label style="font-family: 'Orbitron'; font-size: 0.75rem; color: var(--amarelo); display: block; margin-bottom: 5px;">Formato de Chaveamento</label>
                             <select id="adm-torneio-formato" class="select-painel">
@@ -1210,7 +1232,14 @@
         </section>
     </main>
 
+    <!-- Scripts Utilitários (Global) -->
     <script>
+        function obterUrlIconeLenda(nomeLenda) {
+            if (!nomeLenda || nomeLenda === "Não definido") return "";
+            const nomeTratado = nomeLenda.toLowerCase().replace(/\s+/g, "_");
+            return `https://raw.githubusercontent.com/BrawlhallaDB/brawlhalla-assets/main/avatars/${nomeTratado}.png`;
+        }
+
         function alternarAba(event, abaId) {
             document.querySelectorAll('.btn-aba').forEach(btn => btn.classList.remove('ativa'));
             document.querySelectorAll('.conteudo-aba').forEach(aba => aba.classList.remove('ativa'));
@@ -1219,7 +1248,6 @@
             const abaAlvo = document.getElementById(abaId);
             abaAlvo.classList.add('ativa');
 
-            // Scroll suave ate o menu de abas em vez de dar alert/popup
             document.getElementById('menu-navegacao-abas').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -1229,10 +1257,15 @@
         }
     </script>
 
+    <!-- Lógica da Aplicação (Firebase Module) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc, deleteDoc, collection, getDocs, setDoc, addDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { 
+            getFirestore, doc, getDoc, updateDoc, deleteDoc, 
+            collection, getDocs, setDoc, addDoc, query, orderBy, limit 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDqJZgfNSK281-eMJEucA5KOH00rg4HuEU",
             authDomain: "starkindred-51af3.firebaseapp.com",
@@ -1291,7 +1324,7 @@
                     document.getElementById("auto-legend").value = dados.mainLegend || "";
                     document.getElementById("auto-armas").value = dados["ArmaMain's"] || "";
                     document.getElementById("auto-elo").value = dados.elomax || "";
-                    if(dados.stanceAtiva) {
+                    if (dados.stanceAtiva) {
                         document.getElementById("auto-stance").value = dados.stanceAtiva;
                     }
 
@@ -1436,9 +1469,12 @@
                         `;
                     }
 
+                    const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(lenda) : "";
+                    const imgHtml = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+
                     lendaDiv.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;">
-                            <span style="font-family: 'Orbitron'; font-weight: bold; color: var(--amarelo);">${lenda}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;">
+                            <span style="font-family: 'Orbitron'; font-weight: bold; color: var(--amarelo); display: flex; align-items: center;">${imgHtml}${lenda}</span>
                             <span style="font-size: 0.85rem; color: var(--texto-mutado);">${totalPilotos} piloto(s) ativo(s)</span>
                         </div>
                         ${htmlStances}
@@ -1456,11 +1492,15 @@
                 containerRanking.innerHTML = `<p style="color: var(--texto-mutado);">Nenhuma lenda registrada.</p>`;
             } else {
                 rankingOrdenado.forEach(([lenda, qtd], index) => {
+                    const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(lenda) : "";
+                    const imgHtml = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+                    
                     const rankItem = document.createElement("div");
                     rankItem.style = "display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(8, 18, 37, 0.4); border-radius: 4px; border-left: 3px solid var(--amarelo);";
                     rankItem.innerHTML = `
-                        <div>
+                        <div style="display: flex; align-items: center;">
                             <span style="font-family: 'Orbitron'; font-weight: bold; color: var(--amarelo); margin-right: 10px;">#${index + 1}</span>
+                            ${imgHtml}
                             <span>${lenda}</span>
                         </div>
                         <span style="font-weight: bold; color: white;">${qtd}</span>
@@ -1485,11 +1525,14 @@
                 const linkCorehalla = m.corehalla ? m.corehalla.replace(/"/g, '').trim() : "";
                 const stanceAtiva = m.stanceAtiva || "Padrão";
 
+                const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(m.mainLegend) : "";
+                const imgHtml = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td><strong>${m.nome}</strong></td>
                     <td><span class="badge-tabela ${classeBadge}">${m.patente || 'Membro'}</span></td>
-                    <td>${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</td>
+                    <td style="display: flex; align-items: center;">${imgHtml} ${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</td>
                     <td style="color: var(--amarelo); font-family: 'Orbitron'; font-size: 0.85rem;"><strong>${stanceAtiva}</strong></td>
                     <td>${m.elomax || 'Sem registro'}</td>
                     <td>
@@ -1521,9 +1564,8 @@
                     btn.onclick = async function() {
                         const idParaRemover = this.getAttribute("data-id");
                         const nomeParaRemover = this.getAttribute("data-nome");
-                        if (idParaRemover === nomeSalvo) {
-                            return;
-                        }
+                        if (idParaRemover === nomeSalvo) return;
+                        
                         await deleteDoc(doc(db, "membros", idParaRemover));
                         await registrarAtividade("⚠️ O comandante " + nomeSalvo + " desligou o piloto " + nomeParaRemover + " da tripulação.");
                         location.reload();
@@ -1688,9 +1730,9 @@
                 snap.forEach(d => {
                     const t = d.data();
                     let videoId = "";
-                    if(t.url) {
+                    if (t.url) {
                         videoId = t.url.split('v=')[1] || t.url.split('/').pop();
-                        if(videoId.includes('&')) {
+                        if (videoId.includes('&')) {
                             videoId = videoId.split('&')[0];
                         }
                     }
@@ -1741,15 +1783,13 @@
             const titulo = document.getElementById("adm-tut-titulo").value.trim();
             const url = document.getElementById("adm-tut-link").value.trim();
 
-            if(!titulo || !url) {
-                return;
-            }
+            if (!titulo || !url) return;
 
             try {
                 await addDoc(collection(db, "tutoriais"), { titulo, url });
                 await registrarAtividade("📚 Novo tutorial tático publicado por " + nomeSalvo + ': "' + titulo + '".');
                 location.reload();
-            } catch(e) {}
+            } catch (e) {}
         };
 
         window.publicarEvento = async function() {
@@ -1757,15 +1797,13 @@
             const status = document.getElementById("adm-evt-status").value.trim();
             const descricao = document.getElementById("adm-evt-desc").value.trim();
 
-            if(!titulo || !status || !descricao) {
-                return;
-            }
+            if (!titulo || !status || !descricao) return;
 
             try {
                 await addDoc(collection(db, "eventos"), { titulo, status, descricao });
                 await registrarAtividade("🏆 Operação agendada por " + nomeSalvo + ': "' + titulo + '" (' + status + ').');
                 location.reload();
-            } catch(e) {}
+            } catch (e) {}
         };
 
         window.removerDado = async function(colecao, id, rotulo) {
@@ -1773,7 +1811,7 @@
                 await deleteDoc(doc(db, colecao, id));
                 await registrarAtividade("🗑️ Recurso da central de \"" + colecao + "\" removido por " + nomeSalvo + ': "' + rotulo + '".');
                 location.reload();
-            } catch(e) {}
+            } catch (e) {}
         };
 
         async function carregarComunicados() {
@@ -1826,9 +1864,9 @@
             } catch (err) {}
         });
 
-        // ==========================================================================
-        // SISTEMA DE TORNEIOS (ELIMINAÇÃO SIMPLES & DUPLA)
-        // ==========================================================================
+        /* ==========================================================================
+           MODULO DE TORNEIOS
+           ========================================================================== */
         
         async function sincronizarModuloTorneio() {
             try {
@@ -1994,9 +2032,7 @@
             const horaTorneio = document.getElementById("adm-torneio-hora").value.trim();
             const formatoTorneio = document.getElementById("adm-torneio-formato").value;
 
-            if(!dataTorneio || !horaTorneio) {
-                return;
-            }
+            if (!dataTorneio || !horaTorneio) return;
 
             try {
                 const configRef = doc(db, "torneio_config", "global");
