@@ -478,12 +478,20 @@
         }
 
         .legend-icon {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             vertical-align: middle;
             margin-right: 8px;
             border-radius: 50%;
             border: 1px solid var(--dourado);
+            background-color: rgba(0, 0, 0, 0.5);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .coluna-lenda {
+            display: flex;
+            align-items: center;
         }
 
         @media (max-width: 767px) {
@@ -532,7 +540,7 @@
 
         @media (min-width: 768px) {
             .tabela-membros th, .tabela-membros td {
-                padding: 15px;
+                padding: 12px 15px;
                 text-align: left;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
@@ -556,6 +564,7 @@
             border-radius: 4px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.15);
+            white-space: nowrap;
         }
 
         .badge-tabela.lider {
@@ -894,7 +903,7 @@
         <!-- Dados Resumidos do Usuário Autenticado -->
         <div class="painel-card" style="margin-bottom: 30px; padding: 15px 20px; display: block;">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
-                <span><strong>Meu Caça:</strong> <span id="main-jogador">Carregando...</span></span>
+                <span style="display: flex; align-items: center;"><strong>Meu Caça:</strong>&nbsp;<span id="main-jogador" style="display: flex; align-items: center;">Carregando...</span></span>
                 <span><strong>Stance Ativa:</strong> <span id="stance-jogador" style="color: var(--amarelo); font-weight: bold;">...</span></span>
                 <span><strong>Meu Recorde:</strong> <span id="elo-jogador">Carregando...</span></span>
                 <a id="corehalla-jogador" href="#" target="_blank" style="color: var(--amarelo); text-decoration: none; font-weight: bold;">Acessar Corehalla ↗</a>
@@ -1303,7 +1312,11 @@
                     document.getElementById("display-patente").textContent = dados.patente || "Piloto";
                     
                     const armaMain = dados["ArmaMain's"] || "Não definido";
-                    document.getElementById("main-jogador").textContent = `${dados.mainLegend || 'Não definido'} (${armaMain})`;
+                    const legendMain = dados.mainLegend || 'Não definido';
+                    const urlIcone = window.obterUrlIconeLenda ? window.obterUrlIconeLenda(legendMain) : "";
+                    const imgHtmlMain = urlIcone ? `<img src="${urlIcone}" class="legend-icon" onerror="this.style.display='none'">` : '';
+                    
+                    document.getElementById("main-jogador").innerHTML = `${imgHtmlMain} ${legendMain} (${armaMain})`;
                     document.getElementById("elo-jogador").textContent = dados.elomax || "Sem ELO";
                     document.getElementById("stance-jogador").textContent = dados.stanceAtiva || "Padrão";
                     
@@ -1532,7 +1545,7 @@
                 tr.innerHTML = `
                     <td><strong>${m.nome}</strong></td>
                     <td><span class="badge-tabela ${classeBadge}">${m.patente || 'Membro'}</span></td>
-                    <td style="display: flex; align-items: center;">${imgHtml} ${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</td>
+                    <td><div class="coluna-lenda">${imgHtml} <span>${m.mainLegend || 'Não definido'} (${m["ArmaMain's"] || 'Não definido'})</span></div></td>
                     <td style="color: var(--amarelo); font-family: 'Orbitron'; font-size: 0.85rem;"><strong>${stanceAtiva}</strong></td>
                     <td>${m.elomax || 'Sem registro'}</td>
                     <td>
